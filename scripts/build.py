@@ -121,6 +121,9 @@ def build():
         shutil.rmtree(DIST)
     (DIST / "articles").mkdir(parents=True)
     shutil.copytree(ROOT / "assets", DIST / "assets")
+    # static/ is copied as-is to the site root (e.g. search engine verification files).
+    if (ROOT / "static").is_dir():
+        shutil.copytree(ROOT / "static", DIST, dirs_exist_ok=True)
     articles = []
     for path in sorted(CONTENT.glob("*.html")):
         if not FILENAME_RE.fullmatch(path.name):

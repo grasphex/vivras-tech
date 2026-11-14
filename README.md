@@ -31,6 +31,7 @@
 ## 検索エンジン向け
 
 - ビルド時に `sitemap.xml`（トップと全記事のURL）を自動生成します。記事を追加すれば自動で反映されます。
+- `static/` のファイルはサイト直下にそのまま公開されます。`static/google*.html` はSearch Consoleの所有権確認用なので削除しないでください。
 - Google Search Console に `https://grasphex.github.io/vivras-tech/` をURLプレフィックスとして登録し、`sitemap.xml` を送信すると検索への掲載が早まります。
 
 ## ローカルプレビュー
@@ -62,6 +63,7 @@ python3 -m http.server 8000 --directory dist
 ```
 content/                記事のHTML（ここに放り込むだけ）
 assets/                 共通CSS・検索用JS
+static/                 サイト直下に置くファイル（所有権確認など）
 scripts/build.py        自動一覧生成
 .github/workflows/      GitHub Pages自動公開
 README.md               更新手順
