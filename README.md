@@ -28,6 +28,11 @@
 
 > このLPIC学習内容を公開用の技術解説記事にして。結論→必要な前提知識→仕組み→わかりやすい図解→設定例→誤解しがちな点→理解度チェックの順にし、論理の飛躍がない説明にして。可能な箇所にはHTML/CSS/JSで動く図解を追加すること。HTML/CSS/JSの単一HTMLファイルとして出力して。既存サイトに統合するため `<html lang="ja">`, `<meta charset="utf-8">`, `<meta name="viewport" content="width=device-width,initial-scale=1">`, `<title>...</title>`, `<meta name="description" content="...">`, `<meta name="category" content="Linux または ネットワーク等">`, `<meta name="keywords" content="...">`, `<meta name="published" content="YYYY-MM-DD">`, `<link rel="stylesheet" href="../assets/site.css">`, `<main>...</main>` を必ず含め、トップに戻るリンクは `../index.html` にすること。画像の外部依存は極力避け、SVGとCSSで実装。出力ファイル名は英小文字・数字・ハイフンのみ。出典と更新日も明記し、実機挙動を確認できていない説明には注意書きをつける。書籍の問題文はコピーせず独自の例題を作成。会社や顧客に関する情報は公開しない。
 
+## 検索エンジン向け
+
+- ビルド時に `sitemap.xml`（トップと全記事のURL）を自動生成します。記事を追加すれば自動で反映されます。
+- Google Search Console に `https://grasphex.github.io/vivras-tech/` をURLプレフィックスとして登録し、`sitemap.xml` を送信すると検索への掲載が早まります。
+
 ## ローカルプレビュー
 
 ```bash

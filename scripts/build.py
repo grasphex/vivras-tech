@@ -102,6 +102,20 @@ def render_categories(articles):
     return "".join(buttons)
 
 
+def render_sitemap(articles, site_url):
+    """sitemap.xml so search engines find every article in content/."""
+    def entry(loc, lastmod):
+        tag = f"<lastmod>{lastmod}</lastmod>" if lastmod else ""
+        return f"  <url><loc>{html.escape(loc)}</loc>{tag}</url>"
+    newest = max((a["published"] for a in articles if a["published"]), default="")
+    urls = [entry(site_url + "/", newest)]
+    urls += [entry(f"{site_url}/{a['url']}", a["published"]) for a in articles]
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+             *urls, "</urlset>"]
+    return "\n".join(lines) + "\n"
+
+
 def build():
     if DIST.exists():
         shutil.rmtree(DIST)
@@ -125,6 +139,8 @@ def build():
     # 404.html is served for any missing path, so links must be absolute.
     base = os.environ.get("SITE_BASE_PATH", "").rstrip("/")
     (DIST / "404.html").write_text((ROOT / "templates" / "404.html").read_text(encoding="utf-8").replace("__BASE__", base), encoding="utf-8")
+    site_url = os.environ.get("SITE_URL", "https://grasphex.github.io/vivras-tech").rstrip("/")
+    (DIST / "sitemap.xml").write_text(render_sitemap(articles, site_url), encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
     (DIST / "articles.json").write_text(json.dumps(articles, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Built {len(articles)} articles into {DIST}")
