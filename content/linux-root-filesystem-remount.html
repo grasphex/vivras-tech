@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linuxのルートファイルシステムとread-only再マウントを図解で理解する</title>
+<meta name="description" content="Linux起動時にルートファイルシステムをread-onlyでマウントし、確認後にread-writeへ再マウントする理由を、マウントの意味から図解する。">
+<meta name="category" content="Linux">
+<meta name="keywords" content="Linux ルートファイルシステム mount remount read-only read-write ro rw fsck root=/dev/sda1">
+<meta name="published" content="2026-11-14">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+.mount-map{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center;margin:18px 0}
+.mount-box{border:1px solid var(--border,#d8dee9);border-radius:12px;padding:16px;min-width:0}
+.mount-box code{overflow-wrap:anywhere}
+.tree{white-space:pre-line;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.7}
+@media(max-width:560px){.mount-map{grid-template-columns:1fr}.mount-map .diagram-arrow{text-align:center;transform:rotate(90deg)}}
+</style>
+</head><body>
+<header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav><a href="../index.html#articles">記事一覧</a></nav></div></header>
+<main>
+<header class="article-header">
+<div class="breadcrumb"><a href="../index.html">ホーム</a> / Linux / ファイルシステム</div>
+<span class="tag">LINUX · FILESYSTEM · BOOT</span>
+<h1>ルートファイルシステムとread-only再マウントを図解で理解する</h1>
+<p class="article-lead">「ルートをマウントするって、ディスクにひもづけること？」から出発し、起動時にread-onlyで始める理由と、read-writeへ再マウントする意味までつなげます。</p>
+<div class="article-meta">2026-11-14 · 基礎〜標準 · 図解＋操作デモ</div>
+</header>
+
+<article class="article-body">
+<section>
+<h2>1. 結論：マウントは「ファイルシステムをLinuxの木構造につなぐ」こと</h2>
+<p>Linuxでは、ディスクやパーティション上のファイルシステムを、ディレクトリツリー上の場所に<strong>接続する操作</strong>をマウントと呼びます。</p>
+<p>ルートファイルシステムをマウントするとは、たとえば <code>/dev/sda1</code> 上のファイルシステムを、Linuxのディレクトリ構造の一番上である <code>/</code> に結びつけることです。</p>
+<div class="mount-map">
+<div class="mount-box"><strong>ディスク側</strong><br><code>/dev/sda1</code><br><small>ext4などのファイルシステム</small></div>
+<span class="diagram-arrow">→</span>
+<div class="mount-box"><strong>Linuxから見える場所</strong><div class="tree">/
+├ /etc
+├ /usr
+├ /var
+└ /home</div></div>
+</div>
+<div class="callout"><p><strong>ポイント：</strong><code>/dev/sda1</code> と <code>/</code> は同じ名前ではありません。前者は「どのデバイスか」、後者は「Linuxのどこに見せるか」です。</p></div>
+</section>
+
+<section>
+<h2>2. 前提知識：root=、ro、rwは何を指定している？</h2>
+<p>起動時、ブートローダはカーネルに起動パラメータを渡せます。たとえば次のような指定です。</p>
+<pre><code>root=/dev/sda1 ro</code></pre>
+<p><code>root=/dev/sda1</code> は「実際のルートファイルシステムとして使うデバイス」を指定します。<code>ro</code> は、そのルートファイルシステムを最初はread-only（読み取り専用）で扱う指定です。<code>rw</code> はread-write（読み書き可能）です。</p>
+</section>
+
+<section>
+<h2>3. なぜ最初はread-onlyなのか</h2>
+<p>伝統的なLinuxの起動では、ルートファイルシステムを最初はread-onlyでマウントし、ファイルシステムの整合性確認を安全に行える状態にします。書き込みが行われない状態なら、<code>fsck</code> などの整合性チェックが対象を変化させずに扱いやすくなります。</p>
+<div class="diagram">
+<div class="diagram-row">
+<div class="diagram-node">起動</div><span class="diagram-arrow">→</span>
+<div class="diagram-node highlight">/ を ro でマウント</div><span class="diagram-arrow">→</span>
+<div class="diagram-node">確認</div><span class="diagram-arrow">→</span>
+<div class="diagram-node">rwへ</div>
+</div>
+</div>
+<p class="article-note">現代のsystemd環境では、fsckやマウント処理の具体的な順序・担当はディストリビューションや構成によって異なります。ただし、<code>ro</code> の目的として「整合性確認のため、書き込みを止めた状態を作る」という考え方はLinuxのbootparam(7)にも記載されています。</p>
+</section>
+
+<section>
+<h2>4. 図解：マウントと再マウントの違い</h2>
+<div class="demo">
+<div class="demo-label">INTERACTIVE / SIMULATION</div>
+<p class="demo-title">起動時の状態を1ステップずつ追う</p>
+<div class="diagram"><div class="diagram-row">
+<div id="step-a" class="diagram-node highlight">デバイス</div>
+<span class="diagram-arrow">→</span>
+<div id="step-b" class="diagram-node">/</div>
+<span class="diagram-arrow">→</span>
+<div id="step-c" class="diagram-node">通常利用</div>
+</div></div>
+<div class="step-bar"><button id="prev" type="button">← 前へ</button><span id="progress" class="step-status">1 / 4</span><button id="next" type="button">次へ →</button></div>
+<p id="result" class="demo-result is-allowed" role="status" aria-live="polite">まず、ルートとして使うデバイスを特定します。</p>
+<p class="article-note">仕組みを理解するために単純化しています。initramfsやsystemdの細かな処理は省略しています。</p>
+</div>
+</section>
+
+<section>
+<h2>5. 再マウントとは「同じ接続の条件を変える」こと</h2>
+<p>すでに <code>/</code> に接続されているファイルシステムを、別の場所へ付け替えるのではありません。<strong>同じデバイス・同じマウントポイントのまま、マウント条件を変更</strong>します。</p>
+<pre><code># ルートファイルシステムをread-writeへ再マウント
+sudo mount -o remount,rw /
+
+# 逆にread-onlyへ再マウント
+sudo mount -o remount,ro /</code></pre>
+<p><code>mount(8)</code> の説明でも、<code>remount</code> は「すでにマウント済みのファイルシステムのマウントフラグを変更する」操作で、デバイスやマウントポイント自体は変更しないとされています。</p>
+<table>
+<thead><tr><th>部分</th><th>意味</th></tr></thead>
+<tbody>
+<tr><td><code>mount</code></td><td>ファイルシステムのマウント操作</td></tr>
+<tr><td><code>-o</code></td><td>オプション指定</td></tr>
+<tr><td><code>remount</code></td><td>マウント済みのものを再マウント</td></tr>
+<tr><td><code>rw</code></td><td>read-writeにする</td></tr>
+<tr><td><code>/</code></td><td>対象のマウントポイント</td></tr>
+</tbody>
+</table>
+<div class="callout"><p><strong>一言で：</strong><code>mount -o remount,rw /</code> は「今 <code>/</code> として使っているファイルシステムを、読み書き可能な条件に変えて」と読むと理解しやすいです。</p></div>
+</section>
+
+<section>
+<h2>6. 誤解しがちな点</h2>
+<p><strong>「/ をマウントする」＝ディレクトリそのものをディスクへコピーする、ではありません。</strong> ディスク上のファイルシステムを <code>/</code> という場所から参照できるように接続します。</p>
+<p><strong>再マウント＝別のディスクへつなぎ直す、でもありません。</strong> <code>remount,rw</code> では、同じファイルシステムの読み書き条件を変更します。</p>
+<p><strong>普段の起動で利用者が手動実行するわけではありません。</strong> 通常の起動処理では必要なマウントや状態変更は起動システムが処理します。手動の <code>mount -o remount,rw /</code> は、レスキューや保守などで利用することがあります。</p>
+</section>
+
+<section>
+<h2>7. 理解度チェック</h2>
+<div class="quiz">
+<details><summary>Q1. 「/dev/sda1を/にマウントする」とは何をしている？</summary><p><strong>答え：</strong><code>/dev/sda1</code> 上のファイルシステムを、Linuxのディレクトリツリーの <code>/</code> から参照できるように接続しています。</p></details>
+<details><summary>Q2. root=/dev/sda1 の root は何を指定する？</summary><p><strong>答え：</strong>起動後にルートファイルシステムとして使うデバイスを指定します。</p></details>
+<details><summary>Q3. 起動時に最初はroでマウントする主な理由は？</summary><p><strong>答え：</strong>ファイルシステムへの書き込みを止めた状態で整合性確認を行えるようにするためです。</p></details>
+<details><summary>Q4. mount -o remount,rw / は別のディスクを/へ接続するコマンド？</summary><p><strong>答え：いいえ。</strong>すでに <code>/</code> にマウントされているファイルシステムを、read-writeの条件で再マウントします。</p></details>
+</div>
+</section>
+
+<section>
+<h2>8. 参考資料</h2>
+<p><a href="https://man7.org/linux/man-pages/man7/bootparam.7.html" target="_blank" rel="noopener noreferrer">Linux bootparam(7) — ro / rw とルートファイルシステム</a></p>
+<p><a href="https://man7.org/linux/man-pages/man8/mount.8.html" target="_blank" rel="noopener noreferrer">util-linux mount(8) — mount / remount</a></p>
+<p><a href="https://man7.org/linux/man-pages/man8/fsck.8.html" target="_blank" rel="noopener noreferrer">util-linux fsck(8) — ファイルシステムの確認・修復</a></p>
+<p><a href="https://docs.kernel.org/filesystems/ramfs-rootfs-initramfs.html" target="_blank" rel="noopener noreferrer">Linux Kernel Documentation — ramfs, rootfs and initramfs</a></p>
+<p class="article-note">特定の問題集・試験問題からの転載ではなく、学習目的で独自に作成した解説です。実機の起動順序やfsckの実行方式はディストリビューション・ファイルシステム・systemd構成等によって異なります。</p>
+</section>
+<div class="article-end"><a href="../index.html">← 技術解説一覧に戻る</a></div>
+</article>
+</main>
+<footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span></div></footer>
+<script>
+(()=>{const steps=[
+{a:'highlight',b:'',c:'',msg:'まず、ルートとして使うデバイスを特定します。'},
+{a:'',b:'highlight',c:'',msg:'そのファイルシステムを / に接続します。これがルートファイルシステムのマウントです。'},
+{a:'',b:'highlight',c:'',msg:'起動初期は read-only（ro）として扱い、書き込みを止めた状態を作れます。'},
+{a:'',b:'',c:'highlight',msg:'確認後、必要に応じて read-write（rw）へ再マウントし、通常利用へ進みます。'}
+];let i=0;const a=document.getElementById('step-a'),b=document.getElementById('step-b'),c=document.getElementById('step-c'),p=document.getElementById('progress'),r=document.getElementById('result'),prev=document.getElementById('prev'),next=document.getElementById('next');const draw=()=>{a.className='diagram-node '+steps[i].a;b.className='diagram-node '+steps[i].b;c.className='diagram-node '+steps[i].c;p.textContent=(i+1)+' / '+steps.length;r.textContent=steps[i].msg;prev.disabled=i===0;next.disabled=i===steps.length-1;};prev.addEventListener('click',()=>{if(i>0){i--;draw();}});next.addEventListener('click',()=>{if(i<steps.length-1){i++;draw();}});draw();})();
+</script>
+</body></html>
