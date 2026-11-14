@@ -26,6 +26,8 @@
 
 ### ChatGPT用・記事生成プロンプト
 
+**推奨：** [docs/chatgpt-article-prompt.md](docs/chatgpt-article-prompt.md) の「指示」をChatGPTのプロジェクトに登録すると、問題と解答を貼るだけで、転載・機密チェック済みの記事HTMLとファイル名が返ってきます。以下は単発で使う簡易版です。
+
 > このLPIC学習内容を公開用の技術解説記事にして。結論→必要な前提知識→仕組み→わかりやすい図解→設定例→誤解しがちな点→理解度チェックの順にし、論理の飛躍がない説明にして。可能な箇所にはHTML/CSS/JSで動く図解を追加すること。HTML/CSS/JSの単一HTMLファイルとして出力して。既存サイトに統合するため `<html lang="ja">`, `<meta charset="utf-8">`, `<meta name="viewport" content="width=device-width,initial-scale=1">`, `<title>...</title>`, `<meta name="description" content="...">`, `<meta name="category" content="Linux または ネットワーク等">`, `<meta name="keywords" content="...">`, `<meta name="published" content="YYYY-MM-DD">`, `<link rel="stylesheet" href="../assets/site.css">`, `<main>...</main>` を必ず含め、トップに戻るリンクは `../index.html` にすること。画像の外部依存は極力避け、SVGとCSSで実装。出力ファイル名は英小文字・数字・ハイフンのみ。出典と更新日も明記し、実機挙動を確認できていない説明には注意書きをつける。書籍の問題文はコピーせず独自の例題を作成。会社や顧客に関する情報は公開しない。
 
 ## 検索エンジン向け
