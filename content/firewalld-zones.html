@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>firewalldのzoneとportの仕組みを図解で理解する</title>
+<meta name="description" content="Linux firewalldのzone・service・portの役割と通信判定を、図解と操作デモで基礎から理解する。">
+<meta name="category" content="Linux"><meta name="keywords" content="firewalld zone firewall-cmd port service internal public TCP UDP">
+<meta name="published" content="2026-11-14"><link rel="stylesheet" href="../assets/site.css">
+</head><body><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav><a href="../index.html#articles">記事一覧</a></nav></div></header>
+<main><header class="article-header"><div class="breadcrumb"><a href="../index.html">ホーム</a> / Linux / firewalld</div><span class="tag">LINUX · NETWORK SECURITY</span><h1>firewalldのzoneとportの仕組みを図解で理解する</h1><p class="article-lead">「internal zoneに80/tcpを追加したら何が変わる？」を、前提から整理して操作デモで確かめます。</p><div class="article-meta">2026-11-14 · 基礎〜標準 · 図解＋操作デモ</div></header>
+<article class="article-body">
+<section><h2>1. 結論：通信ルールをまとめて管理する</h2><p><strong>firewalld</strong>はLinuxのファイアウォール設定を管理するサービスです。ファイアウォールは、ネットワーク通信を条件に従って許可・拒否する仕組みです。</p><p><strong>zone（ゾーン）</strong>は、接続元やネットワークインターフェースなどに応じて適用するルール群のまとまりです。<strong>service</strong>はHTTPなどのサービスに必要なポート・プロトコル等の定義を名前で扱う仕組みで、<strong>port</strong>はポート番号とTCP/UDP等を直接指定する方法です。</p><div class="callout"><p><strong>重要：</strong>「どのzoneが適用されるか」→「適用されたzoneにどんな許可ルールがあるか」を分けて考えると理解しやすくなります。</p></div></section>
+<section><h2>2. zone / service / port の関係</h2><div class="diagram"><div class="diagram-row"><div class="diagram-node">送信元 / NIC</div><span class="diagram-arrow">→</span><div class="diagram-node highlight">適用zone</div><span class="diagram-arrow">→</span><div class="diagram-node">service / port の許可ルール</div></div></div><p>たとえばinternal zoneだけに<code>80/tcp</code>を許可するルールを設けても、他のzoneからの接続が自動的に許可されるわけではありません。</p><p><code>80/tcp</code>と<code>80/udp</code>は別の通信です。番号が同じでもプロトコルが違えば、<code>80/tcp</code>の許可ルールは<code>80/udp</code>には適用されません。</p></section>
+<section><h2>3. 操作デモ：通信は通る？</h2><div class="demo"><div class="demo-label">INTERACTIVE / SIMULATION</div><p class="demo-title">適用zoneと宛先ポートを変える</p><p>以下は仕組みを理解するための単純化した独自ルールです。<strong>internalには22/tcp、publicには80/tcpだけを許可</strong>し、それ以外は拒否する前提とします。</p><div class="controls"><label for="zone">適用zone<select id="zone"><option value="internal">internal</option><option value="public">public</option></select></label><label for="port">宛先ポート<select id="port"><option value="22/tcp">22/tcp</option><option value="80/tcp">80/tcp</option><option value="53/udp">53/udp</option></select></label></div><div class="diagram"><div class="diagram-row"><div class="diagram-node">Client</div><span class="diagram-arrow">→</span><div id="selected-zone" class="diagram-node highlight">internal zone</div><span class="diagram-arrow">→</span><div class="diagram-node">Server</div></div></div><p id="result" class="demo-result is-allowed" role="status" aria-live="polite">許可：internal zoneで22/tcpの許可ルールに一致しました。</p><p class="article-note">実際の通信判定はsource/interfaceの割当、既存接続、rich rule、policy、zone target等にも依存します。この教材では省略しています。</p></div></section>
+<section><h2>4. 設定例と動作確認</h2><p>実際のLinux環境では、まずzoneや現在のルールを確認します。</p><pre><code># 動作中のfirewalld状態
+sudo firewall-cmd --state
+
+# アクティブなzoneと割当を確認
+sudo firewall-cmd --get-active-zones
+
+# internal zoneの現在のルールを確認
+sudo firewall-cmd --zone=internal --list-all
+
+# internalで80/tcpを永続的に許可
+sudo firewall-cmd --permanent --zone=internal --add-port=80/tcp
+
+# 永続設定を実行時設定に反映
+sudo firewall-cmd --reload</code></pre><p><code>--permanent</code>は永続設定の変更であり、そのままでは実行中の設定に即時反映されません。上記では<code>--reload</code>で反映します。なお<code>--reload</code>を実行すると、<code>--permanent</code>なしで追加した実行時のみの変更は破棄されます。実行前に環境のセキュリティ方針を確認しましょう。</p></section>
+<section><h2>5. 理解度チェック</h2><div class="quiz"><details><summary>Q1. internalに80/tcpを許可したら、publicでも80/tcpが許可される？</summary><p><strong>答え：いいえ。</strong>zoneごとに適用されるルールは異なります。ただし別途publicにも許可ルールが存在すれば通る可能性があります。</p></details><details><summary>Q2. 53/tcpの許可ルールで53/udpも許可される？</summary><p><strong>答え：いいえ。</strong>ポート番号に加えて通信プロトコルも一致する必要があります。</p></details><details><summary>Q3. 永続設定にポートを追加した直後、実行中のルールへ確実に反映される？</summary><p><strong>答え：いいえ。</strong><code>--permanent</code>だけでは実行時設定に反映されず、通常はreload等で反映します。</p></details></div></section>
+<section><h2>参考資料</h2><p><a href="https://firewalld.org/documentation/" target="_blank" rel="noopener noreferrer">firewalld公式ドキュメント</a>で最新のオプションを確認できます。</p><p class="article-note">独立した学習用解説です。特定の資格試験の公式教材ではありません。</p></section>
+<div class="article-end"><a href="../index.html">← 技術解説一覧に戻る</a></div></article></main><footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span></div></footer>
+<script>
+(()=>{const zone=document.getElementById('zone');const port=document.getElementById('port');const result=document.getElementById('result');const selected=document.getElementById('selected-zone');const update=()=>{const z=zone.value,p=port.value,allowed=z==='internal'?p==='22/tcp':p==='80/tcp';selected.textContent=z+' zone';result.className='demo-result '+(allowed?'is-allowed':'is-blocked');result.textContent=(allowed?'許可：':'拒否：')+z+' zoneで'+p+(allowed?'の許可ルールに一致しました。':'に一致する許可ルールがないため拒否されます。');};zone.addEventListener('change',update);port.addEventListener('change',update);update();})();
+</script></body></html>

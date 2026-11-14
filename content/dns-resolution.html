@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DNS名前解決の流れを図解で理解する</title>
+<meta name="description" content="スタブリゾルバ・再帰DNS・ルート・TLD・権威DNSの役割とキャッシュをステップ送りで理解する。">
+<meta name="category" content="ネットワーク"><meta name="keywords" content="DNS recursive resolver authoritative root TLD TTL dig trace キャッシュ 名前解決">
+<meta name="published" content="2026-11-14"><link rel="stylesheet" href="../assets/site.css">
+</head><body><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav><a href="../index.html#articles">記事一覧</a></nav></div></header>
+<main><header class="article-header"><div class="breadcrumb"><a href="../index.html">ホーム</a> / ネットワーク / DNS</div><span class="tag">NETWORK · DNS</span><h1>DNS名前解決の流れを図解で理解する</h1><p class="article-lead">ブラウザがドメイン名からIPアドレスを知るまで。スタブ・再帰DNS・ルート・TLD・権威DNSを順番に整理します。</p><div class="article-meta">2026-11-14 · 基礎〜標準 · ステップ操作</div></header>
+<article class="article-body"><section><h2>1. 結論：名前からIPアドレスを調べる仕組み</h2><p>DNSは、人が使うドメイン名と、通信先を見つけるためのIPアドレスなどの情報を対応づける仕組みです。Webサイトに接続するとき、必要に応じて名前解決を行います。</p><div class="callout"><p><strong>ポイント：</strong>PCは通常、ルートDNSへ直接問い合わせません。PCのスタブリゾルバが再帰リゾルバに問い合わせ、再帰リゾルバが必要に応じて各DNSサーバーへ問い合わせます。</p></div></section>
+<section><h2>2. 登場人物と役割</h2><ul><li><strong>スタブリゾルバ：</strong>端末側の名前解決機能。設定されたDNSサーバーに問い合わせる。</li><li><strong>再帰リゾルバ：</strong>必要な情報を調べ、回答を返す。キャッシュが使える場合は外部への問い合わせを省略できる。</li><li><strong>ルートDNS：</strong>対象TLDを担当するDNSの情報へ案内する。</li><li><strong>TLD DNS：</strong><code>.com</code>などの管理を通じて委任先の情報を案内する。</li><li><strong>権威DNS：</strong>担当ゾーンの正式なDNSデータを保持し、問い合わせに答える。</li></ul></section>
+<section><h2>3. 図解：名前解決をステップ送りする</h2><div class="demo"><div class="demo-label">INTERACTIVE / WALKTHROUGH</div><p class="demo-title">example.com のAレコードを問い合わせる例</p><div class="diagram"><div class="diagram-row"><div class="diagram-node" id="dns-client">端末</div><span class="diagram-arrow">→</span><div class="diagram-node" id="dns-recursive">再帰DNS</div><span class="diagram-arrow">→</span><div class="diagram-node" id="dns-remote">参照先DNS</div></div></div><p id="step-text" role="status" aria-live="polite">端末のスタブリゾルバが再帰DNSに問い合わせます。</p><div class="step-bar"><button id="prev" type="button">← 前へ</button><span id="progress" class="step-status">1 / 6</span><button id="next" type="button">次へ →</button></div><p class="article-note">典型的な概念モデルです。実環境ではキャッシュ、委任、CNAME、DNSSEC、ローカル設定などによってやりとりが変わります。</p></div></section>
+<section><h2>4. キャッシュとTTL</h2><p>再帰リゾルバが回答をキャッシュしていて有効期間内なら、ルートや権威DNSへの問い合わせを省略して回答できる場合があります。TTL（Time To Live）は、そのレコードをキャッシュに保持してよい最大の時間（秒）を示す値です。</p><p>TTLが短ければ更新が比較的反映されやすくなる反面、キャッシュが切れた後の問い合わせが増える可能性があります。TTLが長ければ外部への問い合わせは減りやすい一方、変更前の情報が残る時間も長くなり得ます。</p></section>
+<section><h2>5. コマンドで確かめる</h2><pre><code># 通常の問い合わせ
+$ dig example.com A
+
+# 指定したサーバーへ問い合わせる
+$ dig @1.1.1.1 example.com A
+
+# 委任をたどる動きを確認する（概念上は反復問い合わせ）
+$ dig +trace example.com A</code></pre><p><code>dig +trace</code>は通常の再帰問い合わせと同じ流れをそのまま表示するコマンドではありません。委任経路をたどるため、動作の違いを理解して使うことが重要です。</p></section>
+<section><h2>6. 理解度チェック</h2><div class="quiz"><details><summary>Q1. PCが必ずルートDNSに直接問い合わせる？</summary><p><strong>答え：いいえ。</strong>通常は設定された再帰リゾルバに問い合わせます。</p></details><details><summary>Q2. 再帰リゾルバに有効なキャッシュがあるとどうなる？</summary><p><strong>答え：</strong>外部への問い合わせを省略して回答できる場合があります。</p></details><details><summary>Q3. <code>dig +trace</code>はPCの普段の問い合わせをそのまま再現する？</summary><p><strong>答え：いいえ。</strong>委任経路をたどるための別の問い合わせ手順です。</p></details></div></section>
+<section><h2>参考資料</h2><p><a href="https://www.rfc-editor.org/rfc/rfc1034" target="_blank" rel="noopener noreferrer">RFC 1034 — Domain Names: Concepts and Facilities</a></p><p class="article-note">特定の問題集からの転載ではなく、学習目的で独自に作成した説明です。</p></section><div class="article-end"><a href="../index.html">← 技術解説一覧に戻る</a></div></article></main><footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span></div></footer>
+<script>
+(()=>{const steps=[['再帰DNS','端末のスタブリゾルバが再帰DNSに「example.com のAレコードは？」と問い合わせます。'],['ルートDNS','キャッシュがなければ、再帰DNSがルートDNSへ問い合わせ、.comの担当先について案内を受けます。'],['TLD DNS','再帰DNSが .com を管理するDNSへ問い合わせ、example.comの権威DNSへの委任情報を得ます。'],['権威DNS','再帰DNSが権威DNSへAレコードについて問い合わせ、回答を得ます。'],['再帰DNS','再帰DNSが有効期間等に従って回答をキャッシュし、端末へ返します。'],['端末','端末側が得たIPアドレスをもとに、必要なネットワーク通信を開始します。']];let i=0;const prev=document.getElementById('prev'),next=document.getElementById('next'),status=document.getElementById('step-text'),progress=document.getElementById('progress'),remote=document.getElementById('dns-remote'),rec=document.getElementById('dns-recursive'),client=document.getElementById('dns-client');const update=()=>{const [label,text]=steps[i];status.textContent=text;progress.textContent=(i+1)+' / '+steps.length;remote.textContent=label==='再帰DNS'?'参照先DNS':label;[remote,rec,client].forEach(el=>el.classList.remove('highlight'));(label==='端末'?client:label==='再帰DNS'?rec:remote).classList.add('highlight');prev.disabled=i===0;next.disabled=i===steps.length-1;};prev.addEventListener('click',()=>{i=Math.max(0,i-1);update();});next.addEventListener('click',()=>{i=Math.min(steps.length-1,i+1);update();});update();})();
+</script></body></html>
