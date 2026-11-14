@@ -142,7 +142,7 @@ def build():
     # 404.html is served for any missing path, so links must be absolute.
     base = os.environ.get("SITE_BASE_PATH", "").rstrip("/")
     (DIST / "404.html").write_text((ROOT / "templates" / "404.html").read_text(encoding="utf-8").replace("__BASE__", base), encoding="utf-8")
-    site_url = os.environ.get("SITE_URL", "https://grasphex.github.io/vivras-tech").rstrip("/")
+    site_url = os.environ.get("SITE_URL", "https://tech.grasphex.com").rstrip("/")
     (DIST / "sitemap.xml").write_text(render_sitemap(articles, site_url), encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
     (DIST / "articles.json").write_text(json.dumps(articles, ensure_ascii=False, indent=2), encoding="utf-8")

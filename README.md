@@ -16,7 +16,7 @@
 2. 本ZIPを展開し、**中身すべて**（隠しフォルダ `.github` を含む）をリポジトリの `main` ブランチに追加・コミットする。
 3. リポジトリの **Settings → Pages → Build and deployment → Source → GitHub Actions** を選ぶ。
 4. Actionsの `Publish VIVRAS Tech` の成功を確認する。初回に自動起動しない場合は **Actions → Publish VIVRAS Tech → Run workflow**。
-5. 通常のURLは `https://grasphex.github.io/vivras-tech/`（リポジトリ名が `vivras-tech` の場合）。**実際に公開成功していることをURLで確認**する。
+5. 公開URLは独自ドメインの `https://tech.grasphex.com/`（Cloudflare DNS で `tech` → `grasphex.github.io` の CNAME、Proxy オフ）。旧URL `https://grasphex.github.io/vivras-tech/` は自動で転送されます。**実際に公開成功していることをURLで確認**する。
 
 ## 普段の更新（最重要）
 
@@ -32,7 +32,7 @@
 
 - ビルド時に `sitemap.xml`（トップと全記事のURL）を自動生成します。記事を追加すれば自動で反映されます。
 - `static/` のファイルはサイト直下にそのまま公開されます。`static/google*.html` はSearch Consoleの所有権確認用なので削除しないでください。
-- Google Search Console に `https://grasphex.github.io/vivras-tech/` をURLプレフィックスとして登録し、`sitemap.xml` を送信すると検索への掲載が早まります。
+- Google Search Console に `https://tech.grasphex.com/` をURLプレフィックスとして登録し、`sitemap.xml` を送信すると検索への掲載が早まります。
 
 ## ローカルプレビュー
 
