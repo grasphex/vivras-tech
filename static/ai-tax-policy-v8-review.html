@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex,follow">
+<title>【v8レビュー】米国のAI課税法案とは？｜VIVRAS Tech</title>
+<meta name="description" content="米国で提出されたAI課税法案は、AIによる雇用への影響に備え、AIの利用や利益などから財源を確保して働く人を支援する提案。カサー議員とケリー議員の法案、所得税・法人税との関係、ヤン氏の主張、日本との違いを図解する。">
+<meta name="category" content="教養">
+<meta name="keywords" content="AI課税 AI税 アンドリュー・ヤン グレッグ・カサー マーク・ケリー トークン課税 所得税 法人税 AI Tax and Work Protection Act Make AI Work for Americans Act">
+<meta name="published" content="2026-11-15">
+<link rel="canonical" href="https://tech.grasphex.com/articles/ai-tax-and-jobs.html">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+:root{--ink:#222823;--paper:#f6f5f0;--white:#fff;--muted:#626961;--rule:#c9cfc7;--forest:#245447;--lightgreen:#e7efea;--orange:#a74d32;--warm:#f4e8df}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper)}
+.atx{color:var(--ink);font:400 16px/1.7 -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
+.atx *{box-sizing:border-box}
+.atx a{color:inherit;text-underline-offset:3px}
+.atx button{font:inherit;cursor:pointer}
+.atx button:focus-visible,.atx a:focus-visible,.atx summary:focus-visible{outline:3px solid #ad7758;outline-offset:3px}
+.atx .frame{max-width:1120px;margin:auto;padding:0 30px}
+.atx .meta{font-size:12px;letter-spacing:.08em;font-weight:700;color:var(--forest);text-transform:uppercase}
+.atx h1,.atx h2,.atx h3,.atx p{margin:0}
+.atx h1{font-size:clamp(33px,4.5vw,59px);letter-spacing:-.057em;line-height:1.23;font-weight:850}
+.atx h2{font-size:clamp(24px,3vw,36px);line-height:1.36;font-weight:800;letter-spacing:-.04em}
+.atx h3{font-size:clamp(17px,2vw,22px);line-height:1.45;font-weight:750}
+.atx p{line-height:1.77}
+.atx .intro{padding:45px 0 60px;border-bottom:1px solid var(--rule)}
+.atx .intro-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:48px;align-items:center}
+.atx .overline{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.atx .overline:before{content:"";width:26px;height:2px;background:var(--forest)}
+.atx .intro .lead{font-size:clamp(17px,1.65vw,21px);line-height:1.65;font-weight:650;margin:20px 0 17px}
+.atx .intro .sub{font-size:13px;color:var(--muted);line-height:1.65}
+.atx .one-line{margin-top:21px;padding-top:13px;border-top:1px solid var(--rule);font-size:14px}
+.atx .one-line strong{color:var(--forest)}
+.atx .hero-figure{background:#fff;border:1px solid var(--rule);padding:22px 22px 18px}
+.atx .f-label{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.045em;margin-bottom:14px}
+.atx .two-paths{display:grid;grid-template-columns:1fr 1fr}
+.atx .path{padding:0 17px 6px;min-width:0}
+.atx .path:first-child{border-right:1px solid var(--rule);padding-left:0}
+.atx .path:last-child{padding-right:0}
+.atx .path .order{font-size:11px;letter-spacing:.09em;font-weight:850;color:var(--muted)}
+.atx .path h3{margin:7px 0 14px;font-size:19px}
+.atx .tile{min-height:59px;padding:11px 10px;font-size:14px;display:grid;place-items:center;text-align:center;font-weight:800;background:var(--lightgreen);color:var(--forest)}
+.atx .path.ai .tile{background:var(--warm);color:var(--orange)}
+.atx .v-arrow{text-align:center;height:22px;color:var(--muted);line-height:22px}
+.atx .outcome{border-top:3px solid var(--forest);padding-top:9px;margin-top:8px}
+.atx .path.ai .outcome{border-color:var(--orange)}
+.atx .outcome strong{display:block;font-size:14px;line-height:1.45}
+.atx .outcome small{font-size:12px;color:var(--muted);display:block;margin-top:5px;line-height:1.5}
+.atx .figure-summary{background:var(--ink);color:#fff;padding:14px 17px;font-size:15px;font-weight:750;margin-top:21px;line-height:1.6}
+.atx .figure-summary span{color:#d0e2d8}
+.atx .figure-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.55}
+.atx .menu{border-bottom:1px solid var(--rule);background:#fff}
+.atx .menu-inner{display:flex;gap:22px;flex-wrap:wrap;padding:12px 30px;max-width:1120px;margin:auto;font-size:13px;font-weight:750}
+.atx .menu a{text-decoration:none}
+.atx .menu a:hover{text-decoration:underline}
+.atx .section{padding:61px 0 65px;border-bottom:1px solid var(--rule)}
+.atx .section-heading{display:grid;grid-template-columns:170px 1fr;gap:28px;margin-bottom:27px}
+.atx .section-heading h2{max-width:800px}
+.atx .section .body{max-width:890px;margin:0 auto}
+.atx .blurb{max-width:780px;font-size:16px;margin-bottom:23px}
+.atx .bill-table{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);gap:0}
+.atx .bill{padding:22px 25px 22px 0}
+.atx .bill+.bill{border-left:1px solid var(--rule);padding:22px 0 22px 25px}
+.atx .bill h3{font-size:19px;margin:8px 0 12px}
+.atx .bill .date{font-size:12px;color:var(--muted)}
+.atx .bill dl{margin:0}
+.atx .bill dl div{padding:10px 0;border-top:1px solid #e0e4de;display:grid;grid-template-columns:65px 1fr;gap:12px}
+.atx .bill dt{font-size:12px;font-weight:800;color:var(--muted)}
+.atx .bill dd{font-size:14px;margin:0;line-height:1.55}
+.atx .bill a{font-size:12px;font-weight:800}
+.atx .yang{margin-top:22px;padding:15px 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:155px 1fr;gap:16px;font-size:14px}
+.atx .yang strong{font-size:14px}
+.atx .yang p{font-size:14px}
+.atx .thesis{font-size:19px;font-weight:800;line-height:1.6;color:var(--forest);margin:12px 0 23px}
+.atx .why-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.atx .why-col{border-top:3px solid var(--forest);padding:15px 0 7px}
+.atx .why-col:nth-child(2){border-color:var(--orange)}
+.atx .why-col h3{font-size:19px;margin-bottom:9px}
+.atx .why-col p{font-size:14px}
+.atx .explain{margin-top:24px;padding:18px 21px;background:#e9eee8;border-left:3px solid var(--forest);font-size:15px}
+.atx .explain strong{display:block;margin-bottom:4px}
+.atx .logic{display:grid;grid-template-columns:1fr 27px 1fr 27px 1fr;align-items:center;gap:9px;margin:22px 0}
+.atx .logic .step{border-top:2px solid var(--forest);padding:10px 3px 2px;font-size:14px;font-weight:700;line-height:1.5;min-height:72px}
+.atx .logic .arrow{text-align:center;font-size:18px;color:var(--forest)}
+.atx .short{font-size:13px;color:var(--muted)}
+.atx .cond-table{width:100%;border-collapse:collapse;margin:19px 0;font-size:14px}
+.atx .cond-table td,.atx .cond-table th{text-align:left;padding:13px 11px;border-block:1px solid var(--rule);vertical-align:top}
+.atx .cond-table th{background:#ecefe9;font-size:13px}
+.atx .cond-table td:first-child{font-weight:800;min-width:130px}
+.atx .microtitle{font-size:13px;font-weight:800;letter-spacing:.04em;margin:20px 0 8px}
+.atx .scenario-controls{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.atx .scenario-controls button{padding:10px 17px;border:1px solid #87958b;background:#fff;color:var(--ink);font-weight:700;font-size:14px}
+.atx .scenario-controls button[aria-pressed=true]{background:var(--forest);color:#fff;border-color:var(--forest)}
+.atx .scenario-out{padding:16px 19px;border-left:3px solid var(--forest);background:#fff}
+.atx .scenario-out strong{font-size:18px;display:block;margin-bottom:4px}
+.atx .scenario-out p{font-size:13px}
+.atx .compact p{font-size:14px}
+.atx details{border-top:1px solid var(--rule);padding:13px 0;font-size:14px}
+.atx details:last-child{border-bottom:1px solid var(--rule)}
+.atx summary{font-weight:800;cursor:pointer}
+.atx details p{padding-top:10px;color:var(--muted)}
+.atx .references{font-size:13px;padding-left:22px;line-height:1.7}
+.atx .references li{padding:4px 0}
+.atx .endnote{font-size:12px;color:var(--muted);margin-top:18px}
+.atx .footer{padding:25px 0 60px;font-size:13px;color:var(--muted)}
+@media(max-width:800px){.atx .intro-grid{grid-template-columns:1fr;gap:26px}.atx .intro{padding:32px 0 44px}.atx .section-heading{grid-template-columns:1fr;gap:7px}.atx .section{padding:41px 0}.atx .hero-figure{max-width:670px}.atx .menu-inner{padding:10px 18px}}
+@media(max-width:580px){
+.atx .frame{padding:0 16px}
+.atx h1{font-size:clamp(29px,8vw,36px)}
+.atx .intro .lead{font-size:17px;margin:15px 0 11px}
+.atx .overline{margin-bottom:15px}
+.atx .hero-figure{padding:15px}
+.atx .path{padding:0 9px 3px}
+.atx .path h3{font-size:16px;min-height:48px;display:flex;align-items:center}
+.atx .tile{font-size:12px;min-height:52px}
+.atx .outcome strong{font-size:12px}
+.atx .outcome small{font-size:11px}
+.atx .figure-summary{font-size:13px;padding:12px}
+.atx .menu-inner{gap:12px}
+.atx .bill-table{grid-template-columns:1fr}
+.atx .bill,.atx .bill+.bill{padding:20px 0;border-left:0}
+.atx .bill+.bill{border-top:1px solid var(--rule)}
+.atx .yang{grid-template-columns:1fr;gap:5px}
+.atx .why-row{grid-template-columns:1fr;gap:10px}
+.atx .logic{grid-template-columns:1fr;gap:4px}
+.atx .logic .step{min-height:0;padding:8px 12px;border-top:0;border-left:3px solid var(--forest);background:#fff}
+.atx .logic .arrow{transform:rotate(90deg);height:18px;line-height:18px}
+.atx .cond-table{font-size:12px}
+.atx .cond-table td,.atx .cond-table th{padding:10px 7px}
+.atx .cond-table td:first-child{min-width:93px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav><a href="../index.html#articles">記事一覧</a></nav></div></header>
+<main class="atx">
+<div class="intro"><div class="frame intro-grid">
+<div>
+<div class="overline meta">教養 / 米国の税制・雇用政策　 2026.11.15</div>
+<h1>米国で「AI税」法案。<br>何に、なぜ課税する？</h1>
+<p class="lead">AIが仕事を代替する時代に備え、<strong>AIの利用や利益から財源を集め、働く人を支える</strong>法案が米国で提出された。</p>
+<p class="sub">AIを導入した企業が必ず人を減らす、税収が必ず減る、という話ではない。法案が想定するリスクと、その対策を見ていく。</p>
+<p class="one-line"><strong>法案の狙い：</strong>雇用喪失への備え ＋ 人とAIの税負担の見直し</p>
+</div>
+<figure class="hero-figure" aria-label="人を雇う場合とAIを使う場合の給与関連の税負担の違い">
+<figcaption class="f-label">なぜAI課税？ ― 人の雇用とAI利用の違い</figcaption>
+<div class="two-paths">
+<div class="path"><div class="order">人が仕事をする</div><h3>社員を雇う</h3>
+<div class="tile">企業が給与を支払う</div><div class="v-arrow">↓</div>
+<div class="outcome"><strong>給与に応じて税・保険料が生じる</strong><small>従業員の所得税、雇用主・従業員の給与関連負担など</small></div></div>
+<div class="path ai"><div class="order">AIが仕事を担う</div><h3>AIを利用する</h3>
+<div class="tile">企業がAI利用料を払う</div><div class="v-arrow">↓</div>
+<div class="outcome"><strong>利用料自体は給与ではない</strong><small>その支出から人の所得税や給与税は生じない</small></div></div>
+</div>
+<div class="figure-summary"><span>そこで提案：</span> AI関連の利用・収益・利益にも新たな税 → 雇用・職業訓練に活用</div>
+<div class="figure-note">※AI提供企業への既存の法人税等は別にあり得る。比較は給与関連の負担に絞った図。</div>
+</figure>
+</div></div>
+<nav class="menu" aria-label="この記事の目次"><div class="menu-inner"><a href="#bills">01 法案の中身</a><a href="#reason">02 背景と狙い</a><a href="#conditions">03 人員削減は条件？</a><a href="#japan">04 日本との違い</a></div></nav>
+<section class="section" id="bills"><div class="frame">
+<div class="section-heading"><span class="meta">01 / WHAT IS PROPOSED</span><h2>法案は2つ。課税する相手と使い道が違う。</h2></div>
+<div class="body">
+<p class="blurb">どちらも2026年に提出された法案で、成立済みの制度ではない。<strong>AIを導入して人員削減した会社だけに課税する仕組みではない。</strong></p>
+<div class="bill-table">
+<div class="bill">
+<div class="meta">H.R. 10044 <span class="date">2026年8月6日提出</span></div><h3>AI Tax and Work Protection Act</h3>
+<dl>
+<div><dt>提出者</dt><dd>グレッグ・カサー下院議員ら</dd></div>
+<div><dt>税の対象</dt><dd>主にAIモデル提供企業。トークン処理の価値やAIサービス取引収益などを基準に課税。<strong>自社・関連企業でのAI利用による人員削減</strong>を対象に含む規定もある。</dd></div>
+<div><dt>使い道</dt><dd>AIによる失業リスクに備え、住宅・インフラ・介護などの分野で雇用を創出。</dd></div>
+</dl><a href="https://www.govinfo.gov/content/pkg/BILLS-119hr10044ih/html/BILLS-119hr10044ih.htm" target="_blank" rel="noopener noreferrer">法案原文</a>　<a href="https://casar.house.gov/media/press-releases/news-casar-leads-introduction-new-bill-protect-workers-threat-ai-mass" target="_blank" rel="noopener noreferrer">提出者の説明</a>
+</div>
+<div class="bill">
+<div class="meta">S. 5518 <span class="date">2026年9月24日提出</span></div><h3>Make AI Work for Americans Act</h3>
+<dl>
+<div><dt>提出者</dt><dd>マーク・ケリー上院議員</dd></div>
+<div><dt>税の対象</dt><dd>AIサービスの一定の<strong>利用者</strong>への利用税、対象AI関連企業の超過利益税、デジタル広告税を組み合わせる。</dd></div>
+<div><dt>使い道</dt><dd>専用基金を設け、失業支援、職業訓練、起業・雇用創出などに活用。</dd></div>
+</dl><a href="https://www.govinfo.gov/content/pkg/BILLS-119s5518is/html/BILLS-119s5518is.htm" target="_blank" rel="noopener noreferrer">法案原文</a>　<a href="https://www.kelly.senate.gov/newsroom/press-releases/kelly-introduces-bill-to-make-sure-big-tech-pays-fair-share-and-invests-in-american-workers/" target="_blank" rel="noopener noreferrer">提出者の説明</a>
+</div>
+</div>
+<div class="yang"><strong>アンドリュー・ヤン氏は？</strong><p>AIやロボットに課税し、人間の労働にかかる負担を軽くすべきだと提唱。<strong>上記2法案の提出者ではない。</strong> <a href="https://blog.andrewyang.com/p/tax-ai-not-humans-again" target="_blank" rel="noopener noreferrer">本人の主張</a></p></div>
+</div></div></section>
+<section class="section" id="reason"><div class="frame">
+<div class="section-heading"><span class="meta">02 / WHY TAX AI?</span><h2>なぜ新しい税が必要と考えられているのか。</h2></div>
+<div class="body">
+<p class="thesis">問題は「税収が必ず減る」ことではなく、AIで仕事が変わったときの税負担と、影響を受ける労働者への支援だ。</p>
+<div class="why-row">
+<div class="why-col"><h3>① 人の雇用とAIで負担が異なる</h3><p>人を雇えば給与税・社会保険料などが発生する。AI利用料は給与ではない。ヤン氏やカサー議員は、この差が人の雇用を相対的に不利にし得ると問題視している。</p></div>
+<div class="why-col"><h3>② AIによる失業への備えが要る</h3><p>AIが一部の仕事を代替すると、賃金所得が減る人や転職が必要になる人が出る可能性がある。AI関連の経済活動から財源を確保し、雇用や訓練に回す。</p></div>
+</div>
+<div class="logic" role="img" aria-label="AIによる業務代替が起きると、給与関連税と働く人の生活が影響を受ける可能性があるため、AI関連の利用や利益などへの課税で支援財源を設けるという議論">
+<div class="step">AIが仕事を代替する可能性</div><div class="arrow">→</div><div class="step">給与・雇用が縮み、生活と税収に影響する可能性</div><div class="arrow">→</div><div class="step">AI関連の活動に課税し、雇用・訓練へ還元</div>
+</div>
+<div class="explain"><strong>既存の法人税ではだめなのか？</strong><p>企業の利益には既に法人税がある。AIで利益が増えれば法人税収も増え得るため、税収全体が減るとは断定できない。ただしAI企業が赤字であれば利益への法人税が発生しない場合もある。新税は、既存税に加え、どこへ負担を配分して何を支えるかという政策選択になる。</p></div>
+</div></div></section>
+<section class="section" id="conditions"><div class="frame">
+<div class="section-heading"><span class="meta">03 / THE ASSUMPTION</span><h2>人員削減が起こらないと、法案は意味がない？</h2></div>
+<div class="body">
+<p class="blurb"><strong>いいえ。</strong> 法案は失業のリスクを重要視しているが、AIを導入した企業が必ず社員を減らすという前提ではない。特にAI提供企業に課す税やAI利用税は、個々の導入企業の解雇人数だけで決まらない。</p>
+<table class="cond-table">
+<thead><tr><th>AI導入後</th><th>給与関連の税・保険料</th><th>AI課税の議論</th></tr></thead>
+<tbody>
+<tr><td>人員削減</td><td>給与総額が減るなら、縮小する可能性がある</td><td>雇用喪失への備えと財源が必要</td></tr>
+<tr><td>雇用維持</td><td>給与も維持すれば、直ちには減らない</td><td>税負担のバランスやAIの利益の分配は引き続き論点</td></tr>
+</tbody></table>
+<div class="microtitle">状況を切り替えて確認</div>
+<div class="scenario-controls" role="group" aria-label="人員削減または雇用維持の条件を見る">
+<button type="button" id="s-cut" aria-pressed="true">人員削減する場合</button>
+<button type="button" id="s-keep" aria-pressed="false">雇用を維持する場合</button>
+</div>
+<div class="scenario-out" aria-live="polite"><strong id="scenario-title">給与総額が減る可能性</strong><p id="scenario-message">AIが一部の業務を置き換え、従業員数が減り、1人当たり給与が変わらなければ給与総額は減る。その分、給与に連動する税・保険料も減り得る。ただし法人税収などは別に変化する。</p></div>
+<p class="short" style="margin-top:12px">※いずれも条件付きの説明。AI利用料の増加が利益増加に直結するわけではない。企業全体の税収への影響には追加の検証が必要。</p>
+</div></div></section>
+<section class="section" id="japan"><div class="frame">
+<div class="section-heading"><span class="meta">04 / JAPAN AND THE U.S.</span><h2>日本と米国で、人員削減のしやすさは異なる。</h2></div>
+<div class="body compact">
+<div class="why-row">
+<div class="why-col"><h3>米国</h3><p>多くの州ではat-will雇用が基本で、日本に比べ人員調整を進めやすい場合がある。ただし差別や報復など違法な解雇は認められず、契約や州法などの例外もある。</p></div>
+<div class="why-col"><h3>日本</h3><p>労働契約法16条により、合理的理由と社会的相当性のない解雇は無効。配置転換や新規採用の抑制なども選択肢になる。ただし解雇が一切できないわけではない。</p></div>
+</div>
+<p class="explain" style="margin-top:18px">法案の背景を考えるには違いが重要だが、<strong>米国なら必ず人員削減、日本なら必ず雇用維持</strong>とは決めつけられない。</p>
+</div></div></section>
+<section class="section" id="questions"><div class="frame">
+<div class="section-heading"><span class="meta">05 / QUICK CHECK</span><h2>よくある疑問を確認する。</h2></div>
+<div class="body">
+<details><summary>Q. これは減った所得税を補填する法案なの？</summary><p>所得税・給与税が縮む可能性は背景の一つ。ただし提出者の説明では、AIが生む経済的な利益・利用などから財源を集め、雇用創出や働く人への支援を行う点が中心。減収額とAI税額を一対一で合わせる制度ではない。</p></details>
+<details><summary>Q. AIで会社の利益が増えたら、法人税も増えるのでは？</summary><p>増える可能性がある。だから「国の税収が必ず減る」とは言えない。新しいAI税を設ける必要性や課税対象は、政策上の議論である。</p></details>
+<details><summary>Q. ヤン氏が提出した法案なの？</summary><p>違う。ヤン氏は人の雇用よりAI利用が税制上有利になることへの問題提起をしている。今回の議会法案の提出者はカサー議員とケリー議員。</p></details>
+</div></div></section>
+<section class="section" id="sources"><div class="frame">
+<div class="section-heading"><span class="meta">PRIMARY SOURCES</span><h2>一次資料</h2></div>
+<div class="body">
+<ol class="references">
+<li><a href="https://www.govinfo.gov/content/pkg/BILLS-119hr10044ih/html/BILLS-119hr10044ih.htm" target="_blank" rel="noopener noreferrer">米議会法案 H.R.10044（原文）</a>／<a href="https://casar.house.gov/media/press-releases/news-casar-leads-introduction-new-bill-protect-workers-threat-ai-mass" target="_blank" rel="noopener noreferrer">カサー議員の提出説明</a></li>
+<li><a href="https://www.govinfo.gov/content/pkg/BILLS-119s5518is/html/BILLS-119s5518is.htm" target="_blank" rel="noopener noreferrer">米議会法案 S.5518（原文）</a>／<a href="https://www.kelly.senate.gov/newsroom/press-releases/kelly-introduces-bill-to-make-sure-big-tech-pays-fair-share-and-invests-in-american-workers/" target="_blank" rel="noopener noreferrer">ケリー議員の提出説明</a></li>
+<li><a href="https://blog.andrewyang.com/p/tax-ai-not-humans-again" target="_blank" rel="noopener noreferrer">Andrew Yang: Tax AI, Not Humans, Again（本人の論考）</a></li>
+<li><a href="https://www.mhlw.go.jp/seisakunitsuite/bunya/koyou_roudou/roudouseisaku/chushoukigyou/keiyakushuryo_rule.html" target="_blank" rel="noopener noreferrer">厚生労働省：労働契約の終了に関するルール</a></li>
+</ol>
+<p class="endnote">2026年11月15日時点の法案提出内容を紹介。成立済み法令ではない。雇用・税収への実際の影響は企業や経済状況により異なる。本文の図は課税対象の全体を網羅した法的フローチャートではない。</p>
+</div></div></section>
+<div class="frame footer"><a href="../index.html">← VIVRAS Techの記事一覧へ戻る</a></div>
+</main>
+<footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span></div></footer>
+<script>
+(function(){
+"use strict";
+const cut=document.getElementById("s-cut"),keep=document.getElementById("s-keep"),title=document.getElementById("scenario-title"),message=document.getElementById("scenario-message");
+function setScenario(isCut){
+ cut.setAttribute("aria-pressed",String(isCut));keep.setAttribute("aria-pressed",String(!isCut));
+ if(isCut){title.textContent="給与総額が減る可能性";message.textContent="AIが一部の業務を置き換え、従業員数が減り、1人当たり給与が変わらなければ給与総額は減る。その分、給与に連動する税・保険料も減り得る。ただし法人税収などは別に変化する。";}
+ else{title.textContent="給与由来の税収が直ちに減るとは限らない";message.textContent="雇用と給与を維持したままAIを導入した場合、給与由来の税収は維持される前提になる。AI費用が増えて利益が減ることもあれば、売上や生産性の向上で利益が増えることもある。";}
+}
+cut.addEventListener("click",function(){setScenario(true)});keep.addEventListener("click",function(){setScenario(false)});setScenario(true);
+})();
+</script>
+</body>
+</html>
