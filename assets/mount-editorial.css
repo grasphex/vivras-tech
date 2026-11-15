@@ -59,21 +59,6 @@ body.mount-editorial{margin:0;background:var(--ed-paper);color:var(--ed-ink);fon
 .mount-editorial .ed-qa>div{border-top:1px solid #aebead;padding-top:9px}
 .mount-editorial .ed-qa b{display:block;font-size:13px;line-height:1.45}
 .mount-editorial .ed-qa p{margin:6px 0 0;font-size:12px;line-height:1.65}
-.mount-editorial .ed-lab{border-top:1px solid var(--ed-rule);padding:9px 0}
-.mount-editorial .ed-lab .ed-lab-status{display:flex;flex-wrap:wrap;gap:8px 22px;margin:9px 0 13px;font-size:13px}
-.mount-editorial .ed-lab .ed-lab-status strong{font-weight:800}
-.mount-editorial .ed-lab-stage{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:9px}
-.mount-editorial .ed-lab-stage span{font:740 11px ui-monospace,monospace;color:#617966}
-.mount-editorial .ed-lab-stage strong{font-size:14px}
-.mount-editorial .ed-lab-run{width:100%;display:flex;justify-content:space-between;align-items:center;gap:13px;padding:13px;border:1px solid #437151;background:#e7f0e8;text-align:left;cursor:pointer;color:#234d34}
-.mount-editorial .ed-lab-run code{font-size:13px;line-height:1.55}
-.mount-editorial .ed-lab-run span{font-size:12px;white-space:nowrap;font-weight:780}
-.mount-editorial .ed-lab-run:hover{background:#d5e7d8}
-.mount-editorial .ed-lab-run[hidden],.mount-editorial #mount-lab-conclusion[hidden]{display:none!important}
-.mount-editorial .ed-lab pre{margin:12px 0 0;background:#1d2921;color:#e4f0e6;padding:16px;font:500 13px/1.6 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;border:0;border-radius:0}
-.mount-editorial .ed-lab #mount-reason-result{margin:8px 0 12px;font-size:13px}
-.mount-editorial #mount-lab-conclusion{border-top:1px solid var(--ed-rule);padding:12px 0}
-.mount-editorial .ed-lab-reset{font-size:12px;cursor:pointer;border:0;background:transparent;padding:5px 0;color:var(--ed-green);text-decoration:underline;text-underline-offset:3px}
 .mount-editorial .ed-source-code{font:500 13px/1.7 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;padding:11px 14px;border-left:2px solid #8ba992;background:#f0f3ee}
 .mount-editorial .ed-footer{border-top:1px solid var(--ed-rule);padding:30px 0;color:#697a6d;font-size:12px;margin-top:35px}
 .mount-editorial .ed-footer a{color:inherit;text-decoration:none}
@@ -102,6 +87,61 @@ body.mount-editorial{margin:0;background:var(--ed-paper);color:var(--ed-ink);fon
 .mount-editorial .ed-visual figcaption.ed-conclusion{font-size:14px}
 .mount-editorial .ed-footnote{margin-bottom:23px}
 .mount-editorial .ed-qa{grid-template-columns:1fr;gap:10px}
-.mount-editorial .ed-lab-run{flex-direction:column;align-items:stretch}
-.mount-editorial .ed-lab-run span{text-align:right}
+}
+/* v9 reading hierarchy: one visual, then one chronological command transcript. */
+.mount-editorial .ed-main{max-width:850px}
+.mount-editorial .ed-meta{margin:16px 0 23px}
+.mount-editorial .ed-hero h1{font-size:clamp(29px,3.8vw,43px);letter-spacing:-.06em;line-height:1.28;margin-bottom:8px}
+.mount-editorial .ed-hero p{margin:0 0 27px;font-size:16px;line-height:1.65}
+.mount-editorial .ed-visual-part{padding:18px 0 20px}
+.mount-editorial .ed-visual-label{font-size:14px;color:#293e30;margin-bottom:15px}
+.mount-editorial .ed-visual-label em{font-size:12px}
+.mount-editorial .ed-artifact .ed-eyebrow{font-size:12px}
+.mount-editorial .ed-path{font-size:clamp(19px,2.5vw,25px)}
+.mount-editorial .ed-file-row{font-size:15px}
+.mount-editorial .ed-join strong{font-size:16px}
+.mount-editorial .ed-join small{font-size:12px}
+.mount-editorial .ed-mode strong{font-size:35px}
+.mount-editorial .ed-mode small{font-size:14px}
+.mount-editorial .ed-figure-note{font-size:13px;line-height:1.55}
+.mount-editorial .ed-mode-transition code{font-size:13px}
+.mount-editorial .ed-footnote{margin:7px 0 20px}
+.mount-editorial .ed-trace{border-top:2px solid #233b2a;padding:18px 0 18px;margin:0}
+.mount-editorial .ed-trace-head{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+.mount-editorial .ed-trace-number{font:700 12px ui-monospace,monospace;color:#748676}
+.mount-editorial .ed-trace-head h2{font-size:16px;line-height:1.5;margin:0;font-weight:760;letter-spacing:-.02em}
+.mount-editorial .ed-trace-caption{font-size:12px;color:#64746a;margin-left:auto}
+.mount-editorial .ed-trace-assumption{font-size:12px;line-height:1.65;color:#647268;margin:0 0 11px}
+.mount-editorial .ed-trace-assumption code{font:650 12px ui-monospace,monospace}
+.mount-editorial .ed-transcript{background:#18241d;color:#e9f1e8;border:0;border-radius:0;box-shadow:none;margin:0;padding:17px 20px;white-space:pre-wrap;overflow-wrap:anywhere;font:500 13px/1.8 ui-monospace,Menlo,Consolas,monospace;max-height:none;overflow-x:auto}
+.mount-editorial .ed-transcript code{font:inherit;color:inherit;border:0;background:transparent;padding:0;white-space:inherit}
+.mount-editorial .ed-prompt{color:#7bb88a;font-weight:800}
+.mount-editorial .ed-error{color:#f1c3ac}
+.mount-editorial .ed-output{color:#b9dcbf}
+.mount-editorial .ed-trace-takeaway{font-size:13px;line-height:1.72;color:#3c5041;margin:10px 0 4px}
+.mount-editorial .ed-trace-safety{font-size:11px;line-height:1.6;color:#65776a;margin:3px 0 0}
+.mount-editorial .ed-extras{margin-top:12px}
+.mount-editorial .ed-extras summary{font-size:13px;padding:14px 26px 14px 0}
+.mount-editorial .ed-footer{margin-top:30px}
+@media(max-width:650px){
+.mount-editorial .ed-main{padding:0 20px 40px}
+.mount-editorial .ed-meta{margin:12px 0 18px}
+.mount-editorial .ed-hero h1{font-size:30px;line-height:1.3}
+.mount-editorial .ed-hero p{font-size:14px;margin-bottom:20px}
+.mount-editorial .ed-visual-part{padding:14px 0}
+.mount-editorial .ed-visual-label{font-size:13px;margin-bottom:11px}
+.mount-editorial .ed-path{font-size:20px}
+.mount-editorial .ed-file-row{font-size:14px}
+.mount-editorial .ed-join{min-height:32px}
+.mount-editorial .ed-mode strong{font-size:30px}
+.mount-editorial .ed-mode small{font-size:12px}
+.mount-editorial .ed-figure-note{font-size:12px}
+.mount-editorial .ed-footnote{font-size:11px;margin:5px 0 15px}
+.mount-editorial .ed-trace{padding:14px 0}
+.mount-editorial .ed-trace-head{flex-wrap:wrap;gap:7px;margin-bottom:7px}
+.mount-editorial .ed-trace-head h2{font-size:15px}
+.mount-editorial .ed-trace-caption{flex-basis:100%;margin-left:0}
+.mount-editorial .ed-trace-assumption{font-size:11px}
+.mount-editorial .ed-transcript{padding:12px 11px;font-size:11px;line-height:1.75}
+.mount-editorial .ed-trace-takeaway{font-size:12px}
 }
