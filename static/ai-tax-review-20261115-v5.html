@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex,follow">
+<title>AI課税はなぜ議論される？――給与・企業利益・税収の関係｜VIVRAS Tech</title>
+<meta name="description" content="米国で提出されたAI課税法案とアンドリュー・ヤン氏の主張を起点に、税金の仕組み、AI導入前後の給与・企業利益、所得税と法人税の関係を一つの具体例で図解。AI課税が必要とされる理由と反論を分けて解説します。">
+<meta name="category" content="教養">
+<meta name="keywords" content="AI税 AI課税 アンドリュー・ヤン AI Tax and Work Protection Act Make AI Work for Americans Act 所得税 法人税 税制 雇用 自動化">
+<meta name="published" content="2026-11-15">
+<link rel="canonical" href="https://tech.grasphex.com/articles/ai-tax-and-jobs.html">
+<meta property="og:title" content="AI課税はなぜ議論される？――給与・企業利益・税収の関係">
+<meta property="og:description" content="米国の法案→税金の仕組み→AI導入前後のお金の流れを、数字と図で追う。">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+#ai-lesson{--ink:#202521;--dim:#4f5b54;--line:#cbd0ca;--accent:#72543c;--salary:#315a51;--other:#b6bbb3;--ai:#be8255;--profit:#e1d4c5;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;font-size:16px;line-height:1.76}
+#ai-lesson *{box-sizing:border-box}
+#ai-lesson .wrap{max-width:850px;margin:auto;padding:0 22px}
+#ai-lesson .topline{font-size:12px;letter-spacing:.05em;color:var(--dim);border-bottom:1px solid var(--line);padding:20px 0 12px}
+#ai-lesson h1{font-size:clamp(29px,4.2vw,49px);line-height:1.32;letter-spacing:-.055em;margin:26px 0 18px;font-weight:850}
+#ai-lesson h2{font-size:clamp(22px,3.1vw,31px);line-height:1.38;letter-spacing:-.04em;margin:0 0 13px}
+#ai-lesson h3{font-size:18px;letter-spacing:-.03em;line-height:1.45;margin:0 0 10px}
+#ai-lesson p{margin:0 0 13px}
+#ai-lesson .standfirst{font-size:19px;font-weight:650;line-height:1.7;max-width:760px}
+#ai-lesson .dek{font-size:14px;color:var(--dim)}
+#ai-lesson .lead-points{margin:25px 0 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+#ai-lesson .lead-points div{display:grid;grid-template-columns:130px 1fr;gap:12px;border-bottom:1px solid var(--line);padding:12px 0;font-size:14px}
+#ai-lesson .lead-points div:last-child{border-bottom:0}
+#ai-lesson .lead-points dt{color:var(--dim);font-weight:700}
+#ai-lesson .lead-points dd{margin:0;font-weight:700}
+#ai-lesson section{padding:48px 0;border-bottom:1px solid var(--line)}
+#ai-lesson .sectionno{display:block;font:700 12px/1.3 ui-monospace,monospace;color:var(--accent);letter-spacing:.06em;margin-bottom:12px}
+#ai-lesson .route{margin:22px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+#ai-lesson .route li{display:grid;grid-template-columns:145px 1fr;gap:12px;border-bottom:1px solid var(--line);padding:14px 0;font-size:14px}
+#ai-lesson .route strong{font-size:14px}
+#ai-lesson .route span{color:var(--dim)}
+#ai-lesson .plain-note{font-size:13px;color:var(--dim);margin-top:14px}
+#ai-lesson .muted-title{font-size:13px;font-weight:750;color:var(--dim);margin:20px 0 8px}
+#ai-lesson .flow{display:grid;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr) 18px minmax(0,1.1fr);gap:7px;align-items:center;margin:17px 0 12px}
+#ai-lesson .node{border-top:2px solid var(--salary);padding:10px 6px;font-size:13px;min-height:72px}
+#ai-lesson .node strong,#ai-lesson .node small{display:block}
+#ai-lesson .node small{color:var(--dim);font-size:12px;margin-top:5px}
+#ai-lesson .chev{text-align:center;color:var(--dim);font-size:18px}
+#ai-lesson .factline{border-left:3px solid var(--accent);padding:7px 0 7px 14px;margin:20px 0;font-weight:700}
+#ai-lesson .example{padding:20px 0 0}
+#ai-lesson .example-top{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid var(--ink);gap:12px;padding-bottom:10px;margin-bottom:14px}
+#ai-lesson .example-top strong{font-size:19px}
+#ai-lesson .example-top small{font-size:12px;color:var(--dim)}
+#ai-lesson .controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
+#ai-lesson button{font:inherit;cursor:pointer}
+#ai-lesson .tab{border:1px solid #858e87;background:#fff;color:var(--ink);padding:9px 15px;font-weight:750;font-size:14px;min-width:120px}
+#ai-lesson .tab[aria-pressed="true"]{color:#fff;background:var(--ink);border-color:var(--ink)}
+#ai-lesson button:focus-visible,#ai-lesson a:focus-visible{outline:3px solid #ba8d65;outline-offset:3px}
+#ai-lesson .money-bar{display:flex;height:66px;border:1px solid #8a938a;width:100%;overflow:hidden;background:#fff}
+#ai-lesson .seg{height:100%;transition:width .4s ease}
+#ai-lesson .salary{background:var(--salary)}
+#ai-lesson .other{background:var(--other)}
+#ai-lesson .ai{background:var(--ai)}
+#ai-lesson .profit{background:var(--profit)}
+#ai-lesson .key{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 22px;margin:20px 0 0}
+#ai-lesson .keyitem{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:9px 0;font-size:14px}
+#ai-lesson .swatch{height:11px;width:11px;flex-shrink:0;display:inline-block;margin-right:7px}
+#ai-lesson .keyitem .name{display:flex;align-items:center}
+#ai-lesson .keyitem strong{font-variant-numeric:tabular-nums}
+#ai-lesson .observations{margin:18px 0 0;padding:0;list-style:none}
+#ai-lesson .observations li{padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
+#ai-lesson .observations strong{font-variant-numeric:tabular-nums}
+#ai-lesson .transition{font-weight:750;margin:16px 0;color:var(--ink)}
+#ai-lesson .two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:23px}
+#ai-lesson .two-col>div{border-top:2px solid var(--ink);padding-top:15px}
+#ai-lesson .two-col h3{margin-bottom:8px}
+#ai-lesson .two-col p{font-size:14px}
+#ai-lesson .legislation{border-collapse:collapse;width:100%;margin:18px 0 10px;font-size:14px}
+#ai-lesson .legislation th,#ai-lesson .legislation td{vertical-align:top;text-align:left;padding:12px 10px;border-top:1px solid var(--line)}
+#ai-lesson .legislation th{width:30%;font-size:13px}
+#ai-lesson .legislation tr:last-child th,#ai-lesson .legislation tr:last-child td{border-bottom:1px solid var(--line)}
+#ai-lesson details{border-top:1px solid var(--line);padding:15px 0;font-size:14px}
+#ai-lesson details:last-child{border-bottom:1px solid var(--line)}
+#ai-lesson summary{font-weight:750;cursor:pointer}
+#ai-lesson details p{margin-top:10px;color:var(--dim)}
+#ai-lesson .sources{font-size:13px;line-height:1.8}
+#ai-lesson .sources li{margin-bottom:12px}
+#ai-lesson .footer-note{padding:25px 0 50px;color:var(--dim);font-size:13px}
+#ai-lesson .summary{margin:23px 0;border-top:3px solid var(--ink);padding-top:16px;font-size:18px;font-weight:750}
+@media(max-width:600px){
+#ai-lesson .wrap{padding:0 16px}
+#ai-lesson section{padding:36px 0}
+#ai-lesson .lead-points div{grid-template-columns:90px 1fr}
+#ai-lesson .route li{grid-template-columns:96px 1fr}
+#ai-lesson .flow{grid-template-columns:1fr;gap:3px}
+#ai-lesson .node{min-height:0;padding:7px 12px}
+#ai-lesson .chev{transform:rotate(90deg);height:20px}
+#ai-lesson .key{grid-template-columns:1fr}
+#ai-lesson .two-col{grid-template-columns:1fr;gap:17px}
+#ai-lesson .legislation th{width:36%}
+}
+@media(prefers-reduced-motion:reduce){#ai-lesson .seg{transition:none}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav><a href="../index.html#articles">記事一覧</a></nav></div></header>
+<main>
+<article id="ai-lesson">
+<div class="wrap">
+<header>
+<div class="topline"><a href="../index.html">記事一覧</a> / 教養・経済 / 税制　　2026年11月15日　｜　改訂版レビュー 01:47</div>
+<h1>AI課税はなぜ議論される？<br>給与・企業利益・税収の関係</h1>
+<p class="standfirst">米国では、AIの利用や利益に新しい税を課す法案が提出されている。背景にあるのは、AIが仕事を代替したとき、税金の集まり方も変わるという問題だ。</p>
+<p class="dek">法案の内容から始め、今の税金の仕組み、AI導入前後の数字、課税する理由の順に確認する。</p>
+<dl class="lead-points">
+<div><dt>何の話？</dt><dd>AIへの新たな課税を検討する米国の政策議論</dd></div>
+<div><dt>誰が提案？</dt><dd>議会法案はグレッグ・カサー議員ら、マーク・ケリー議員。アンドリュー・ヤン氏は課税の必要性を提唱</dd></div>
+<div><dt>決まった？</dt><dd>紹介する2法案はいずれも提出段階（2026年11月15日時点）</dd></div>
+</dl>
+</header>
+<section id="proposal">
+<span class="sectionno">01 / 米国で何が提案されている？</span>
+<h2>AIから新たに税を集め、働く人を支援する。</h2>
+<p>米議会には、AIの「利用量」や「追加利益」などに着目して課税し、その財源を雇用・生活支援に活用する法案が提出されている。すべてのAI利用に一律の税をかける法案が成立したわけではない。</p>
+<ol class="route">
+<li><strong>2026年8月</strong><span>カサー下院議員が「AI Tax and Work Protection Act」を提出。AIのトークン使用への課税と、労働者保護の仕組みを提案。</span></li>
+<li><strong>2026年9月</strong><span>ケリー上院議員が「Make AI Work for Americans Act」を提出。AIの利用、超過利益などに関する課税と支援基金を提案。</span></li>
+<li><strong>ヤン氏の主張</strong><span>元米大統領候補アンドリュー・ヤン氏は、AIやロボットに課税する一方、人間の労働への負担を軽減すべきだと提唱している。</span></li>
+</ol>
+<p class="plain-note">※ヤン氏はここで紹介した議会法案の提出者ではない。政策提言と、議員が提出した具体的な法案を区別する。</p>
+<p class="transition">では、なぜ「AIを使うこと」に税を設けようとするのか。</p>
+</section>
+<section id="tax-system">
+<span class="sectionno">02 / 前提：税金はどう集まる？</span>
+<h2>税金は、人の給与にも、会社の利益にもかかる。</h2>
+<p>国や地方自治体は、税収を公共サービスなどの財源にする。会社が仕事をして収益を生み出すと、複数の経路で税が発生する。</p>
+<div class="muted-title">① 人を雇うとき</div>
+<div class="flow" aria-label="企業が労働者に給料を払い、給与には所得税などがかかる">
+<div class="node"><strong>会社</strong><small>給料を支払う</small></div><div class="chev" aria-hidden="true">→</div><div class="node"><strong>労働者</strong><small>給料を受け取る</small></div><div class="chev" aria-hidden="true">→</div><div class="node"><strong>国・地方など</strong><small>所得税・地方税・社会保険料など</small></div>
+</div>
+<div class="muted-title">② 会社に利益が出たとき</div>
+<div class="flow" aria-label="会社の売上から費用を引いて利益が出ると法人税が課され得る">
+<div class="node"><strong>会社の売上</strong><small>商品・サービスを販売</small></div><div class="chev" aria-hidden="true">→</div><div class="node"><strong>費用を引いた利益</strong><small>税法上の課税所得と必ずしも一致しない</small></div><div class="chev" aria-hidden="true">→</div><div class="node"><strong>国・地方など</strong><small>課税所得に法人税など</small></div>
+</div>
+<p class="plain-note">社会保険料は厳密には税とは別の制度上の負担。ただし、雇用が減った場合の財源への影響を考えるうえで重要。</p>
+<p class="factline">つまり、給与が減れば給与由来の税収などが減る可能性がある。一方、会社の利益が増えれば法人税などが増える可能性もある。</p>
+<p class="transition">両方が同時に起きる状況を、具体的な数字で見てみよう。</p>
+</section>
+<section id="example">
+<span class="sectionno">03 / AI導入前後の変化を比較</span>
+<h2>給与が減り、利益が増える場合。</h2>
+<p>ある会社の年間売上を1,000万円とする。「社員が担当していた業務の一部をAIに任せる」前後の例だ。売上とその他費用は固定し、給与支出とAI利用料だけを変更する。</p>
+<div class="example" id="interactive-demo">
+<div class="example-top"><strong>売上 1,000万円の使い道</strong><small>説明用の仮定</small></div>
+<div class="controls" role="group" aria-label="AI導入の前後を切り替える">
+<button class="tab" id="ai-before" type="button" aria-pressed="true">AI導入前</button>
+<button class="tab" id="ai-after" type="button" aria-pressed="false">AI導入後</button>
+</div>
+<div class="money-bar" role="img" id="money-bar" aria-label="AI導入前：給与600万円、その他費用200万円、AI利用料0万円、利益200万円">
+<div id="bar-salary" class="seg salary" style="width:60%"></div>
+<div id="bar-other" class="seg other" style="width:20%"></div>
+<div id="bar-ai" class="seg ai" style="width:0%"></div>
+<div id="bar-profit" class="seg profit" style="width:20%"></div>
+</div>
+<div class="key" aria-live="polite">
+<div class="keyitem"><span class="name"><span class="swatch salary"></span>社員への給与</span><strong id="val-salary">600万円</strong></div>
+<div class="keyitem"><span class="name"><span class="swatch other"></span>その他の費用</span><strong id="val-other">200万円</strong></div>
+<div class="keyitem"><span class="name"><span class="swatch ai"></span>AI提供会社への利用料</span><strong id="val-ai">0万円</strong></div>
+<div class="keyitem"><span class="name"><span class="swatch profit"></span>残る利益（税引き前）</span><strong id="val-profit">200万円</strong></div>
+</div>
+<p class="plain-note" id="demo-text" aria-live="polite">導入前：会社は社員に600万円を支払っている。給与や利益がそれぞれ課税の対象となり得る。</p>
+</div>
+<ul class="observations">
+<li><strong>社員への給与：</strong>600万円 → 300万円（300万円減）</li>
+<li><strong>この会社の利益：</strong>200万円 → 400万円（200万円増）</li>
+<li><strong>AI提供企業の売上：</strong>0万円 → 100万円（100万円増）。ただし提供企業の利益ではない</li>
+</ul>
+<p class="plain-note">※「給与の支出が減る」というモデルであり、実際に何人解雇されるかは示していない。企業全体・経済全体の利益や税収の変化も、この図だけでは決まらない。</p>
+<p class="factline">この会社では給与から生じる税・保険料の基盤が縮小する。しかし、企業利益は増えている。では、その法人税で補えるのでは？</p>
+</section>
+<section id="why-tax">
+<span class="sectionno">04 / それでも新しい税が議論される理由</span>
+<h2>法人税があるのに、なぜ「AI税」？</h2>
+<p>その疑問は正しい。企業の利益には、もともと法人税がある。新たなAI課税を考える理由は、既存の税だけで負担と分配を十分に調整できるか不確かなためだ。</p>
+<ol class="route">
+<li><strong>給与の税・保険料</strong><span>人件費が減れば給与に連動する税や保険料の収入が減る可能性がある。</span></li>
+<li><strong>企業利益への税</strong><span>利益が増えれば法人税が増える可能性もある。ただし、税法上の利益・控除・赤字などで金額は変わる。</span></li>
+<li><strong>AI提供企業</strong><span>利用料はAI企業の売上になるが、開発費などが大きく赤字なら法人税の課税所得が生じない場合もある。</span></li>
+<li><strong>負担の再配分</strong><span>利益が一部企業に集中する一方、職を失った人への再訓練や生活支援が必要になる場合がある。</span></li>
+</ol>
+<p class="factline">だから「企業がAIを使う量」や「AIで得た追加利益」などに着目し、別の財源を確保しようという提案が出てくる。</p>
+<p>一方、AIで新しい仕事や消費が増えれば税収が増える可能性もある。AIが普及すれば税収が必ず減る、という意味ではない。</p>
+</section>
+<section id="policy">
+<span class="sectionno">05 / 提案と論点を区別する</span>
+<h2>課税の方法は、まだ一つに決まっていない。</h2>
+<table class="legislation">
+<tbody>
+<tr><th>カサー議員の法案</th><td><strong>AIのトークン使用量</strong>に課税する案。仕事の保護・支援につなげることを掲げる。<br><a href="https://www.govinfo.gov/app/details/BILLS-119hr10044ih" target="_blank" rel="noopener noreferrer">H.R.10044 原文・提出情報</a></td></tr>
+<tr><th>ケリー議員の法案</th><td><strong>AI利用への課税や超過利益課税</strong>などを含む案。財源を支援基金に回す構想。<br><a href="https://www.govinfo.gov/app/details/BILLS-119s5518is" target="_blank" rel="noopener noreferrer">S.5518 原文・提出情報</a></td></tr>
+<tr><th>ヤン氏の提言</th><td>人を雇う際の税・社会保険料などの負担とAI利用の負担を比べ、<strong>AIに課税し、人間の労働への負担を減らす</strong>べきだと主張。<br><a href="https://blog.andrewyang.com/p/tax-ai-not-humans-again" target="_blank" rel="noopener noreferrer">ヤン氏本人の論考</a></td></tr>
+</tbody>
+</table>
+<div class="two-col">
+<div><h3>課税を支持する理由</h3><p>AIによる利益を労働者支援などに還元できる。人の雇用だけに負担が偏る構造を見直せる。</p></div>
+<div><h3>課税に慎重な理由</h3><p>AI利用を高くすると生産性向上が遅れるかもしれない。課税対象の定義も難しい。</p></div>
+</div>
+<p class="summary">要するに、AI税は「AIが無税だから作る税」ではなく、「AI時代の税負担と社会保障の財源をどう設計するか」という議論だ。</p>
+</section>
+<section id="quiz">
+<span class="sectionno">06 / 理解度チェック</span>
+<h2>3問で確認する。</h2>
+<details><summary>Q1. ヤン氏が上記の米議会法案を提出した？</summary><p>いいえ。ヤン氏は政策提言者。紹介した法案の提出者はカサー下院議員とケリー上院議員。</p></details>
+<details><summary>Q2. AI導入で社員への給与が減ったら、国全体の税収も必ず減る？</summary><p>いいえ。所得税や社会保険料などが減る場合でも、企業利益や別の雇用・消費から税収が増える可能性がある。</p></details>
+<details><summary>Q3. 企業の利益には既存の税金がかからないからAI税が必要？</summary><p>いいえ。企業の課税所得には既存の法人税などがある。新たな課税の是非は、税負担の配分と必要な財源をどう確保するかという問題。</p></details>
+</section>
+<section id="references">
+<span class="sectionno">参考資料</span>
+<h2>原文に当たる。</h2>
+<ol class="sources">
+<li><a href="https://www.govinfo.gov/app/details/BILLS-119hr10044ih" target="_blank" rel="noopener noreferrer">米政府出版局：H.R. 10044 / AI Tax and Work Protection Act</a>（2026年8月6日提出）</li>
+<li><a href="https://www.govinfo.gov/app/details/BILLS-119s5518is" target="_blank" rel="noopener noreferrer">米政府出版局：S. 5518 / Make AI Work for Americans Act</a>（2026年9月24日提出）</li>
+<li><a href="https://blog.andrewyang.com/p/tax-ai-not-humans-again" target="_blank" rel="noopener noreferrer">Andrew Yang: Tax AI, Not Humans, Again</a>（2026年6月8日）</li>
+</ol>
+<p class="plain-note">本記事は制度の理解を目的とした独自の解説。収支の数値は説明用に作成した仮定で、現実の税収予測ではない。政策案と成立済みの制度を区別した。</p>
+</section>
+<div class="footer-note"><a href="../index.html">← 記事一覧へ戻る</a>　　VIVRAS Tech / 教養</div>
+</div>
+</article>
+</main>
+<footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span></div></footer>
+<script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+const before=$("ai-before"),after=$("ai-after"),money=$("money-bar");
+function show(ai){
+ const values=ai?{salary:300,other:200,ai:100,profit:400}:{salary:600,other:200,ai:0,profit:200};
+ for(const name of ["salary","other","ai","profit"]){
+  $("bar-"+name).style.width=values[name]/10+"%";
+  $("val-"+name).textContent=values[name]+"万円";
+ }
+ money.setAttribute("aria-label",(ai?"AI導入後：":"AI導入前：")+"給与"+values.salary+"万円、その他費用"+values.other+"万円、AI利用料"+values.ai+"万円、税引き前利益"+values.profit+"万円");
+ before.setAttribute("aria-pressed",String(!ai));after.setAttribute("aria-pressed",String(ai));
+ $("demo-text").textContent=ai?"導入後：給与は300万円減り、利益は200万円増える。AI提供会社には100万円が支払われる。ただし国全体の税収はこの数字だけでは決まらない。":"導入前：会社は社員に600万円を支払っている。給与や利益がそれぞれ課税の対象となり得る。";
+}
+before.addEventListener("click",()=>show(false));after.addEventListener("click",()=>show(true));show(false);
+})();
+</script>
+</body></html>
