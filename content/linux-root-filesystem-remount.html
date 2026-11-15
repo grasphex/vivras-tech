@@ -58,8 +58,8 @@
 <pre><code># / に接続されている保存元・ファイルシステム・条件
 findmnt -no SOURCE,FSTYPE,OPTIONS /
 # /mnt/data に個別のマウントがあるか確認
-findmnt /mnt/data</code></pre>
-<p>結果の<strong>SOURCE</strong>は接続元、<strong>FSTYPE</strong>はファイルシステムの種類、<strong>OPTIONS</strong>はro・rwなどの条件です。<code>findmnt /mnt/data</code>は、その場所に個別のマウントがなければ、通常は何も表示しません。</p>
+findmnt --mountpoint /mnt/data</code></pre>
+<p>結果の<strong>SOURCE</strong>は接続元、<strong>FSTYPE</strong>はファイルシステムの種類、<strong>OPTIONS</strong>はro・rwなどの条件です。<code>findmnt --mountpoint /mnt/data</code>は、その場所自体がマウントポイントでなければ、通常は何も表示しません。</p>
 <details class="lesson-detail"><summary>保守作業でroからrwへ変更するコマンドは？</summary><p><code>sudo mount -o remount,rw /</code>。<code>/</code>にマウント済みのファイルシステムを、読み書き可能な条件へ変更しようとします。<strong>障害時の保護や運用方針を崩す可能性があるため、実機で理由なく実行しないでください。</strong></p></details>
 </section>
 <section class="lesson-section" id="check">
