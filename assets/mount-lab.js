@@ -63,16 +63,20 @@
           state.last = "書き込み成功：rwで許可";
         }
         break;
-      case "remountrw":
+      case "remountrw": {
+        const previous = state.mode;
         state.mode = "rw";
-        output = "# 正常終了：通常は出力なし\n# 仮想環境で / のマウント条件が rw に変わった";
-        state.last = "remount成功：ro → rw";
+        output = "# 正常終了：通常は出力なし\n# 仮想環境で / の状態： " + previous + " → rw";
+        state.last = "remount成功：" + previous + " → rw";
         break;
-      case "remountro":
+      }
+      case "remountro": {
+        const previous = state.mode;
         state.mode = "ro";
-        output = "# 正常終了：通常は出力なし\n# 仮想環境で / のマウント条件が ro に変わった";
-        state.last = "remount成功：rw → ro";
+        output = "# 正常終了：通常は出力なし\n# 仮想環境で / の状態： " + previous + " → ro";
+        state.last = "remount成功：" + previous + " → ro";
         break;
+      }
     }
     transcript.push("$ " + command + "\n" + output);
     if (transcript.length > 14) transcript.splice(0, transcript.length - 14);
