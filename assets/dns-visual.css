@@ -1,5 +1,5 @@
 /* DNS lesson — editorial diagrams, mono surfaces + selective orange ink. */
-.dns-lab{--dns-ink:#1c1c1c;--dns-rule:#d5d5d5;--dns-soft:#f5f5f5;--dns-accent:#f26a3d;max-width:920px}
+.dns-lab{margin-inline:auto;--dns-ink:#1c1c1c;--dns-rule:#d5d5d5;--dns-soft:#f5f5f5;--dns-accent:#f26a3d;max-width:920px}
 .dns-lab *, .dns-lab *:before,.dns-lab *:after{box-sizing:border-box}
 .dns-lab .article-header{max-width:920px;margin-bottom:20px}
 .dns-lab .article-header h1{font-size:clamp(30px,4.8vw,47px);line-height:1.25}
