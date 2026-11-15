@@ -314,3 +314,45 @@ body{background:var(--bg);color:var(--ink)}
 .firewall-two{grid-template-columns:1fr;gap:9px}
 .dns-story-row{grid-template-columns:1fr;gap:3px;padding:10px}
 }
+
+/* Tap-to-explain terms: inline by default, zero added reading height. */
+.vterm{display:inline;vertical-align:baseline;appearance:none;-webkit-appearance:none;border:0;border-bottom:1px dotted #537b60;background:transparent;border-radius:0;cursor:pointer;color:inherit;font:inherit;font-weight:inherit;line-height:inherit;letter-spacing:inherit;padding:0 1px;text-align:left;text-decoration:none;overflow-wrap:anywhere}
+.vterm:after{content:"?";display:inline-grid;place-items:center;vertical-align:0.11em;width:12px;height:12px;border-radius:50%;margin-left:3px;background:#e0eadf;color:#386749;font:800 9px/1 sans-serif}
+.vterm:hover,.vterm[aria-expanded="true"]{color:#285c40;background:#e9f1e6}
+.vterm:focus-visible{outline:2px solid #416f52;outline-offset:3px}
+.vterm-note[hidden]{display:none!important}
+.vterm-note{position:fixed;z-index:1000;width:310px;max-width:calc(100vw - 24px);max-height:min(70dvh,320px);overflow-y:auto;border:1px solid #94b39b;border-top:3px solid #2d6545;background:#fff;color:#26382b;padding:13px 16px 16px;box-shadow:0 13px 32px #1426192c;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.6}
+.vterm-note-head{display:flex;align-items:start;justify-content:space-between;gap:14px;margin-bottom:5px}
+.vterm-note-title{font-size:15px;line-height:1.5;letter-spacing:0}
+.vterm-note-close{appearance:none;border:0;background:#ecf2ea;color:#294f35;padding:0;width:29px;height:29px;display:grid;place-items:center;font:600 22px/1 sans-serif;cursor:pointer;flex-shrink:0}
+.vterm-note-text{font-size:13px!important;line-height:1.7!important;margin:4px 0 0!important;color:#415346}
+.vterm-note-close:focus-visible{outline:2px solid #38634a;outline-offset:2px}
+.term-hint{font-size:12px!important;line-height:1.5!important;color:#607666!important;margin:9px 0 0!important}
+.article-collapsible{margin-top:17px!important}
+.article-expand{border-top:1px solid #b5c5b6;border-bottom:1px solid #b5c5b6;background:transparent}
+.article-expand summary{cursor:pointer;font-size:15px;font-weight:780;color:#34513c;padding:14px 22px 14px 0;position:relative;list-style:none}
+.article-expand summary::-webkit-details-marker{display:none}
+.article-expand summary:after{content:"＋";position:absolute;right:4px;color:#4f785d;font-size:17px;top:12px}
+.article-expand[open] summary:after{content:"−"}
+.article-expand>.article-expand-body{padding:4px 0 18px}
+.article-expand-body h3{font-size:17px;margin-top:13px}
+.article-expand-body p,.article-expand-body li{font-size:14px;line-height:1.75}
+.article-expand-body pre{margin-top:10px}
+.article-expand-body .article-note{margin:9px 0 0}
+@media(max-width:640px){
+.vterm-note{left:12px!important;right:12px!important;bottom:12px!important;top:auto!important;width:auto!important;max-width:none;max-height:min(55dvh,300px);box-shadow:0 0 0 100vmax #15241723,0 8px 30px #14261926}
+.vterm:after{width:13px;height:13px}
+}
+@media(prefers-reduced-motion:reduce){.vterm-note{scroll-behavior:auto}}
+
+
+/* Keep extra technical steps visually compact when disclosures are closed. */
+.tech-lesson>.lesson-section.lesson-compact{margin-top:14px}
+.tech-lesson .article-expand{border-radius:0}
+.tech-lesson .article-expand>summary{padding:12px 24px 12px 0;line-height:1.55}
+.tech-lesson .article-expand-body{padding:6px 0 16px}
+.tech-lesson .article-expand-body .lesson-try{margin:7px 0 9px}
+.tech-lesson .article-expand-body .lesson-steps{margin:3px 0 7px}
+.tech-lesson .article-expand-body .lesson-quiz{margin-top:8px}
+.tech-lesson .term-hint{margin-top:6px}
+@media(max-width:620px){.tech-lesson>.lesson-section.lesson-compact{margin-top:12px}}

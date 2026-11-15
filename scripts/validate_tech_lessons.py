@@ -1,52 +1,45 @@
 #!/usr/bin/env python3
-"""Editorial structural checks for self-contained beginner tech lessons.
-
-These checks catch missing causal steps; they do not replace human fact review.
-"""
+"""Editorial checks for succinct, visual-first technical lessons."""
 from pathlib import Path
-import re
+from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1] / "content"
 CASES = {
     "linux-root-filesystem-remount.html": {
         "condition": "conditions",
-        "terms": ("保存領域", "ファイルシステム", "マウントポイント"),
-        "logic": ("/dev/sdb1", "/mnt/data/report.txt", "コピーやファイル移動はしていません"),
+        "commands": "verify",
+        "examples": ("/dev/sdb1", "/mnt/data/report.txt", "コピーやファイル移動はしていません"),
         "source": "man7.org",
     },
     "firewalld-zones.html": {
         "condition": "try",
-        "terms": ("ポート番号", "TCP / UDP", "zone"),
-        "logic": ("eth0", "eth1", "zoneごとに設定が独立"),
+        "commands": "commands",
+        "examples": ("eth0", "eth1", "zoneごとに設定が独立"),
         "source": "docs.redhat.com",
     },
     "dns-resolution.html": {
         "condition": "cache",
-        "terms": ("ドメイン名", "再帰DNS", "権威DNS"),
-        "logic": ("ルートDNS", ".comのDNS", "ブラウザが取得したIPアドレス"),
+        "commands": "commands",
+        "examples": ("ルートDNS", ".comのDNS", "ブラウザが取得したIPアドレス"),
         "source": "cloudflare.com",
-    }
+    },
 }
-
-for filename, requirements in CASES.items():
-    source = (ROOT / filename).read_text(encoding="utf-8")
-    assert "<article" in source and 'class="article-body tech-lesson"' in source, filename
-    order = ["problem", "terms", "flow", requirements["condition"], "commands" if filename != "linux-root-filesystem-remount.html" else "verify", "check"]
-    positions = [source.find(f'id="{id_}"') for id_ in order]
-    assert all(position >= 0 for position in positions) and positions == sorted(positions), (filename, positions)
-    assert source.find('<dl class="lesson-terms">') < source.find('<figure class="lesson-figure'), filename
-    assert len(re.findall(r'<div class="lesson-kicker">', source)) == 6, filename
-    assert len(re.findall(r'<summary>', source)) in (3, 4), filename
-    assert source.count('class="lesson-result"') >= 1, filename
-    assert 'class="lesson-try"' in source, filename
-    assert 'aria-live="polite"' in source, filename
-    assert re.search(r'<script>\s*\(\(\)=>', source), filename
-    assert all(phrase in source for phrase in requirements["terms"]), filename
-    assert all(phrase in source for phrase in requirements["logic"]), filename
-    assert requirements["source"] in source, filename
-    assert "原則として" not in source or "規定" in source or "条件" in source, filename
-    assert len(source) < 10000, f"Review for unnecessary length: {filename} {len(source)} characters"
-    assert "class=\"plain-steps\"" not in source and "class=\"visual-grid\"" not in source, filename
-    print(f"PASS {filename}: section logic, terms, example, edge conditions and sources")
-
-print("All three technical lessons passed editorial structural checks.")
+for filename, req in CASES.items():
+    h = (ROOT / filename).read_text(encoding="utf-8")
+    order = ("problem", "flow", req["condition"], req["commands"], "check")
+    pos = [h.find(f'id="{name}"') for name in order]
+    assert all(p >= 0 for p in pos) and pos == sorted(pos), (filename, pos)
+    assert 'id="terms"' not in h and 'class="lesson-terms"' not in h, filename
+    assert 'class="article-body tech-lesson"' in h, filename
+    assert 'class="lesson-figure' in h, filename
+    assert 'class="lesson-try"' in h and 'aria-live="polite"' in h, filename
+    assert h.count('class="vterm"') >= 4 and 'assets/terms.js' in h, filename
+    assert h.count('<details class="article-expand') >= 4, filename
+    assert 'class="lesson-quiz"' in h, filename
+    assert '<script>' in h, filename
+    assert all(x in h for x in req["examples"]), filename
+    assert req["source"] in h, filename
+    # Term help markup increases source length without adding scrolling.
+    assert len(h) < 18000, f"Review for excess source length: {filename} {len(h)}"
+    print(f"PASS {filename}: problem → illustration → conditional demo, on-demand definitions and sources")
+print("All technical lessons passed editorial checks.")

@@ -1,64 +1,56 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DNS名前解決｜なぜ名前からIPアドレスが分かるのか｜VIVRAS Tech</title><meta name="description" content="DNSの名前解決を、ブラウザ・再帰DNS・ルートDNS・TLD・権威DNSの役割から解説。キャッシュの有無でなぜ問い合わせ経路が変わるか一例を追って理解する。"><meta name="category" content="ネットワーク"><meta name="keywords" content="DNS 名前解決 スタブ リゾルバ ルート TLD 権威DNS Aレコード TTL dig"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/dns-resolution.html"><link rel="stylesheet" href="../assets/site.css"></head>
+<title>DNS名前解決｜なぜ名前からIPアドレスが分かるのか｜VIVRAS Tech</title><meta name="description" content="DNSの名前解決を、ブラウザ・再帰DNS・ルートDNS・TLD・権威DNSの役割から解説。キャッシュの有無でなぜ問い合わせ経路が変わるか一例を追って理解する。"><meta name="category" content="ネットワーク"><meta name="keywords" content="DNS 名前解決 スタブ リゾルバ ルート TLD 権威DNS Aレコード TTL dig"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/dns-resolution.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script></head>
 <body><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav></div></header><main><header class="article-header"><div class="breadcrumb"><a href="../index.html">トップ</a> / <a href="../topics/tech.html">技術</a> / <a href="../index.html?category=%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF#articles">ネットワーク</a></div>
 <span class="tag">NETWORK / DNS</span><h1>DNS｜なぜ「example.com」から通信先が分かるのか</h1>
-<p class="article-lead">人はWebサイトを<strong>名前</strong>で覚えますが、コンピューターが通信するには<strong>IPアドレス（通信先の番号）</strong>が必要です。<strong>名前からIPアドレスを調べるのがDNS</strong>です。</p></header><article class="article-body tech-lesson">
+<p class="article-lead">人はWebサイトを<strong>名前</strong>で覚えますが、コンピューターが通信するには<strong><button type="button" class="vterm" data-explain="通信先の機器を区別するための番号。IPv4では192.0.2.10のように表します。" aria-label="IPアドレス（通信先の番号）の説明を開く">IPアドレス（通信先の番号）</button></strong>が必要です。<strong>名前からIPアドレスを調べるのがDNS</strong>です。</p><p class="term-hint">点線の用語をタップすると説明が開きます。</p></header><article class="article-body tech-lesson">
 <section class="lesson-section" id="problem"><div class="lesson-kicker">01 / なぜ必要？</div>
 <h2>「example.com」と入力しても、通信先の番号はまだ分からない。</h2>
-<p>ブラウザに<code>example.com</code>と入力すると、コンピューターは通常、まずその名前に対応する<strong>IPアドレス</strong>を調べます。この手順を<strong>名前解決</strong>といいます。</p>
+<p>ブラウザに<code>example.com</code>と入力すると、コンピューターは通常、まずその名前に対応する<strong>IPアドレス</strong>を調べます。この手順を<strong><button type="button" class="vterm" data-explain="ドメイン名などから対応するIPアドレスを調べること。" aria-label="名前解決の説明を開く">名前解決</button></strong>といいます。</p>
 <p class="lesson-answer"><strong>答え：</strong>端末がDNSに質問し、DNSが名前に対応するIPアドレスを返します。<strong>名前解決が終わってから</strong>、ブラウザは得られた通信先へWebの通信を始めます。</p>
 </section>
-<section class="lesson-section" id="terms"><div class="lesson-kicker">02 / 必要な3つの言葉</div>
-<h2>「質問する側」「調べる側」「正式な答えを持つ側」。</h2>
-<dl class="lesson-terms">
-<div><dt><strong>ドメイン名</strong></dt><dd><code>example.com</code>のような、人に読みやすい名前です。</dd></div>
-<div><dt><strong>再帰DNS</strong></dt><dd>端末の代わりに答えを調べて返すDNSサーバー。<strong>前に調べた答え（キャッシュ）</strong>も保存できます。</dd></div>
-<div><dt><strong>権威DNS</strong></dt><dd><code>example.com</code>を管理する側が、正式なDNSの情報を登録しているサーバーです。</dd></div>
-</dl>
-<p class="lesson-note"><strong>Aレコード</strong>は「この名前に対応するIPv4アドレス」というDNSの情報の一種。<strong>ルートDNS</strong>と<strong>.comのDNS</strong>はIPアドレスを直接答える代わりに、担当する先を案内する役割があります。</p>
-</section>
+
 <section class="lesson-section" id="flow"><div class="lesson-kicker">03 / 具体例で追う</div>
 <h2>答えを知らないDNSは、どうやって正解にたどり着く？</h2>
-<p>再帰DNSが<code>example.com</code>のAレコードをまだ持っていないと仮定します。DNSの管理は階層的に分かれているので、<strong>上位から「誰が担当か」を順番に聞く</strong>必要があります。</p>
+<p><button type="button" class="vterm" data-explain="端末に代わりDNSサーバーを調べ、答えを返すサーバー。" aria-label="再帰DNSの説明を開く">再帰DNS</button>が<code>example.com</code>の<button type="button" class="vterm" data-explain="名前に対応するIPv4アドレスの情報を記録したもの。" aria-label="Aレコードの説明を開く">Aレコード</button>をまだ持っていないと仮定します。DNSの管理は階層的に分かれているので、<strong>上位から「誰が担当か」を順番に聞く</strong>必要があります。</p>
 <figure class="lesson-figure dns-story">
 <figcaption>例：端末が「example.com のAレコードは？」と質問</figcaption>
 <div class="dns-story-row"><span>① 端末</span><strong>再帰DNSに質問する</strong><small>「IPアドレスを調べて」</small></div>
 <div class="dns-story-down">↓</div>
-<div class="dns-story-row"><span>② ルートDNS</span><strong>「.comの担当へ」</strong><small>ここではexample.comのIPはまだ返さない</small></div>
+<div class="dns-story-row"><span>② <button type="button" class="vterm" data-explain="DNSの階層の最上位で次の問い合わせ先を案内するサーバー。" aria-label="ルートDNSの説明を開く">ルートDNS</button></span><strong>「.comの担当へ」</strong><small>ここではexample.comのIPはまだ返さない</small></div>
 <div class="dns-story-down">↓</div>
 <div class="dns-story-row"><span>③ .comのDNS</span><strong>「example.comの担当へ」</strong><small>権威DNSの場所を案内</small></div>
 <div class="dns-story-down">↓</div>
-<div class="dns-story-row is-final"><span>④ 権威DNS</span><strong>「この名前のAレコードはこれ」</strong><small>正式な情報からIPアドレスを回答</small></div>
+<div class="dns-story-row is-final"><span>④ <button type="button" class="vterm" data-explain="example.comなどの正式なDNS情報を管理するサーバー。" aria-label="権威DNSの説明を開く">権威DNS</button></span><strong>「この名前のAレコードはこれ」</strong><small>正式な情報からIPアドレスを回答</small></div>
 <div class="lesson-result">最後に再帰DNSが端末へ回答 → ブラウザが取得したIPアドレスへ通信</div>
 </figure>
 <p class="lesson-note"><strong>誰が上位DNSへ質問している？</strong> 端末ではなく、<strong>再帰DNS</strong>です。ルート・.com・権威DNSを毎回ブラウザが直接回るわけではありません。</p>
 </section>
-<section class="lesson-section" id="cache"><div class="lesson-kicker">04 / 条件が変わると？</div>
-<h2>2回目も、毎回すべてのDNSに聞くの？</h2>
-<p><strong>いいえ。</strong> 再帰DNSに有効なキャッシュ（保存済みの答え）があれば、そこから返せます。保存の有効期間を<strong>TTL</strong>と呼びます。</p>
+<section class="lesson-section lesson-compact" id="cache">
+
+<p><strong>いいえ。</strong> 再帰DNSに有効な<button type="button" class="vterm" data-explain="前に調べた回答を有効期限内だけ保存して再利用する仕組み。" aria-label="キャッシュの説明を開く">キャッシュ</button>（保存済みの答え）があれば、そこから返せます。保存の有効期間を<strong><button type="button" class="vterm" data-explain="DNSの回答を再利用してよい期間。期限後は必要に応じ再問い合わせします。" aria-label="TTLの説明を開く">TTL</button></strong>と呼びます。</p><details class="article-expand"><summary>キャッシュの有無を操作して確認</summary><div class="article-expand-body">
 <div class="lesson-try"><div class="lesson-try-head"><strong>保存済みの答えがあるか切り替える</strong><span>実機のDNSを操作しません</span></div>
 <div class="lesson-control"><label for="dns-cache">再帰DNSの状態<select id="dns-cache"><option value="miss">まだ答えがない</option><option value="hit">有効な答えを保存済み</option></select></label></div>
 <div id="dns-status" class="lesson-status" aria-live="polite"></div><p id="dns-why" class="lesson-why"></p>
 <div id="dns-path" class="lesson-path" aria-live="polite"></div>
 </div>
 <p class="lesson-note">実際には端末側でキャッシュする場合や、再帰DNSが途中の担当先を覚えている場合もあります。ここでは「何も保存していない場合」と「答えを保存している場合」を比較しています。</p>
-</section>
-<section class="lesson-section" id="commands"><div class="lesson-kicker">05 / 実機で何を見る？</div>
-<h2>名前からIPが返ってくることを確かめる。</h2>
+</div></details></section>
+<section class="lesson-section lesson-compact" id="commands"><details class="article-expand"><summary>コマンドで確認</summary><div class="article-expand-body">
+
 <pre><code># example.comのIPv4アドレスを問い合わせる
 dig example.com A
 # DNSの担当を順にたどる診断用の問い合わせ
 dig +trace example.com A</code></pre>
 <p><code>dig</code>の回答に<strong>ANSWER SECTION</strong>とAレコードがあれば、IPアドレスを確認できます。<code>+trace</code>は、通常のブラウザの通信そのものではなく、<strong>担当先を順番にたどる様子を調べるコマンド</strong>です。</p>
-</section>
-<section class="lesson-section" id="check"><div class="lesson-kicker">06 / 誤解を防ぐ</div><h2>最後に3問。</h2>
+</div></details></section>
+<section class="lesson-section lesson-compact" id="check"><details class="article-expand"><summary>3問で理解度を確認</summary><div class="article-expand-body">
 <div class="lesson-quiz">
 <details><summary>Q1. ルートDNSは、example.comのIPアドレスを直接教える？</summary><p>通常は教えません。例では「.comを担当するDNSサーバー」を案内します。</p></details>
 <details><summary>Q2. 再帰DNSに有効な答えがあれば、上位のDNSに聞く？</summary><p>聞かずに保存した答えを返せます。だからキャッシュがあると問い合わせを短縮できます。</p></details>
-<details><summary>Q3. DNSの回答を受け取ったら、Webページは表示済み？</summary><p>まだです。DNSは通信先を調べる仕組み。ブラウザはその後、取得したIPアドレスに対してWebの通信を行います。</p></details></div></section>
-<section class="lesson-section lesson-sources"><h2>参照した資料</h2>
+<details><summary>Q3. DNSの回答を受け取ったら、Webページは表示済み？</summary><p>まだです。DNSは通信先を調べる仕組み。ブラウザはその後、取得したIPアドレスに対してWebの通信を行います。</p></details></div></div></details></section>
+<section class="lesson-section lesson-compact" id="sources"><details class="article-expand"><summary>一次資料・参考文献</summary><div class="article-expand-body">
 <p><a href="https://www.cloudflare.com/learning/dns/what-is-dns/" target="_blank" rel="noopener noreferrer">Cloudflare：DNSの仕組み</a> ／ <a href="https://www.rfc-editor.org/rfc/rfc1034" target="_blank" rel="noopener noreferrer">RFC 1034（DNSの基本仕様）</a></p>
-<p class="lesson-note">標準的なAレコード問い合わせを単純化した図。CNAME、IPv6、キャッシュや委任情報の有無によって実際の経路は異なります。</p></section>
+<p class="lesson-note">標準的なAレコード問い合わせを単純化した図。CNAME、IPv6、キャッシュや委任情報の有無によって実際の経路は異なります。</p></div></details></section>
 <div class="article-end"><a href="../topics/tech.html">← 技術の記事一覧へ</a></div>
 </article></main><footer class="site-footer"><div class="container footer-row">© VIVRAS Tech</div></footer><script>(()=>{"use strict";const mode=document.getElementById("dns-cache"),status=document.getElementById("dns-status"),why=document.getElementById("dns-why"),path=document.getElementById("dns-path");function draw(){const hit=mode.value==="hit";status.textContent=hit?"保存済みの答えをすぐ返す":"担当するDNSを順番に探す";status.className="lesson-status is-allowed";why.textContent=hit?"有効なキャッシュがあるため、ほかのDNSをたどる必要はありません。":"まだ答えがないので、上位DNSから担当先を調べ、最後に権威DNSの回答を受け取ります。";path.textContent=hit?"端末 → 再帰DNS（保存済みのIP）→ 端末":"端末 → 再帰DNS → ルート → .com → 権威DNS → 再帰DNS → 端末";}mode.addEventListener("change",draw);draw()})();</script></body></html>

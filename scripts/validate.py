@@ -77,6 +77,25 @@ def validate():
             if target.is_dir():
                 target = target / "index.html"
             assert target.is_file(), f"Broken internal path {link} in {page.relative_to(DIST)}"
+    # Terms must be explained where first used; no standalone glossary or hidden main idea.
+    for a in articles:
+        source = (DIST / a["url"]).read_text(encoding="utf-8")
+        assert 'src="../assets/terms.js"' in source, f"Missing inline definitions: {a['slug']}"
+        assert 'id="words"' not in source and 'id="terms"' not in source, f"Standalone glossary remains: {a['slug']}"
+        assert '<details class="article-expand' in source, f"No progressive detail control: {a['slug']}"
+        class Inline(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.buttons = []
+            def handle_starttag(self, tag, pairs):
+                attrs = dict(pairs)
+                if tag == "button" and "vterm" in attrs.get("class", "").split():
+                    self.buttons.append(attrs)
+        parsed = Inline()
+        parsed.feed(source)
+        assert len(parsed.buttons) >= 3, f"Too few contextual definitions: {a['slug']}"
+        assert all(x.get("type") == "button" and len(x.get("data-explain", "")) > 12 and x.get("aria-label") for x in parsed.buttons), f"Broken inline definitions: {a['slug']}"
+    assert (DIST / "assets" / "terms.js").is_file(), "Missing shared term behavior"
     for name in EXPECTED_TOPICS:
         group_page = (DIST / "topics" / f"{name}.html").read_text(encoding="utf-8")
         for a in articles:
