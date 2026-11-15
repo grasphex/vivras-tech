@@ -1,16 +1,15 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Linuxのマウント｜一枚の図でmount・ro/rw・remountを理解｜VIVRAS Tech</title><meta name="description" content="mountは保存領域をつなぐ。ro/rwは書き込み条件、remountはその条件変更。Linuxのマウントを一枚の図と最小限の操作で理解する。"><meta name="category" content="Linux"><meta name="keywords" content="Linux mount remount ファイルシステム ro rw 読み取り専用"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/linux-root-filesystem-remount.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script><script src="../assets/mount-lab.js" defer></script></head>
-<body><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav></div></header><main><header class="article-header">
+<body class="mount-focus"><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav></div></header><main><header class="article-header">
 <div class="breadcrumb"><a href="../index.html">トップ</a> / <a href="../topics/tech.html">技術</a> / Linux</div>
-<span class="tag">LINUX / FILESYSTEM</span>
 <h1>Linuxのマウント。何が変わる？</h1>
 <p class="article-lead"><strong>保存領域をフォルダーにつなぐのが <button type="button" class="vterm" data-explain="ファイルシステムをLinuxのディレクトリ階層に接続する操作です。ファイルをコピーする操作ではありません。" aria-label="mountの意味を開く">mount</button>。</strong> つないだまま設定を変えるのが <button type="button" class="vterm" data-explain="マウントしたファイルシステムについて、接続先を変えずに読み書きなどの設定を変更する操作です。" aria-label="remountの意味を開く">remount</button> です。</p>
 </header>
 <article class="article-body tech-lesson">
 <section class="lesson-section mount-lite-section" id="problem">
 <figure class="lesson-figure mount-lite-figure" aria-label="保存領域のreport.txtをmountで/mnt/dataに接続し、remountで書き込み可否だけを変更する図">
-<figcaption>これだけ覚える：ファイルを見せる場所と、書き込みの条件</figcaption>
+<figcaption>保存領域をつなぎ、読み書きの条件を変える</figcaption>
 <div class="mount-lite-connection">
 <div class="mount-lite-place"><small>保存領域</small><strong>/dev/sdb1</strong><span>report.txt</span></div>
 <div class="mount-lite-arrow"><b>mount</b><span aria-hidden="true">→</span><small>つなぐ</small></div>
@@ -23,7 +22,7 @@
 </div>
 <p class="mount-lite-bottom"><strong>mount</strong>で見えるようにする。<strong>remount</strong>では接続先は変わらず、書き込み条件だけが変わる。ファイルは移動・コピーされない。</p>
 </figure>
-<p class="mount-lite-caveat">*rwでもアクセス権限や障害などで書き込めない場合があります。</p>
+<p class="mount-lite-caveat">*読み取り・書き込みにはファイル権限なども影響します。</p>
 </section>
 <section class="lesson-section mount-lite-lab-section" id="conditions">
 <details class="article-expand mount-lite-toggle">
