@@ -82,6 +82,11 @@ def validate():
         for a in articles:
             if a["group"] == name:
                 assert f"../{a['url']}" in group_page, f"Missing article on {name} page"
+    # Old versioned preview URLs must not strand visitors on outdated layouts.
+    for snapshot in (ROOT / "static").glob("ai-tax-*.html"):
+        published = (DIST / snapshot.name).read_text(encoding="utf-8")
+        assert 'http-equiv="refresh"' in published, f"Missing redirect for {snapshot.name}"
+        assert "articles/ai-tax-and-jobs.html" in published
     homepage = (DIST / "index.html").read_text(encoding="utf-8")
     assert 'id="groups"' in homepage and 'id="categories"' in homepage
     assert 'href="topics/tech.html"' in homepage
