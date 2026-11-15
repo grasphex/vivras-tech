@@ -1,21 +1,15 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>firewalldのzone｜どのルールが使われるのか｜VIVRAS Tech</title><meta name="description" content="firewalldはなぜzoneごとに通信を許可・拒否するのか。接続口からzoneを選び、ポート・TCP/UDPと照合する順序を、1つの具体例と確認コマンドで解説。"><meta name="category" content="Linux"><meta name="keywords" content="firewalld firewall-cmd zone port service TCP UDP ファイアウォール 通信制御"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/firewalld-zones.html"><link rel="stylesheet" href="../assets/site.css"></head>
+<title>firewalldのzone｜どのルールが使われるのか｜VIVRAS Tech</title><meta name="description" content="firewalldはなぜzoneごとに通信を許可・拒否するのか。接続口からzoneを選び、ポート・TCP/UDPと照合する順序を、1つの具体例と確認コマンドで解説。"><meta name="category" content="Linux"><meta name="keywords" content="firewalld firewall-cmd zone port service TCP UDP ファイアウォール 通信制御"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/firewalld-zones.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script></head>
 <body><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav></div></header><main><header class="article-header"><div class="breadcrumb"><a href="../index.html">トップ</a> / <a href="../topics/tech.html">技術</a> / <a href="../index.html?category=Linux#articles">Linux</a></div>
 <span class="tag">LINUX / NETWORK SECURITY</span><h1>firewalld｜同じ80/tcpでも通る通信・通らない通信がある理由</h1>
-<p class="article-lead"><strong>「80/tcpを許可したのに、つながらない」</strong>。まず確認すべきなのは、<strong>その通信にどのzone（ルールのまとまり）が使われているか</strong>です。</p></header><article class="article-body tech-lesson">
+<p class="article-lead"><strong>「80/tcpを許可したのに、つながらない」</strong>。まず確認すべきなのは、<strong>その通信にどの<button type="button" class="vterm" data-explain="firewalldで、ネットワーク通信の許可をまとめた設定。入口や送信元によって適用zoneが変わります。" aria-label="zone（ルールのまとまり）の説明を開く">zone（ルールのまとまり）</button>が使われているか</strong>です。</p><p class="term-hint">点線の用語をタップすると説明が開きます。</p></header><article class="article-body tech-lesson">
 <section class="lesson-section" id="problem"><div class="lesson-kicker">01 / なぜ必要？</div>
 <h2>同じサーバーでも、接続する場所によって許可を変えたい。</h2>
-<p>例えば社内からの管理接続は許可し、インターネットからの不要な接続は防ぎたい。Linuxの<strong>firewalld</strong>は、こうした通信のルールを分かりやすく管理するサービスです。</p>
-<p class="lesson-answer"><strong>答え：</strong>通信を受け取ったら、<strong>①適用するzoneを決める → ②そのzoneの許可設定に合うか調べる</strong>。そのため、同じ80/tcpでも適用zoneが違えば結果が変わります。</p>
+<p>例えば社内からの管理接続は許可し、インターネットからの不要な接続は防ぎたい。Linuxの<strong><button type="button" class="vterm" data-explain="Linuxでネットワーク通信の許可・拒否を管理するサービス。zoneごとにルールを分けます。" aria-label="firewalldの説明を開く">firewalld</button></strong>は、こうした通信のルールを分かりやすく管理するサービスです。</p>
+<p class="lesson-answer"><strong>答え：</strong>通信を受け取ったら、<strong>①適用するzoneを決める → ②そのzoneの許可設定に合うか調べる</strong>。そのため、同じ<button type="button" class="vterm" data-explain="80は通信先のポート番号、tcpは通信方式。80/udpとは別の通信条件です。" aria-label="80/tcpの説明を開く">80/tcp</button>でも適用zoneが違えば結果が変わります。</p>
 </section>
-<section class="lesson-section" id="terms"><div class="lesson-kicker">02 / まず必要な3つの言葉</div>
-<h2>通信・ポート・zoneの役割を分ける。</h2>
-<dl class="lesson-terms">
-<div><dt><strong>ポート番号</strong></dt><dd>通信を受け取るアプリを区別する番号。例：<code>80</code>はWebサーバーのHTTP通信によく使われます。</dd></div>
-<div><dt><strong>TCP / UDP</strong></dt><dd>通信の方式。<code>80/tcp</code>と<code>80/udp</code>は別の条件です。</dd></div>
-<div><dt><strong>zone</strong></dt><dd>許可する通信をまとめた設定。<code>internal</code>や<code>public</code>という名前でも、<strong>何を許可するかは実際の設定次第</strong>です。</dd></div>
-</dl></section>
+
 <section class="lesson-section" id="flow"><div class="lesson-kicker">03 / 一つの例を最後まで追う</div>
 <h2>publicで80/tcpを許可したのに、なぜinternal側では通らない？</h2>
 <p>以下のように設定した<strong>架空のサーバー</strong>を考えます。ネットワークの接続口<code>eth0</code>は<code>internal</code>、<code>eth1</code>は<code>public</code>に割り当ててあるものとします。</p>
@@ -27,15 +21,15 @@
 </div>
 <div class="lesson-result">通信の入口 → 適用zone → zone内の許可ルール → 結果</div>
 </figure>
-<ol class="lesson-steps">
-<li><strong>接続口を確認：</strong>届いた通信の送信元やネットワークの入口（インターフェース）への割り当てから、使うzoneを決めます。</li>
+<details class="article-expand lesson-steps-extra"><summary>図の流れを一つずつ確認</summary><div class="article-expand-body"><ol class="lesson-steps">
+<li><strong>接続口を確認：</strong>届いた通信の送信元やネットワークの入口（<button type="button" class="vterm" data-explain="サーバーがネットワークに接続する入口。eth0などの名前で識別します。" aria-label="インターフェースの説明を開く">インターフェース</button>）への割り当てから、使うzoneを決めます。</li>
 <li><strong>そのzoneを確認：</strong><code>internal</code>に80/tcpの許可がなければ、<code>public</code>の許可は使われません。zoneごとに設定が独立しているためです。</li>
-<li><strong>ポートと方式を照合：</strong>80/tcpを許可した場合でも、80/udpが自動で許可されるわけではありません。</li>
-</ol>
+<li><strong>ポートと方式を照合：</strong>80/tcpを許可した場合でも、<button type="button" class="vterm" data-explain="宛先ポート80・通信方式UDPを表す。80/tcpと別の条件のため、片方の許可がもう片方に自動適用されません。" aria-label="80/udpの説明を開く">80/udp</button>が自動で許可されるわけではありません。</li>
+</ol></div></details>
 <p class="lesson-note">この図は、新規の受信通信・単純な許可ルールを仮定。実際はzone target、rich rule、policy、接続状態なども影響します。インターフェースだけでなく送信元アドレスにもzoneを割り当てられます。</p>
 </section>
 <section class="lesson-section" id="try"><div class="lesson-kicker">04 / 条件を変えて納得</div>
-<h2>同じ80/tcpを、違うzoneへ通してみる。</h2>
+<h2>同じ80/tcpを、違うzoneへ通してみる。</h2><details class="article-expand lesson-simulator"><summary>操作して結果を確かめる</summary><div class="article-expand-body">
 <div class="lesson-try">
 <div class="lesson-try-head"><strong>この例の設定を切り替える</strong><span>実機の設定は変わりません</span></div>
 <div class="lesson-control">
@@ -46,9 +40,9 @@
 <div id="fw-status" class="lesson-status" aria-live="polite"></div><p id="fw-why" class="lesson-why"></p>
 </div>
 <p class="lesson-note">許可された場合でも、Webサーバーが起動していない・経路が壊れている等の理由で接続できないことはあります。</p>
-</section>
-<section class="lesson-section" id="commands"><div class="lesson-kicker">05 / 実機で何を見る？</div>
-<h2>「設定したzone」と「実際に使うzone」を別々に確認する。</h2>
+</div></details></section>
+<section class="lesson-section lesson-compact" id="commands"><details class="article-expand"><summary>コマンドで確認</summary><div class="article-expand-body">
+
 <pre><code># サービスの起動状態
 sudo firewall-cmd --state
 # どの接続口・送信元にどのzoneが使われるか
@@ -66,14 +60,14 @@ sudo firewall-cmd --permanent --zone=internal --add-port=80/tcp
 # 永続設定を実行中にも反映
 sudo firewall-cmd --reload</code></pre>
 <p><code>--permanent</code>だけではすぐ反映されず、<code>--reload</code>で適用されます。<strong>reloadは別の一時設定に影響することがあります。接続が切れると困るリモート機器では、事前確認が必要です。</strong></p></details>
-</section>
-<section class="lesson-section" id="check"><div class="lesson-kicker">06 / 誤解を防ぐ</div>
-<h2>最後に3問。</h2><div class="lesson-quiz">
+</div></details></section>
+<section class="lesson-section lesson-compact" id="check"><details class="article-expand"><summary>3問で理解度を確認</summary><div class="article-expand-body">
+<div class="lesson-quiz">
 <details><summary>Q1. publicに80/tcpを許可すれば、internalでも使える？</summary><p>使えません。別のzoneの許可設定だからです。internal側の通信にはinternalのルールを確認します。</p></details>
 <details><summary>Q2. 80/tcpを許可すれば80/udpも許可される？</summary><p>いいえ。番号が同じでもTCPとUDPは別の通信方式です。</p></details>
-<details><summary>Q3. firewalldが通信を許可したら、Webに必ずアクセスできる？</summary><p>いいえ。Webサーバーが動いているか、別の通信制御やネットワーク経路に問題がないかは別に確認します。</p></details></div></section>
-<section class="lesson-section lesson-sources"><h2>参照した公式資料</h2>
+<details><summary>Q3. firewalldが通信を許可したら、Webに必ずアクセスできる？</summary><p>いいえ。Webサーバーが動いているか、別の通信制御やネットワーク経路に問題がないかは別に確認します。</p></details></div></div></details></section>
+<section class="lesson-section lesson-compact" id="sources"><details class="article-expand"><summary>一次資料・参考文献</summary><div class="article-expand-body">
 <p><a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_firewalls_and_packet_filters/using-and-configuring-firewalld_firewall-packet-filters" target="_blank" rel="noopener noreferrer">Red Hat：firewalldの設定</a> ／ <a href="https://firewalld.org/documentation/man-pages/firewall-cmd.html" target="_blank" rel="noopener noreferrer">firewall-cmdマニュアル</a></p>
-<p class="lesson-note">図中のinternal・publicの許可ポートは説明用の独自設定です。ディストリビューションの既定値ではありません。</p></section>
+<p class="lesson-note">図中のinternal・publicの許可ポートは説明用の独自設定です。ディストリビューションの既定値ではありません。</p></div></details></section>
 <div class="article-end"><a href="../topics/tech.html">← 技術の記事一覧へ</a></div>
 </article></main><footer class="site-footer"><div class="container footer-row">© VIVRAS Tech</div></footer><script>(()=>{"use strict";const z=document.getElementById("fw-zone"),p=document.getElementById("fw-port"),add=document.getElementById("fw-add"),status=document.getElementById("fw-status"),why=document.getElementById("fw-why");function draw(){const allow=z.value==="internal"?["22/tcp","53/udp"]:["80/tcp"];if(z.value==="internal"&&add.checked)allow.push("80/tcp");const pass=allow.includes(p.value);status.textContent=pass?"この例のルールでは通過":"この例のルールでは通過しない";status.className="lesson-status "+(pass?"is-allowed":"is-blocked");why.textContent="適用zone："+z.value+" ／ 許可："+allow.join("・")+" ／ 宛先："+p.value+"。"+(pass?"一致する許可があるため。":"一致する許可がないため。");}z.addEventListener("change",draw);p.addEventListener("change",draw);add.addEventListener("change",draw);draw()})();</script></body></html>
