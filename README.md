@@ -1,74 +1,29 @@
-# VIVRAS Tech — 技術・学び・暮らし・思考をコンテンツ化する個人メディア
+# VIVRAS Tech
 
-**位置づけ:** SEとしての仕事・技術学習から始まり、教養・ニュース・生活・経験・考察まで拡張して発信する個人メディア。名称の Tech は出発点であり領域制限ではありません。サイトの実デプロイ確認は公開URLで実施します。
+**技術・教養・生活・考察を、ひと目で理解できる形に。** SEの仕事を起点に、学びと経験を記録する個人メディア。
 
-**記事制作の最優先ルール:** [docs/chatgpt-article-prompt.md](docs/chatgpt-article-prompt.md) のブランド・編集・デザイン方針。総論→各論、論理の飛躍なし、10秒でつかめる俯瞰図、独自の視覚設計、初見ユーザーレビューを必須とします。
+- サイト：[tech.grasphex.com](https://tech.grasphex.com/)
+- 編集方針：[Notion正本](https://app.notion.com/p/419636f0a707814d96fcc19f422e51b3)
+- 制作・公開ルール：[docs/chatgpt-article-prompt.md](docs/chatgpt-article-prompt.md)
 
-## 何ができるか
+## 記事を追加する
 
-- `content/` に `.html` ファイルを追加すると、GitHub Actionsが記事一覧を自動生成してサイトを再公開
-- キーワード検索、カテゴリ絞り込み、モバイル表示
-- 記事内では任意のHTML/CSS/JSを使用可能
-- サンプル：DNSのステップ送り、firewalldの許可ルールシミュレーション
-- ランタイムDB・ログイン・Node/npm依存なし
+`content/<slug>.html` を追加してGitHubにコミットする。GitHub Actionsが記事一覧・検索データ・sitemapを生成しGitHub Pagesへ公開する。
 
-## 最初の公開（GitHub Pages）
+- 記事内容：**結論＋全体図 → 必要な仕組み → 根拠**。冗長な章は作らない。
+- デザイン：見栄えより先に、初見10秒で理解できる情報構造。
+- 安全：著作権・機密・個人情報に注意し、一次資料を確認する。
+- 確認：HTML・モバイル・リンク・ビルド・公開URLを別々にチェックする。未確認の公開を成功と呼ばない。
 
-1. 新規**公開（Public）**リポジトリを作成する（例 `grasphex/vivras-tech`）。GitHub FreeでPagesを利用する場合は公開リポジトリが必要。
-2. 本ZIPを展開し、**中身すべて**（隠しフォルダ `.github` を含む）をリポジトリの `main` ブランチに追加・コミットする。
-3. リポジトリの **Settings → Pages → Build and deployment → Source → GitHub Actions** を選ぶ。
-4. Actionsの `Publish VIVRAS Tech` の成功を確認する。初回に自動起動しない場合は **Actions → Publish VIVRAS Tech → Run workflow**。
-5. 公開URLは独自ドメインの `https://tech.grasphex.com/`（Cloudflare DNS で `tech` → `grasphex.github.io` の CNAME、Proxy オフ）。旧URL `https://grasphex.github.io/vivras-tech/` は自動で転送されます。**実際に公開成功していることをURLで確認**する。
+## ローカルビルド
 
-## 普段の更新（最重要）
-
-1. ChatGPTに以下のテンプレートを渡し、必要な解説HTMLを生成する。
-2. 生成したファイルを `content/<英小文字・数字・ハイフン>.html` に保存する。例：`content/systemd-targets.html`。
-3. GitHubにコミットする。自動ビルドで一覧と検索に追加される。記事一覧の手修正は不要。
-
-### ChatGPT用・記事生成プロンプト
-
-**推奨：** [docs/chatgpt-article-prompt.md](docs/chatgpt-article-prompt.md) の「指示」をChatGPTのプロジェクトに登録すると、問題と解答を貼るだけで、転載・機密チェック済みの記事HTMLとファイル名が返ってきます。以下は単発で使う簡易版です。
-
-> このLPIC学習内容を公開用の技術解説記事にして。結論→必要な前提知識→仕組み→わかりやすい図解→設定例→誤解しがちな点→理解度チェックの順にし、論理の飛躍がない説明にして。可能な箇所にはHTML/CSS/JSで動く図解を追加すること。HTML/CSS/JSの単一HTMLファイルとして出力して。既存サイトに統合するため `<html lang="ja">`, `<meta charset="utf-8">`, `<meta name="viewport" content="width=device-width,initial-scale=1">`, `<title>...</title>`, `<meta name="description" content="...">`, `<meta name="category" content="Linux または ネットワーク等">`, `<meta name="keywords" content="...">`, `<meta name="published" content="YYYY-MM-DD">`, `<link rel="stylesheet" href="../assets/site.css">`, `<main>...</main>` を必ず含め、トップに戻るリンクは `../index.html` にすること。画像の外部依存は極力避け、SVGとCSSで実装。出力ファイル名は英小文字・数字・ハイフンのみ。出典と更新日も明記し、実機挙動を確認できていない説明には注意書きをつける。書籍の問題文はコピーせず独自の例題を作成。会社や顧客に関する情報は公開しない。
-
-## 検索エンジン向け
-
-- ビルド時に `sitemap.xml`（トップと全記事のURL）を自動生成します。記事を追加すれば自動で反映されます。
-- `static/` のファイルはサイト直下にそのまま公開されます。`static/google*.html` はSearch Consoleの所有権確認用なので削除しないでください。
-- Google Search Console に `https://tech.grasphex.com/` をURLプレフィックスとして登録し、`sitemap.xml` を送信すると検索への掲載が早まります。
-
-## ローカルプレビュー
-
-```bash
+```sh
 python3 scripts/build.py
 python3 -m http.server 8000 --directory dist
 ```
 
-`http://localhost:8000` を開いて閲覧できます。`content/` を更新したら再度ビルドしてください。
-
-## 既存一問一答アプリとの連携
-
-- 現時点の教材は単体で読めるものとし、問題の自己採点履歴は未実装。
-- 将来 `grasphex/vivras-learning` の `/quiz/<topic>` 等へ「問題演習へ」のリンクを設けられるよう、記事ファイル名を安定したslugにする。
-- 試作アプリは認証付き非公開プレビューとして別運用。リンク先を一般公開できるまで、トップページからは誘導しない。
-
-## 公開前のチェック
-
-- 技術的な正確性と公式ドキュメントとの照合
-- 書籍・LPIC問題集の設問や図の転載禁止。独自の説明と独自問題にする
-- 会社・顧客・社内NW構成・実アドレス・認証情報を含めない
-- 資料のライセンス、外部画像、社内データの混入を検査
-- 変更した既存設定やコマンドはローカル検証し、破壊的な操作を含めない
-- URLを手元のスマートフォンでも開き、図解・検索を確認
-
-## ファイル構成
-
-```
-content/                記事のHTML（ここに放り込むだけ）
-assets/                 共通CSS・検索用JS
-static/                 サイト直下に置くファイル（所有権確認など）
-scripts/build.py        自動一覧生成
-.github/workflows/      GitHub Pages自動公開
-README.md               更新手順
-```
+- `templates/index.html`：トップページ
+- `assets/site.css`：共通デザイン
+- `assets/catalog.js`：記事検索
+- `content/`：各記事の単体HTML
+- `scripts/build.py`：静的ビルド
