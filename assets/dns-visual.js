@@ -14,6 +14,30 @@
   const previous = document.getElementById("dns-prev");
   const next = document.getElementById("dns-next");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const stageCanvas = scope.querySelector(".dns-stage");
+  const particle = document.createElement("span");
+  particle.className = "dns-packet";
+  particle.setAttribute("aria-hidden", "true");
+  stageCanvas.appendChild(particle);
+  function movePacket(from, to) {
+    if (reduceMotion.matches || typeof particle.animate !== "function") return;
+    const start = nodes.find(n => n.dataset.node === from);
+    const end = nodes.find(n => n.dataset.node === to);
+    if (!start || !end) return;
+    const origin = stageCanvas.getBoundingClientRect();
+    const a = start.getBoundingClientRect(), b = end.getBoundingClientRect();
+    const x0 = a.left + a.width / 2 - origin.left;
+    const y0 = a.top + a.height / 2 - origin.top;
+    const x1 = b.left + b.width / 2 - origin.left;
+    const y1 = b.top + b.height / 2 - origin.top;
+    particle.getAnimations().forEach(anim => anim.cancel());
+    particle.animate([
+      {left:x0 + "px",top:y0 + "px",opacity:0,offset:0},
+      {left:x0 + "px",top:y0 + "px",opacity:1,offset:.12},
+      {left:x1 + "px",top:y1 + "px",opacity:1,offset:.86},
+      {left:x1 + "px",top:y1 + "px",opacity:0,offset:1}
+    ],{duration:950,easing:"ease-in-out"});
+  }
   const cold = [
     {from:"client",to:"resolver",title:"端末 → 再帰DNS",packet:"example.com の A レコードは？",why:"OS側が問い合わせを再帰DNSに渡します。端末がルート・.com・権威DNSへ直接順番に問い合わせるわけではありません。"},
     {from:"resolver",to:"root",title:"再帰DNS → ルートDNS",packet:"example.com の A レコードは？",why:"ルートDNSは通常、IPアドレスそのものではなく「.comを担当するDNS」を案内します。再帰DNSは案内を受け取ります。"},
@@ -37,7 +61,7 @@
     playback.textContent = "再生";
     playback.setAttribute("aria-pressed", "false");
   }
-  function render() {
+  function render(animatePacket = true) {
     const stages = route();
     const stage = stages[index];
     title.textContent = stage.title;
@@ -57,6 +81,7 @@
       node.classList.toggle("is-playing", timer !== null && !reduceMotion.matches && node.dataset.node === stage.to);
     });
     modes.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.dnsMode === mode)));
+    if (animatePacket) movePacket(stage.from, stage.to);
   }
   function advance() {
     if (index < route().length - 1) {
@@ -76,14 +101,14 @@
   previous.addEventListener("click", () => { stop(); index = Math.max(0, index - 1); render(); });
   next.addEventListener("click", () => { stop(); advance(); });
   playback.addEventListener("click", () => {
-    if (timer !== null) { stop(); render(); return; }
+    if (timer !== null) { stop(); render(false); return; }
     if (index === route().length - 1) index = 0;
     playback.textContent = "一時停止";
     playback.setAttribute("aria-pressed", "true");
     timer = setInterval(advance, reduceMotion.matches ? 2500 : 1800);
     render();
   });
-  document.addEventListener("visibilitychange", () => { if (document.hidden) { stop(); render(); } });
-  reduceMotion.addEventListener?.("change", render);
-  render();
+  document.addEventListener("visibilitychange", () => { if (document.hidden) { stop(); render(false); } });
+  reduceMotion.addEventListener?.("change", () => render(false));
+  render(false);
 })();
