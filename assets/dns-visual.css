@@ -1,0 +1,99 @@
+/* DNS lesson — editorial diagrams, mono surfaces + selective orange ink. */
+.dns-lab{--dns-ink:#1c1c1c;--dns-rule:#d5d5d5;--dns-soft:#f5f5f5;--dns-accent:#f26a3d;max-width:920px}
+.dns-lab *, .dns-lab *:before,.dns-lab *:after{box-sizing:border-box}
+.dns-lab .article-header{max-width:920px;margin-bottom:20px}
+.dns-lab .article-header h1{font-size:clamp(30px,4.8vw,47px);line-height:1.25}
+.dns-lab .article-lead{font-size:clamp(15px,2vw,18px);line-height:1.7;color:#2c2c2c;max-width:780px}
+.dns-lab .article-lead strong,.dns-lab .dns-key{font-weight:800}
+.dns-lab .dns-key{background:linear-gradient(transparent 65%,#ffcdaf 65%,#ffcdaf 91%,transparent 91%);padding:0 .07em}
+.dns-lab .tech-lesson{max-width:920px}
+.dns-lab .tech-lesson>.lesson-section{margin-top:36px}
+.dns-lab .tech-lesson h2{font-size:clamp(22px,3vw,27px);border:0;padding:0;margin:0 0 14px;line-height:1.4}
+.dns-lab .lesson-kicker{color:#555!important;font-size:11px}
+.dns-lab .dns-figure{background:#fff;border-top:2px solid #1c1c1c;border-bottom:1px solid var(--dns-rule);padding:21px 0;margin:17px 0 12px}
+.dns-lab .dns-figure figcaption{font-size:12px;color:#555;font-weight:700;margin-bottom:17px;letter-spacing:.01em}
+.dns-lab .dns-system-top{display:grid;grid-template-columns:minmax(0,1fr) 66px minmax(0,1fr);gap:6px;align-items:center;max-width:630px;margin:auto}
+.dns-lab .dns-unit{background:#fff;border:1px solid #bdbdbd;padding:14px 13px;min-width:0;text-align:center}
+.dns-lab .dns-unit strong{display:block;font-size:clamp(14px,1.9vw,18px);letter-spacing:-.03em}
+.dns-lab .dns-unit small{display:block;font-size:12px;color:#555;line-height:1.5;margin-top:5px}
+.dns-lab .dns-unit.is-center{border-color:#1b1b1b;border-width:2px}
+.dns-lab .dns-exchange{display:flex;flex-direction:column;text-align:center;align-items:center;line-height:1.25;color:#333}
+.dns-lab .dns-exchange b{font:700 25px ui-monospace,monospace}
+.dns-lab .dns-exchange small{font-size:10px;color:#666}
+.dns-lab .dns-down{text-align:center;font-size:22px;color:#333;line-height:1.4;margin:8px auto 4px}
+.dns-lab .dns-down small{display:block;color:#555;font-size:11px;line-height:1.2}
+.dns-lab .dns-hierarchy{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:720px;margin:0 auto}
+.dns-lab .dns-hierarchy .dns-unit{padding:13px 8px}
+.dns-lab .dns-hierarchy .dns-unit:last-child{border-bottom:3px solid var(--dns-accent)}
+.dns-lab .dns-chain-arrow{display:flex;align-items:center;justify-content:center;color:#444;font-size:12px;gap:5px}
+.dns-lab .dns-system-note{font-size:12px;color:#555;text-align:center;margin:13px 0 0!important}
+.dns-lab .dns-process-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px;margin:0 0 13px}
+.dns-lab .dns-process-head p{margin:0;font-size:13px;color:#555}
+.dns-lab .dns-modes{display:inline-flex;gap:4px;padding:4px;background:#f1f1f1;border:1px solid #ddd}
+.dns-lab button{font:inherit}
+.dns-lab .dns-modes button{appearance:none;border:0;background:transparent;color:#333;font-size:13px;font-weight:650;padding:8px 12px;cursor:pointer}
+.dns-lab .dns-modes button[aria-pressed="true"]{background:#222;color:#fff}
+.dns-lab .dns-modes button:focus-visible,.dns-lab .dns-player button:focus-visible{outline:2px solid #a63813;outline-offset:2px}
+.dns-lab .dns-stage{border:1px solid var(--dns-rule);background:#fff;padding:20px 22px}
+.dns-lab .dns-stage h3{font-size:clamp(17px,2.5vw,22px);margin:10px 0 7px;line-height:1.35}
+.dns-lab .dns-stage p{font-size:14px;line-height:1.65;margin:6px 0}
+.dns-lab .dns-stage .dns-tally{font:700 11px ui-monospace,monospace;color:#555}
+.dns-lab .dns-flow-rail{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:22px 0 10px}
+.dns-lab .dns-rail-node{position:relative;min-width:0;text-align:center;border:1px solid #d1d1d1;background:#f8f8f8;padding:13px 3px;transition:background .25s,border-color .25s,box-shadow .25s}
+.dns-lab .dns-rail-node:not(:last-child):after{content:"→";position:absolute;right:-11px;top:50%;transform:translateY(-50%);color:#888;font-size:12px;z-index:1}
+.dns-lab .dns-rail-node b{display:block;font-size:clamp(11px,1.7vw,15px);line-height:1.4}
+.dns-lab .dns-rail-node small{display:block;font-size:11px;line-height:1.3;color:#666;margin-top:5px}
+.dns-lab .dns-rail-node.is-from{border-color:#333;background:#eee}
+.dns-lab .dns-rail-node.is-to{border-color:var(--dns-accent);background:#fff4ee;box-shadow:inset 0 -4px var(--dns-accent)}
+.dns-lab .dns-rail-node.is-to.is-playing{animation:dns-receive 1.2s ease-in-out infinite}
+@keyframes dns-receive{0%,100%{box-shadow:inset 0 -4px #f26a3d}50%{box-shadow:inset 0 -4px #f26a3d,0 0 0 4px #ffe2d3}}
+.dns-lab .dns-message{padding:13px 15px;background:#f5f5f5;margin:13px 0 0;border-left:3px solid var(--dns-accent)}
+.dns-lab .dns-message span{font-size:11px;color:#666;font-weight:750}
+.dns-lab .dns-message strong{font-size:16px;display:block;margin-top:4px;line-height:1.5;overflow-wrap:anywhere}
+.dns-lab .dns-web-tail{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:#555;padding-top:13px;min-height:36px}
+.dns-lab .dns-web-tail b{display:inline-block;padding:4px 9px;border:1px solid #ccc;color:#222}
+.dns-lab .dns-web-tail.is-to b{background:#fff4ee;border-color:#f26a3d}
+.dns-lab .dns-player{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:18px}
+.dns-lab .dns-player button{cursor:pointer;background:#fff;color:#1c1c1c;border:1px solid #888;padding:9px 16px;min-height:43px;font-size:13px;font-weight:700}
+.dns-lab .dns-player button.primary{background:#242424;color:#fff;border-color:#242424}
+.dns-lab .dns-player button:disabled{opacity:.4;cursor:not-allowed}
+.dns-lab .dns-player .dns-steps{font:700 12px ui-monospace,monospace;color:#555;margin-left:auto}
+.dns-lab .dns-player-note{font-size:12px!important;color:#666;margin:10px 0 0!important}
+.dns-lab .dns-cache-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:12px 0}
+.dns-lab .dns-cache-case{border-top:2px solid #222;background:#f7f7f7;padding:18px}
+.dns-lab .dns-cache-case h3{font-size:17px;margin:0 0 8px}
+.dns-lab .dns-cache-case p{font-size:13px;line-height:1.6;color:#444;margin:9px 0 0}
+.dns-lab .dns-cache-path{display:flex;align-items:center;flex-wrap:wrap;gap:5px;min-height:73px}
+.dns-lab .dns-cache-path span{border:1px solid #ccc;padding:6px 8px;background:#fff;font-weight:750;font-size:12px}
+.dns-lab .dns-cache-path i{font-style:normal;color:#888}
+.dns-lab .dns-cache-path .last{border-color:#f26a3d;border-bottom:3px solid #f26a3d}
+.dns-lab .dns-cache-case.hit{border-top-color:#777}
+.dns-lab .dns-cache-case.hit .dns-cache-path{align-content:center}
+.dns-lab .dns-code-caption{font-size:13px;color:#555}
+.dns-lab .lesson-note{color:#555!important}
+.dns-lab .tech-lesson .lesson-answer{background:#f6f6f6;border-color:#f26a3d}
+.dns-lab .tech-lesson .lesson-answer strong{color:#222}
+.dns-lab .article-expand summary{cursor:pointer}
+@media(max-width:650px){
+ .dns-lab .article-header{margin-top:28px}
+ .dns-lab .dns-figure{padding-top:14px}
+ .dns-lab .dns-system-top{grid-template-columns:minmax(0,1fr) 37px minmax(0,1fr)}
+ .dns-lab .dns-unit{padding:10px 7px}
+ .dns-lab .dns-unit small{font-size:10px}
+ .dns-lab .dns-exchange b{font-size:20px}
+ .dns-lab .dns-hierarchy{gap:5px}
+ .dns-lab .dns-hierarchy .dns-unit{padding:10px 4px}
+ .dns-lab .dns-hierarchy .dns-unit strong{font-size:12px}
+ .dns-lab .dns-stage{padding:15px 12px}
+ .dns-lab .dns-flow-rail{gap:5px;margin-top:16px}
+ .dns-lab .dns-rail-node{padding:9px 1px}
+ .dns-lab .dns-rail-node:not(:last-child):after{right:-7px;font-size:9px}
+ .dns-lab .dns-rail-node small{display:none}
+ .dns-lab .dns-cache-grid{grid-template-columns:1fr;gap:12px}
+ .dns-lab .dns-cache-path{min-height:0}
+ .dns-lab .dns-player button{flex:1;padding:9px 11px}
+ .dns-lab .dns-player .dns-steps{width:100%;text-align:right;margin-left:0}
+ .dns-lab .dns-process-head{display:block}
+ .dns-lab .dns-modes{margin-top:10px}
+}
+@media(prefers-reduced-motion:reduce){.dns-lab .dns-rail-node,.dns-lab .dns-rail-node.is-to.is-playing{animation:none!important;transition:none!important}}
