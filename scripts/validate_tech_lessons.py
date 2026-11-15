@@ -8,7 +8,7 @@ CASES = {
     "linux-root-filesystem-remount.html": {
         "condition": "conditions",
         "commands": "verify",
-        "examples": ("/dev/sdb1", "/mnt/data/report.txt", "コピーやファイル移動はしていません"),
+        "examples": ("/dev/sdb1", "/mnt/data/report.txt", "ファイルは移動しない"),
         "source": "man7.org",
     },
     "firewalld-zones.html": {
