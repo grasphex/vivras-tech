@@ -39,6 +39,7 @@ function render(withMotion=true){const s=steps()[index];
  back.disabled=index===0;next.disabled=index===steps().length-1;
  const traveled=steps().slice(0,index+1).map(x=>x.to);
  nodes.forEach(node=>{const n=Number(node.dataset.flowIndex);node.classList.toggle("is-current",n===s.to);node.classList.toggle("is-past",n!==s.to&&traveled.includes(n));node.classList.toggle("is-omitted",mode==="app"&&n===2);});
+ lab.querySelector(".flow-track").classList.toggle("is-direct",mode==="app");
  choices.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.flowMode===mode)));
  if(withMotion)animate(s.from,s.to);
 }
