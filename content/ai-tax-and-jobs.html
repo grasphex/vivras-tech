@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
-<meta name="description" content="米国の2つのAI課税法案は、何を問題と考え、なぜAIに税を課し、どこにお金を使おうとしているのか。カサー議員の雇用創出策とケリー議員の労働者支援基金を、政策の因果関係と一次資料から図解する。">
+<meta name="description" content="米国で提案された2つのAI課税法案を、初めての人にもわかる言葉と図で解説。カサー議員は新しい仕事づくり、ケリー議員は失業中の生活・学び直し・起業の支援。誰が税金を払い、お金がどこへ届くかを比べる。">
 <meta name="category" content="教養">
 <meta name="keywords" content="AI課税 AI税 カサー ケリー アンドリュー・ヤン 119hr10044 119s5518 AI Tax and Work Protection Act Make AI Work for Americans Act 所得税 法人税 トークン課税 雇用">
 <meta name="published" content="2026-11-15">
 <link rel="canonical" href="https://tech.grasphex.com/articles/ai-tax-and-jobs.html">
 <link rel="stylesheet" href="../assets/site.css">
-<title>米国のAI課税法案を比較｜なぜ課税し、何を実現したいのか｜VIVRAS Tech</title>
+<title>米国のAI課税法案を比較｜税金で誰をどう助ける？｜VIVRAS Tech</title>
 <style>
 :root{--paper:#f7f6f3;--black:#202621;--ash:#59635c;--stroke:#cbd0c8;--green:#245345;--green-weak:#e4eee6;--umber:#954f37;--umber-weak:#f4e8e0}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--paper)}
@@ -92,6 +92,28 @@
 .kpi>div{grid-template-columns:110px 1fr;gap:10px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Plain-language explainer: one idea per line, no generic UI cards */
+.page .term-list{display:grid;grid-template-columns:1fr 1fr;gap:0 26px;margin:19px 0 0;border-top:1px solid var(--stroke)}
+.page .term-list>div{padding:12px 0;border-bottom:1px solid var(--stroke)}
+.page .term-list dt{font-weight:800;font-size:13px}
+.page .term-list dd{margin:4px 0 0;font-size:13px;line-height:1.62;color:var(--ash)}
+.page .person-example{margin:20px 0;border-top:3px solid var(--umber);border-bottom:1px solid var(--stroke);padding:15px 0}
+.page .person-example .case-title{font-size:17px;font-weight:800;margin-bottom:9px}
+.page .person-example .case{display:grid;grid-template-columns:120px 1fr;gap:15px;padding:11px 0;border-top:1px solid var(--stroke)}
+.page .person-example .case strong{font-size:14px}
+.page .person-example .case p{font-size:14px}
+.page .moneyflow{margin:26px 0 9px;background:#fff;border:1px solid var(--stroke);padding:18px 21px}
+.page .moneyflow .flow-title{font-size:12px;font-weight:800;color:var(--ash);letter-spacing:.03em;margin:0 0 13px}
+.page .moneyflow .money-in{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.page .moneyflow .money-in>div{border-top:3px solid var(--umber);padding:9px 5px;font-size:13px;line-height:1.5;font-weight:750}
+.page .moneyflow .down{text-align:center;color:var(--umber);font-size:21px;line-height:1.3}
+.page .moneyflow .pooled{background:var(--umber);color:#fff;padding:12px;text-align:center;font-size:17px;font-weight:800}
+.page .moneyflow .pooled span{display:block;font-size:12px;font-weight:500}
+.page .moneyflow .money-out{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.page .moneyflow .money-out>div{background:var(--umber-weak);padding:11px 8px;text-align:center;font-size:13px;font-weight:750}
+.page .easy-def{font-weight:500;font-size:13px;color:var(--ash)}
+@media(max-width:610px){.page .term-list{grid-template-columns:1fr}.page .person-example .case{grid-template-columns:90px 1fr;gap:7px}.page .moneyflow{padding:12px}.page .moneyflow .money-in,.page .moneyflow .money-out{gap:5px}.page .moneyflow .money-in>div,.page .moneyflow .money-out>div{font-size:11px;padding:8px 5px}}
 </style>
 </head>
 <body>
@@ -103,108 +125,127 @@
 <h1>米国の「AI税」は、<br>何を変えたいのか。</h1>
 <p class="lead">AIに課税する法案が2つ提出された。<br>どちらも働く人を守るため。ただし、<strong>解決したい問題が違う。</strong></p>
 <p class="context">2026年時点の米議会提出案。成立した税制ではない。</p>
-</div><div class="hero-meta">見方：①問題認識 → ②政策判断 → ③課税方法 → ④税収の使い道。議員の一次説明と法案本文を照合して整理した。</div></div>
+</div><div class="hero-meta">見方：①問題認識 → ②政策判断 → ③課税方法 → ④税収の使い道。議員本人の説明と法案本文を照合して整理した。</div></div>
 <div class="overview" role="group" aria-label="カサー案とケリー案の政策ロジック比較">
 <div class="overview-head">2法案の「なぜ課税するか」を一枚で比較</div>
 <div class="lanes">
 <div class="lane casar"><div class="num">H.R.10044 / カサー案</div><h3>AIで失業が増える前に、仕事を作る</h3>
 <dl class="chain">
-<dt>問題認識</dt><dd>AIが仕事を代替し、大量失業の恐れ</dd>
-<dt>政策判断</dt><dd>失われる雇用に対し、新しい雇用の受け皿を作る</dd>
-<dt>課税方法</dt><dd>AIモデルを提供する企業などに課税</dd>
-<dt>税収の使途</dt><dd>住宅・インフラ・介護などで雇用を創出</dd>
+<dt>困ること</dt><dd>AIが人の仕事を担い、多くの人が失業する恐れ</dd>
+<dt>解決策</dt><dd>仕事がなくなる人のために、新しい仕事を用意する</dd>
+<dt>集め方</dt><dd>AIサービスの土台を作り、提供する企業などに課税</dd>
+<dt>使い道</dt><dd>住宅・道路・介護など、人が働く仕事を増やす</dd>
 </dl><div class="line">AIによる失業リスク → AI関連の税収で「新しい仕事」</div>
 </div>
-<div class="lane kelly"><div class="num">S.5518 / ケリー案</div><h3>AIの利益を、働く人の将来へ還元する</h3>
+<div class="lane kelly"><div class="num">S.5518 / ケリー案</div><h3>AIで仕事が変わっても、次へ進めるようにする</h3>
 <dl class="chain">
-<dt>問題認識</dt><dd>AIの利益が大企業に集中し、働く人は将来が不安</dd>
-<dt>政策判断</dt><dd>利益を得る側も、転職・生活支援の費用を担う</dd>
-<dt>課税方法</dt><dd>大規模広告・AI利用・対象企業の超過利益に課税</dd>
-<dt>税収の使途</dt><dd>失業給付・職業訓練・起業支援など</dd>
-</dl><div class="line">AIの利益・利用 → 専用基金で「働く人への投資」</div>
+<dt>困ること</dt><dd>AIで仕事が変わる。失業や転職に備えるお金が要る</dd>
+<dt>解決策</dt><dd>AIなどで収益を得る側から税金を集め、働く人を支える</dd>
+<dt>集め方</dt><dd>AIの利用、大企業のネット広告収入、AI関連企業の特に大きな利益などに課税</dd>
+<dt>使い道</dt><dd>失業中の生活費、別の仕事を学ぶ費用、起業への支援</dd>
+</dl><div class="line">税金を集める → 仕事を失う前も、失った後も支える</div>
 </div>
 </div></div>
-<p class="leadnote">※上の「政策判断」は、提出者の発言と法案目的を日本語で整理したもの。厳密な納税義務者や対象範囲は本文で区別する。</p>
+<p class="leadnote">※上の「困ること→解決策」は、提出者の発言と法案の狙いを分かりやすく整理したもの。厳密な納税義務者や対象範囲は本文で区別する。</p>
 </div></section>
-<nav class="localnav" aria-label="この記事の目次"><div class="wrap"><a href="#casar">01 カサーの論理</a><a href="#kelly">02 ケリーの論理</a><a href="#difference">03 2案の違い</a><a href="#tax">04 所得税の減収は？</a></div></nav>
+<nav class="localnav" aria-label="この記事の目次"><div class="wrap"><a href="#casar">01 カサーの論理</a><a href="#kelly">02 ケリーの論理</a><a href="#difference">03 2案の違い</a><a href="#tax">04 所得税の減収は？</a><a href="#words">用語</a></div></nav>
 <section id="casar" class="section"><div class="wrap">
-<div class="section-lead"><div class="eyebrow">01 / カサー下院議員の法案</div><h2>雇用を奪う技術の普及に備え、<br>人間の新しい仕事を作る。</h2></div>
+<div class="section-lead"><div class="eyebrow">01 / カサー下院議員の法案</div><h2>AIで仕事が減るなら、<br>人が働ける仕事を増やす。</h2></div>
 <div class="narrow">
-<p class="lede">「AIで仕事がなくなれば、働ける場所そのものが減る」。だから、AI関連の収益を財源に新しい雇用を生み出す、という発想。</p>
+<p class="lede">「AIで人の仕事が減れば、働く場所が足りなくなる」。だから、AI関連の企業などから税金を集め、新しい仕事を作るという発想。</p>
 <div class="fact-column">
 <div class="policy">
-<span class="pill">問題と理由</span><h3>失業する人を放置できない</h3>
-<p>カサー議員らは、AIが業務を自動化して大量の失業を生む可能性を懸念。さらに、企業が人を雇う際には給与に関連する税などの負担がある一方、AIの利用料には同じ給与税はかからないと指摘する。</p>
+<span class="pill">問題と理由</span><h3>仕事を失う人が増えるかもしれない</h3>
+<p>カサー議員らは、AIが人の仕事を代わりに行い、多くの人が失業する可能性を心配している。さらに、企業が人を雇う際には給与に関連する税などの負担がある一方、AIの利用料には人への給与と同じ税はかからない、と指摘する。</p>
 <p class="small" style="margin-top:10px">これは雇用削減が必ず起こるという予測の確定ではなく、提案者が重視するリスク。</p>
 </div>
 <div class="policy">
-<span class="pill">主張から制度へ</span><h3>AIから集め、仕事を作る</h3>
-<p>基金を新設し、自治体などへ助成して、保育・介護・インフラ・住宅など人が担う仕事を増やす。AIで失業が深刻になれば、税率を上げる設計も含めている。</p>
-<p class="small" style="margin-top:10px">「失業率に連動した税率」は、対策を雇用情勢に合わせて強化するための仕組み。</p>
+<span class="pill">主張から制度へ</span><h3>AIから税金を集め、新しい仕事を作る</h3>
+<p>集めた税金を使って、地域で保育・介護・道路・住宅など、人が担う仕事を増やす。AIで失業が深刻になれば、税率を上げる設計も含めている。</p>
+<p class="small" style="margin-top:10px">「仕事を探しているのに就けない人の割合（失業率）」が上がると、税金の割合も上げて仕事づくりを強化する仕組み。</p>
 </div>
 </div>
 <dl class="policylist">
-<dt>法案</dt><dd><strong>AI Tax and Work Protection Act</strong>（H.R.10044、2026年8月6日提出）</dd>
-<dt>誰が払う？</dt><dd>原則として対象となる基盤AIモデルの開発・提供事業者など。自社・関連会社の人員削減につながる一部のモデル利用も対象に含む。</dd>
-<dt>何に課税？</dt><dd>対象取引のAIトークン価値またはAIサービス収益等に税率を掛けた金額の<strong>大きい方</strong>。規定された失業率が上がれば税率も上がり得る。</dd>
-<dt class="purpose">税収の使い道</dt><dd>労働省の新組織・雇用創出助成制度を通じ、人間の新しい仕事を増やす。</dd>
+<dt>法案の名前</dt><dd><strong>AI Tax and Work Protection Act</strong>（H.R.10044、2026年8月6日提出）</dd>
+<dt>誰が払う？</dt><dd>主に、大規模なAIサービスの土台を作って提供する企業。自分の会社やグループ会社でAIを使い、人を減らした場合が対象になる規定もある。</dd>
+<dt>何に課税？</dt><dd>AIによる処理量やAIサービスの売上などを基準に計算し、法案で定めた方法で税額を決める。規定された失業率が上がれば税率も上がり得る。</dd>
+<dt class="purpose">使い道は？</dt><dd>国の仕事づくりの制度を通じて、地域で人が働ける仕事を増やす。</dd>
 </dl>
-<p class="detail-note">AIサービスを導入した全企業へ一律に税を課すわけではない。自社利用での人員削減が条件になる規定もあるが、モデル提供企業の対外取引には個々の顧客企業の解雇を要件としていない。 <a href="https://www.govinfo.gov/content/pkg/BILLS-119hr10044ih/html/BILLS-119hr10044ih.htm" target="_blank" rel="noopener noreferrer">法案原文・第101条など</a></p>
-<div class="question"><strong>なぜ所得税の減収だけを補填する仕組みにしないのか？</strong>
-<p>提出者が重視するのは、税収額そのものより<strong>人間が働く場所を確保すること</strong>。だから税収を、一般財源に漫然と入れるのではなく雇用創出に充てる設計になっている。</p></div>
+<p class="detail-note">AIを使ったすべての企業に税がかかるわけではない。自社利用での人員削減が条件になる場合もあるが、AIを提供する企業の売上への課税には、利用した会社の解雇が必須というわけではない。 <a href="https://www.govinfo.gov/content/pkg/BILLS-119hr10044ih/html/BILLS-119hr10044ih.htm" target="_blank" rel="noopener noreferrer">法案原文・第101条など</a></p>
+<div class="question"><strong>なぜ減った税金を埋めるだけではだめなの？</strong>
+<p>提出者が重視するのは、国の税収を補うことだけでなく、<strong>人が働く場所を作ること</strong>。だから集めた税金を仕事づくりに使う設計になっている。</p></div>
 </div></div></section>
 <section id="kelly" class="section"><div class="wrap">
-<div class="section-lead"><div class="eyebrow">02 / ケリー上院議員の法案</div><h2>AIで利益を得る企業にも、<br>労働者の将来への負担を求める。</h2></div>
+<div class="section-lead"><div class="eyebrow">02 / ケリー上院議員の法案</div><h2>AIで仕事が変わっても、<br>次の道を選べるようにする。</h2></div>
 <div class="narrow">
-<p class="lede">「AIの利益を大企業だけのものにしない」。新しい働き方へ移る人を支援するため、AI関連の収益から専用基金を作るという発想。</p>
-<div class="fact-column">
-<div class="policy kelly">
-<span class="pill orange">問題と理由</span><h3>利益と不安が偏る</h3>
-<p>ケリー議員は、AIで大きな利益を得る企業がある一方、働く人は職の将来に不安を抱えていると指摘。AIが失業を必ず増やすかにかかわらず、技能更新や転職支援を社会が準備すべきだと訴える。</p>
-<p class="small" style="margin-top:10px">2025年の「AI for America」構想で示した、AIの利益を公共投資へ回す考え方が土台。</p>
+<p class="lede">「AIのおかげで会社が成長しても、仕事が減る人には困りごとが残る」。だから、<strong>大きく稼ぐ企業やAIの利用などから税金を集め、働く人を支える</strong>という考え方。</p>
+<p class="explain">カサー案は<strong>新しい仕事を作る</strong>ことが中心。ケリー案はそれに加え、<strong>仕事が変わる人を支える</strong>ことが中心だ。</p>
+<div class="person-example">
+<div class="case-title">例えば、会社にAIが広がったら</div>
+<div class="case"><strong>今の社員</strong><p>仕事の内容が変わる → <strong>新しい仕事の勉強を支援</strong></p></div>
+<div class="case"><strong>失業した人</strong><p>次の仕事が決まらない → <strong>失業中の生活費を支援</strong></p></div>
+<div class="case"><strong>起業したい人</strong><p>別の仕事を自分で始める → <strong>開業に必要な知識や資金を支援</strong></p></div>
 </div>
-<div class="policy kelly">
-<span class="pill orange">主張から制度へ</span><h3>稼ぐ側から集め、移行を支える</h3>
-<p>AI関連企業の超過利益、大規模デジタル広告、AIサービス利用などに課税し、<strong>AI Horizon Fund</strong>を設ける。基金から失業支援、訓練、起業支援など幅広い制度へ投資する。</p>
-<p class="small" style="margin-top:10px">「職を失った人への支援」だけでなく、「働き続ける人が変化に備える」目的もある。</p>
+<div class="moneyflow" aria-label="対象のAI利用者と大手企業などから集めた税金を専用のお金の置き場に集め、生活費・学び直し・起業支援に使う">
+<p class="flow-title">誰が払い、誰のために使う？</p>
+<div class="money-in">
+<div>① AIサービスを使う人・企業<br><span class="easy-def">対象の利用には税</span></div>
+<div>② ネット広告で大きく稼ぐ企業<br><span class="easy-def">一定の広告収入に税</span></div>
+<div>③ 特に利益率が高いAI関連の大企業<br><span class="easy-def">基準超の利益に税</span></div>
 </div>
+<div class="down" aria-hidden="true">↓</div>
+<div class="pooled">働く人を支えるためのお金 <span>AI Horizon Fund（AIホライゾン基金）＝使い道を決めて集めておく国のお金</span></div>
+<div class="down" aria-hidden="true">↓</div>
+<div class="money-out"><div>失業中の<br>生活費</div><div>別の仕事に向けた<br>学び直し</div><div>起業や就職へ<br>進む支援</div></div>
 </div>
+<p class="detail-note">図は仕組みの全体像。実際には課税される企業の規模やAIの利用量などに条件がある。<strong>ネット広告への税は、AI利用がなくても対象になる場合がある</strong>。AIを使った全員に一律で税をかける案ではない。</p>
 <dl class="policylist">
-<dt>法案</dt><dd><strong>Make AI Work for Americans Act</strong>（S.5518、2026年9月24日提出）</dd>
-<dt>何に課税？</dt><dd>①一定の大規模デジタル広告事業者の広告収益、②対象AIサービスの利用、③一定の大規模AI関連企業の超過利益。</dd>
-<dt>誰が払う？</dt><dd>広告・超過利益の税は要件を満たす企業。AI利用税は対象利用者が納税義務者で、原則として提供者が徴収する仕組み。</dd>
-<dt class="purpose">税収の使い道</dt><dd>基金を通じて失業給付の拡充、職業訓練、コミュニティーカレッジ、起業支援、有給の就業体験などに投資。</dd>
+<dt>法案の名前</dt><dd><strong>Make AI Work for Americans Act</strong>（「AIをアメリカ人のために役立てる法案」、S.5518、2026年9月24日提出）</dd>
+<dt>なぜ必要？</dt><dd>AIを作る・使う側には大きな利益の可能性がある。一方、働く人は仕事内容の変化や失業に備える必要がある。そこで税金の一部を働く人へ回す。</dd>
+<dt>お金の集め方</dt><dd>上の3種類。①AIの利用、②大規模なネット広告の売上、③条件を満たすAI関連企業の特に大きな利益。詳しい条件は法案原文に記載。</dd>
+<dt class="purpose">何に使う？</dt><dd>失業給付（失業中に受け取るお金）、職業訓練（仕事のための学び直し）、米国の地域の短期大学での教育、開業支援、給料をもらいながら仕事を学ぶ制度など。</dd>
 </dl>
-<p class="detail-note">超過利益課税は「全企業のAI導入による増益すべて」に課税するものではない。規模・課税所得等に要件がある。利用税にも対象範囲や控除等の条項がある。 <a href="https://www.govinfo.gov/content/pkg/BILLS-119s5518is/html/BILLS-119s5518is.htm" target="_blank" rel="noopener noreferrer">法案原文・第101、201〜203条など</a></p>
-<div class="question"><strong>なぜ人員削減の有無に関係なく税を設計するのか？</strong>
-<p>ケリー案は<strong>失業の補償だけでなく、AI時代への社会全体の備え</strong>を目指す。雇用を維持していても、AIの便益とそれに伴う変化への負担をどう配分するかは残るからだ。</p></div>
+<div class="question"><strong>なぜ、失業者にお金を配るだけではないの？</strong><p>AIの普及で<strong>今の仕事がなくなる前から</strong>勉強できれば、次の仕事を見つけやすくなる。失業した人を助けるだけでなく、働き続ける人の選択肢も増やそうという法案だから。</p></div>
+<p class="detail-note">法律上の「超過利益税」は、単に前年より増えた利益への税ではない。対象企業の「税金を計算するときの所得」が売上の一定割合を超えた部分などに条件付きで課す。AI利用税は対象の利用者が負担し、通常はサービス提供者が集める。 <a href="https://www.govinfo.gov/content/pkg/BILLS-119s5518is/xhtml/BILLS-119s5518is.html" target="_blank" rel="noopener noreferrer">法案原文の第101・201〜203条を見る</a></p>
 </div></div></section>
 <section id="difference" class="section"><div class="wrap">
 <div class="section-lead"><div class="eyebrow">03 / 比較して理解する</div><h2>同じ「AI税」でも、目指す解決が違う。</h2></div>
 <div class="narrow">
 <div class="quotes">
-<div><h3>カサー案：雇用を作る政策</h3><p>大量失業のリスクを直接受け止め、AIから集めたお金で<strong>新しい仕事を創出</strong>する。失業率に応じて税率を変える構想。</p></div>
-<div><h3>ケリー案：労働者への再投資政策</h3><p>AIの経済的利益を社会に広く還元し、<strong>失業時の支援・再訓練・新規事業</strong>を通じて変化への対応力をつくる。</p></div>
+<div><h3>カサー案：新しい仕事を増やす</h3><p>仕事を失う人が増えるのに備え、AIから集めたお金で<strong>新しい仕事を増やす</strong>。失業者が増えるほど課税を強める仕組みもある。</p></div>
+<div><h3>ケリー案：次の仕事へ進めるようにする</h3><p>AIなどで集めたお金を、<strong>失業中の生活費・学び直し・新しい商売を始める支援</strong>に回す。職を失った人だけでなく、今働いている人も対象にする。</p></div>
 </div>
-<div class="boxed"><strong>共通する考え方：</strong>AIの開発・普及で利益を得る側にも、その変化で影響を受ける人への支援負担を求める。</div>
+<div class="boxed"><strong>共通点：</strong>AIで仕事が変わるとき、負担を働く人だけに押し付けず、AIなどで稼ぐ側にも税金を負担してもらう。</div>
 <p class="detail-note">両案は同時提出の共同法案ではなく別々の提案。両方の要素を組み合わせることは政策上あり得るが、現時点で一本化された法律ではない。</p>
 </div></div></section>
 <section id="tax" class="section"><div class="wrap">
-<div class="section-lead"><div class="eyebrow">04 / 前提知識と誤解</div><h2>「所得税が減るから新税を作る」だけではない。</h2></div>
+<div class="section-lead"><div class="eyebrow">04 / 前提知識と誤解</div><h2>税金が減るからAI税を作るの？</h2></div>
 <div class="narrow">
-<p class="explain">AIで社員数や給与総額が減る場合、給与に連動する所得税・給与税・社会保険料が減る可能性がある。しかし、AI導入で企業利益が増えれば<strong>既存の法人税収が増える可能性</strong>もある。雇用を維持すれば給与関連の収入も直ちには減らない。</p>
+<p class="explain">AIで社員数や給料の支払い総額が減る場合、給料にかかる税金や保険料が減る可能性がある。しかし、AIで企業の利益が増えれば<strong>法人税（会社の利益にかかる税金）が増える可能性</strong>もある。雇用を維持すれば給与関連の収入も直ちには減らない。</p>
 <div class="subject-flow" role="img" aria-label="AIによって雇用代替や利益集中が起こる可能性がある。2つの法案はAI関連の経済活動に課税し、雇用創出または働く人の支援に使う">
-<span>AIによって雇用・利益の分配が変化するリスク</span><span class="arrow" aria-hidden="true">→</span><span>AI関連の経済活動から追加財源を確保</span><span class="arrow" aria-hidden="true">→</span><span>雇用創出・失業支援・訓練へ使う</span>
+<span>AIで仕事の数や、お金の集まる先が変わる可能性</span><span class="arrow" aria-hidden="true">→</span><span>AIの利用や大手企業などから税金を集める</span><span class="arrow" aria-hidden="true">→</span><span>仕事を増やす・生活を支える・学び直す</span>
 </div>
-<p class="detail-note">社会保険料は税金と同じ制度ではない。「米国は解雇が自由、日本は絶対に解雇できない」という単純な比較も不正確であり、今回の課税法案の説明に必須ではないため中心図から外した。</p>
-<div class="question"><strong>アンドリュー・ヤン氏との関係は？</strong>
+<p class="detail-note">社会保険料（健康保険や年金などのために払うお金）は、税金とは別の仕組み。「米国は解雇が自由、日本は絶対に解雇できない」という単純な比較も不正確であり、今回の課税法案の説明に必須ではないため中心図から外した。</p>
+<div class="question"><strong>新聞に出てきたヤン氏は法案の提出者？</strong>
 <p>ヤン氏はAIを使う方が人を雇うより給与関連の負担を回避しやすい点を批判し、AIへの課税と人間の労働への負担軽減を提唱する<strong>政策提言者</strong>。上記2法案の提出者ではない。</p></div>
 </div></div></section>
-<section class="section" id="quiz"><div class="wrap">
-<div class="section-lead"><div class="eyebrow">05 / 理解度チェック</div><h2>ここまでの確認。</h2></div>
+<section class="section" id="words"><div class="wrap">
+<div class="section-lead"><div class="eyebrow">06 / 用語を確認</div><h2>用語の意味を確認する。</h2></div>
 <div class="narrow">
-<details><summary>Q1. カサー案は所得税の減収を一般会計へ補填する法案？</summary><p>いいえ。主眼はAIによる雇用喪失への備え。AI関連の税収を使って新たな雇用を創出する制度を提案している。</p></details>
-<details><summary>Q2. ケリー案は人員削減をした企業だけが納税する？</summary><p>いいえ。AI利用税・大規模デジタル広告税・対象AI関連企業の超過利益税など、個々の雇用削減とは別の要件で課税を設計している。</p></details>
+<dl class="term-list">
+<div><dt>基金（ききん）</dt><dd>使い道を決めて、税金などをまとめておく国のお金。</dd></div>
+<div><dt>失業給付</dt><dd>職を失った人が、一定の条件のもとで次の仕事を探す間に受け取るお金。</dd></div>
+<div><dt>職業訓練</dt><dd>新しい仕事に就くための勉強や実習。例えばITや介護の技能を学ぶこと。</dd></div>
+<div><dt>超過利益（ちょうかりえき）</dt><dd>法律で決めた基準を上回る利益。ケリー案では対象企業の規模や所得にも条件がある。</dd></div>
+<div><dt>AIの基盤モデル</dt><dd>ChatGPTのようなサービスの土台になる、大規模なAIの仕組み。</dd></div>
+<div><dt>トークン</dt><dd>AIが文章などを処理するときの細かい単位。文字数と完全には一致しない。</dd></div>
+</dl>
+</div></div></section>
+<section class="section" id="quiz"><div class="wrap">
+<div class="section-lead"><div class="eyebrow">07 / 理解度チェック</div><h2>3つだけ確認。</h2></div>
+<div class="narrow">
+<details><summary>Q1. カサー案は、何のために新しい税金を集めるの？</summary><p>AIで仕事を失う人が増える可能性に備え、新しい仕事を作るため。減った所得税の穴埋めだけが目的ではない。</p></details>
+<details><summary>Q2. ケリー案で集めた税金は、何に使うの？</summary><p>仕事を失った人への給付、新しい仕事を学ぶ費用、開業の支援など。すべての納税が人員削減を条件にするわけではない。</p></details>
 <details><summary>Q3. 2つの法案とも、すでに米国で成立している？</summary><p>いいえ。2026年11月15日時点で議会へ提出された法案であり、成立済みの税制ではない。</p></details>
 </div></div></section>
 <section class="section" id="sources"><div class="wrap">
