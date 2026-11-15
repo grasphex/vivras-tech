@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DNS名前解決｜名前からIPを探す通信の流れ｜VIVRAS Tech</title>
-<meta name="description" content="DNS名前解決を3つの図と操作できるアニメーションで解説。端末・再帰DNS・ルート・TLD・権威DNSの役割、キャッシュとTTL、digの見方が分かる。">
+<meta name="description" content="DNSの問い合わせと応答を全体図と動くアニメーションで解説。キャッシュの違い、dig A・NS・+traceのコマンドと出力例、TTLの読み方をまとめて学ぶ。">
 <meta name="category" content="ネットワーク"><meta name="keywords" content="DNS 名前解決 スタブリゾルバ 再帰DNS ルート TLD 権威DNS Aレコード TTL dig 図解 アニメーション">
 <meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/dns-resolution.html">
 <link rel="stylesheet" href="../assets/site.css"><link rel="stylesheet" href="../assets/refined-orange-v11.css"><link rel="stylesheet" href="../assets/dns-visual.css">
@@ -59,14 +59,17 @@
 </div></div>
 <div class="dns-stage">
 <div class="dns-tally" id="dns-steps">1 / 7</div>
-<div class="dns-flow-rail" aria-label="通信の登場者。オレンジの印が現在の到着先です">
-<div class="dns-rail-node is-from" data-node="client"><b>端末</b><small>質問する</small></div>
-<div class="dns-rail-node is-to" data-node="resolver"><b>再帰DNS</b><small>調べる</small></div>
-<div class="dns-rail-node" data-node="root"><b>ルート</b><small>.comの案内</small></div>
-<div class="dns-rail-node" data-node="tld"><b>.com</b><small>権威の案内</small></div>
-<div class="dns-rail-node" data-node="auth"><b>権威DNS</b><small>正式な答え</small></div>
+<div class="dns-network-head"><strong>名前解決（DNS）</strong><span>IP判明後のWeb通信も表示</span></div>
+<div class="dns-flow-rail" aria-label="名前解決の全体図。上段が端末・再帰DNS・Webサーバー、下段がルート・TLD・権威DNS。オレンジ色の経路が今の通信を示します。">
+<svg class="dns-network-lines" aria-hidden="true"><defs><marker id="dns-arrow-tip" markerWidth="6" markerHeight="6" refX="5.2" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#e05a30"/></marker></defs><g class="dns-wire-base"></g><path class="dns-wire-active" marker-end="url(#dns-arrow-tip)"></path></svg>
+<div class="dns-rail-node" data-node="client"><b>端末</b><small>ブラウザ・OS</small></div>
+<div class="dns-rail-node" data-node="resolver"><b>再帰DNS</b><small>名前を調べる</small></div>
+<div class="dns-rail-node" data-node="web"><b>Webサーバー</b><small>HTTPSの相手</small></div>
+<div class="dns-rail-node" data-node="root"><b>ルートDNS</b><small>.comの担当を案内</small></div>
+<div class="dns-rail-node" data-node="tld"><b>.comのDNS</b><small>権威DNSを案内</small></div>
+<div class="dns-rail-node" data-node="auth"><b>権威DNS</b><small>Aレコードを回答</small></div>
 </div>
-<div class="dns-web-tail" data-node="web"><span>名前解決の後</span><span aria-hidden="true">→</span><b>Webサーバー</b></div>
+<div class="dns-flow-legend"><span><i class="dns-legend-query"></i>問い合わせ</span><span><i class="dns-legend-answer"></i>案内・回答</span><span id="dns-current-type" aria-live="polite">問い合わせ</span></div>
 <h3 id="dns-current-title" aria-live="polite">端末 → 再帰DNS</h3>
 <div class="dns-message"><span>送る情報・返る情報</span><strong id="dns-current-packet">example.com の A レコードは？</strong></div>
 <p id="dns-current-reason">OS側が問い合わせを再帰DNSに渡します。</p>
@@ -79,7 +82,7 @@
 <p class="dns-player-note" id="dns-assumption">条件：端末・再帰DNSに有効な回答や途中の委任情報がない、説明用の単純化した例。</p>
 </div>
 </div>
-<p class="lesson-note">上段は登場者の配置です。実際の送信方向は、オレンジの点の移動と「送信元 → 送信先」の見出しで示します。再試行などを省き、誰が誰へ質問するかに絞った教材です。</p>
+<p class="lesson-note">矢印とオレンジの点は、そのステップで送られる問い合わせ・応答を表します。ルートDNSや.com DNSからの案内も再帰DNSへ返ります。Web通信は名前解決の後に行う別の処理です。</p>
 </section>
 
 <section class="lesson-section" id="cache">
@@ -102,15 +105,62 @@
 
 <section class="lesson-section" id="commands">
 <div class="lesson-kicker">04 / 実機で確かめる</div>
-<h2><code>dig</code>で回答と問い合わせの経路を見る</h2>
-<p><button type="button" class="vterm" data-explain="DNSへ問い合わせてレコードや応答情報を表示するコマンド。LinuxやmacOSなどで利用できますが、環境によっては別途インストールが必要です。" aria-label="digコマンドの説明を開く">dig</button>は、DNSの回答を確認するコマンドです。</p>
-<pre><code>dig example.com A
-dig +trace example.com A</code></pre>
-<p class="dns-code-caption">1行目：Aレコードの回答を見る。2行目：ルートなどからたどる様子を調べる。<code>+trace</code>は普段のブラウザの問い合わせ経路をそのまま記録するものではありません。</p>
-<details class="article-expand"><summary>回答で見る場所と注意点</summary><div class="article-expand-body">
-<p><code>ANSWER SECTION</code>にAレコードがあればIPv4アドレスが読めます。ルートやTLDによる案内は、NSなどの情報として現れます。結果やIPアドレスは実行環境・時点によって異なります。</p>
-<p>上のアニメーションの <code>192.0.2.10</code> は説明用の架空IPであり、example.comの実際のレコードを示していません。</p>
-</div></details>
+<h2><code>dig</code>のコマンドと出力を対応させる</h2>
+<p><button type="button" class="vterm" data-explain="DNSレコードを問い合わせ、回答や問い合わせ先を表示するツール。Linuxではdnsutils等、macOSでは標準または追加環境で利用できます。" aria-label="digの説明を開く">dig</button>はDNSに問い合わせるコマンド。<strong>下の結果は表示形式を説明するための例で、実際に実行して取得した結果ではありません。</strong> 実行時のIP・TTL・サーバー・順序は変わります。</p>
+<div class="dns-command-block">
+<h3>① 名前に対応するIPv4を取得</h3>
+<p>まずは答えを確認。<code>A</code>はIPv4アドレスのレコード種別。</p>
+<div class="dns-terminal-label">入力コマンド</div>
+<pre><code>dig example.com A</code></pre>
+<div class="dns-terminal-label">出力例（抜粋・数値は説明用）</div>
+<pre><code>;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR
+;; QUESTION SECTION:
+;example.com.       IN  A
+
+;; ANSWER SECTION:
+example.com.  300   IN  A  192.0.2.10
+
+;; Query time: 15 msec
+;; SERVER: 192.0.2.53#53(192.0.2.53)</code></pre>
+<p class="dns-result-read"><strong>読むところ：</strong><code>status: NOERROR</code>はDNS処理上の成功。<code>ANSWER SECTION</code>の末尾がIPv4、<code>300</code>はこの応答に表示されたTTL（秒）。<code>SERVER</code>はこのコマンドが問い合わせたDNSサーバー。<code>192.0.2.10</code>と<code>192.0.2.53</code>は文書化用の架空IPです。</p>
+</div>
+<div class="dns-command-block">
+<h3>② どの権威DNSが担当しているか</h3>
+<p><code>NS</code>はそのドメインの名前サーバーを表すレコード。</p>
+<div class="dns-terminal-label">入力コマンド</div>
+<pre><code>dig example.com NS +noall +answer</code></pre>
+<div class="dns-terminal-label">出力例（抜粋・TTLは説明用）</div>
+<pre><code>example.com.  86400  IN  NS  a.iana-servers.net.
+example.com.  86400  IN  NS  b.iana-servers.net.</code></pre>
+<p class="dns-result-read"><strong>読むところ：</strong>最後の列が権威DNSのホスト名。<code>+noall +answer</code>は説明用のヘッダーを省略して回答だけを表示します。これはIPアドレス自体の回答ではありません。</p>
+</div>
+<div class="dns-command-block">
+<h3>③ ルートから担当をたどる</h3>
+<p>普通の<code>dig</code>は通常、設定された再帰DNSに質問します。<code>+trace</code>は<code>dig</code>自身が委任関係をたどる別の動作です。</p>
+<div class="dns-terminal-label">入力コマンド</div>
+<pre><code>dig +trace example.com A</code></pre>
+<div class="dns-terminal-label">出力例（流れを示す抜粋・架空IP）</div>
+<pre><code>.             518400  IN  NS  a.root-servers.net.
+;; ルートへの問い合わせ結果（.com の委任情報）
+com.          172800  IN  NS  a.gtld-servers.net.
+;; .comへの問い合わせ結果（example.com の委任）
+example.com.   86400  IN  NS  a.iana-servers.net.
+;; 権威DNSへの問い合わせ結果
+example.com.     300  IN  A   192.0.2.10</code></pre>
+<p class="dns-result-read"><strong>読むところ：</strong><code>NS</code>が「次の担当はどこか」を示し、最後の<code>A</code>がIPアドレス。途中にはDNSSEC関連など、ここで省いた行も出ます。各行のTTLは説明用です。<code>+trace</code>はブラウザの通信ログではありません。</p>
+</div>
+<div class="dns-command-block">
+<h3>④ TTLが変わる様子を見る</h3>
+<div class="dns-terminal-label">入力コマンド（同じ再帰DNSへ繰り返す）</div>
+<pre><code>dig @1.1.1.1 example.com A +noall +answer
+dig @1.1.1.1 example.com A +noall +answer</code></pre>
+<div class="dns-terminal-label">出力例（キャッシュが利用された場合の概念例）</div>
+<pre><code>example.com.  300  IN  A  192.0.2.10
+example.com.  295  IN  A  192.0.2.10</code></pre>
+<p class="dns-result-read"><strong>読むところ：</strong>2回目のTTLが小さくなれば、同じキャッシュの残存時間が減った可能性があります。ただしサーバー側の分散処理や再取得により単調減少しないこともあり、<strong>2行の差だけでキャッシュ利用を断定できません。</strong></p>
+</div>
+<p class="lesson-note">比較のため数値を統一していますが、実際の<code>example.com</code>のAレコードを示したものではありません。許可されたネットワークから読み取り専用のDNS問い合わせとして実行できます。</p>
+<details class="article-expand"><summary>実行結果が例と違う場合は？</summary><div class="article-expand-body"><p>同じドメインでも、キャッシュ・問い合わせ先・時刻・地域・CDNの構成でIPアドレスやTTLは変わります。<code>NXDOMAIN</code>なら対象名が存在しない応答、<code>SERVFAIL</code>なら名前解決処理に失敗した応答です。<code>+trace</code>はDNSSECや追加レコードも表示します。教材中の各IPは実在の測定値ではありません。</p></div></details>
 </section>
 
 <section class="lesson-section lesson-compact" id="check">
