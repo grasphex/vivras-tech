@@ -34,7 +34,7 @@ for filename, req in CASES.items():
     assert 'class="lesson-figure' in h, filename
     assert 'aria-live="polite"' in h, filename
     if filename == "linux-root-filesystem-remount.html":
-        assert 'id="mount-command-lab"' in h and 'class="mount-lite-figure"' in h, filename
+        assert 'id="mount-command-lab"' in h and 'class="lesson-figure mount-lite-figure"' in h, filename
     else:
         assert 'class="lesson-try"' in h, filename
     assert h.count('class="vterm"') >= 4 and 'assets/terms.js' in h, filename
