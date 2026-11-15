@@ -3,102 +3,135 @@
   const root = document.getElementById("mount-command-lab");
   if (!root) return;
 
-  const buttons = [...root.querySelectorAll("button[data-lab-command]")];
-  const reset = root.querySelector("[data-lab-reset]");
-  const consoleBox = root.querySelector("#mount-terminal");
-  const modeBadge = root.querySelector("#mount-live-mode");
-  const modeMessage = root.querySelector("#mount-mode-message");
-  const lastResult = root.querySelector("#mount-last-result");
-  const roResult = root.querySelector("#mount-ro-write");
-  const rwResult = root.querySelector("#mount-rw-write");
-  const lesson = root.querySelector("#mount-learned");
-  const commandMap = Object.freeze({
-    inspect: "findmnt -no TARGET,OPTIONS /",
-    write: "sudo touch /vivras-demo.txt",
-    remountrw: "sudo mount -o remount,rw /",
-    remountro: "sudo mount -o remount,ro /",
-    read: "cat /etc/hostname"
-  });
-  let state;
-  const transcript = [];
+  const $ = selector => root.querySelector(selector);
+  const elements = {
+    mode: $("#mount-live-mode"),
+    file: $("#mount-file-state"),
+    nextPanel: $("#mount-next-panel"),
+    next: $("[data-lab-next]"),
+    stageNumber: $("#mount-lab-step"),
+    stageTask: $("#mount-lab-task"),
+    nextCommand: $("#mount-next-command"),
+    terminal: $("#mount-terminal"),
+    request: $("#mount-reason-request"),
+    check: $("#mount-reason-check"),
+    result: $("#mount-reason-result"),
+    progress: [...root.querySelectorAll("[data-lab-progress]")],
+    conclusion: $("#mount-lab-conclusion"),
+    history: $("#mount-history"),
+    reset: $("[data-lab-reset]")
+  };
 
-  function updateView() {
-    const isWritable = state.mode === "rw";
-    modeBadge.textContent = isWritable ? "rw：読み書き可能" : "ro：読み取り専用";
-    modeBadge.dataset.mode = state.mode;
-    modeMessage.textContent = isWritable
-      ? "マウントの条件はrwです。通常は書き込みも可能です。"
-      : "マウントの条件はroです。ファイルの読み取りはできても、書き込みは禁止です。";
-    lastResult.textContent = state.last;
-    roResult.textContent = state.roAttempted ? "失敗（Read-only file system）" : "未実行";
-    rwResult.textContent = state.rwAttempted ? "成功（ファイル作成／更新）" : "未実行";
-    lesson.textContent = state.roAttempted && state.rwAttempted
-      ? "同じ touch コマンドでも、remountでroからrwに変えると、書き込みの結果が変わる。接続先「/」やファイルのパスは変えていません。"
-      : "試してみよう：①roでtouchを実行 → ②remount,rw → ③同じtouchを再実行。";
-    consoleBox.textContent = transcript.length ? transcript.join("\n\n") : "仮想Linuxの準備完了。上のコマンドを選んで実行してください。";
-  }
-
-  function execute(key) {
-    const command = commandMap[key];
-    if (!command) return;
-    let output = "";
-    switch (key) {
-      case "inspect":
-        output = "/ " + state.mode + ",relatime\n# findmntは現在のマウント条件を表示";
-        state.last = "マウント状態を確認";
-        break;
-      case "read":
-        output = "vivras-demo-host\n# 読み取り成功（roでもrwでも可能）";
-        state.last = "読み取り成功";
-        break;
-      case "write":
-        if (state.mode === "ro") {
-          output = "touch: cannot touch '/vivras-demo.txt': Read-only file system\n# 終了コード 1：書き込み失敗";
-          state.roAttempted = true;
-          state.last = "書き込み失敗：読み取り専用";
-        } else {
-          output = "# 終了コード 0：書き込み成功（touch自体は通常、何も出力しない）";
-          state.fileCreated = true;
-          state.rwAttempted = true;
-          state.last = "書き込み成功：rwで許可";
-        }
-        break;
-      case "remountrw": {
-        const previous = state.mode;
-        state.mode = "rw";
-        output = "# 正常終了：通常は出力なし\n# 仮想環境で / の状態： " + previous + " → rw";
-        state.last = "remount成功：" + previous + " → rw";
-        break;
-      }
-      case "remountro": {
-        const previous = state.mode;
-        state.mode = "ro";
-        output = "# 正常終了：通常は出力なし\n# 仮想環境で / の状態： " + previous + " → ro";
-        state.last = "remount成功：" + previous + " → ro";
-        break;
-      }
+  // Only the mount option changes between the two identical touch commands.
+  const steps = [
+    {
+      command: "findmnt -no TARGET,OPTIONS /",
+      task: "最初に / の状態を調べる",
+      request: "既にマウントされている / の設定を表示する",
+      check: "表示された options に ro がある",
+      result: "今は読み取り専用。まだファイルを作っていない",
+      output: "/ ro,relatime"
+    },
+    {
+      command: "sudo touch /vivras-demo.txt",
+      task: "ファイルの作成を試す",
+      request: "まだ存在しない /vivras-demo.txt を作る",
+      check: "/ のマウント条件は ro → 書き込み禁止",
+      result: "拒否。ファイルは作られない",
+      output: "touch: cannot touch '/vivras-demo.txt': Read-only file system",
+      outcome: "blocked"
+    },
+    {
+      command: "sudo mount -o remount,rw /",
+      task: "拒否の原因だった条件だけを変える",
+      request: "接続済みの / のマウント条件を rw へ変更する",
+      check: "remount は接続先やファイルを移動しない",
+      result: "/ が ro → rw に変わった。ファイルはまだない",
+      output: "（正常終了：通常、出力なし）",
+      setMode: "rw"
+    },
+    {
+      command: "sudo touch /vivras-demo.txt",
+      task: "まったく同じ touch をもう一度実行",
+      request: "手順2と同じ /vivras-demo.txt を作る",
+      check: "/ のマウント条件は rw → 読み取り専用制限なし",
+      result: "作成成功。ファイルが存在するようになった",
+      output: "（正常終了：通常、出力なし）",
+      outcome: "created",
+      createFile: true
+    },
+    {
+      command: "ls /vivras-demo.txt",
+      task: "本当にファイルができたか調べる",
+      request: "ファイルが存在するかを確認する",
+      check: "手順4で touch の作成が成功した",
+      result: "名前が表示されたので、ファイルが存在する",
+      output: "/vivras-demo.txt"
     }
-    transcript.push("$ " + command + "\n" + output);
-    if (transcript.length > 14) transcript.splice(0, transcript.length - 14);
-    updateView();
-    consoleBox.scrollTop = consoleBox.scrollHeight;
+  ];
+
+  let nextStep = 0;
+  let mountMode = "ro";
+  let fileExists = false;
+  const history = [];
+
+  function render() {
+    elements.mode.textContent = mountMode === "ro" ? "ro：読み取り専用" : "rw：読み書き可能";
+    elements.mode.dataset.mode = mountMode;
+    elements.file.textContent = fileExists ? "作成済み" : "存在しない";
+    elements.file.dataset.exists = String(fileExists);
+    elements.progress.forEach((item, index) => {
+      const completed = index < nextStep;
+      const active = index === nextStep;
+      item.dataset.state = completed ? "completed" : active ? "current" : "pending";
+      if (active) item.setAttribute("aria-current", "step");
+      else item.removeAttribute("aria-current");
+    });
+
+    const finished = nextStep >= steps.length;
+    elements.nextPanel.hidden = finished;
+    elements.conclusion.hidden = !finished;
+    if (!finished) {
+      const step = steps[nextStep];
+      elements.stageNumber.textContent = "STEP " + (nextStep + 1) + " / " + steps.length;
+      elements.stageTask.textContent = step.task;
+      elements.nextCommand.textContent = step.command;
+    }
+    elements.history.textContent = history.length ? history.join("\n\n") : "まだ履歴はありません。";
   }
 
-  function restart() {
-    state = {
-      mode: "ro",
-      fileCreated: false,
-      roAttempted: false,
-      rwAttempted: false,
-      last: "まだコマンドを実行していません"
-    };
-    transcript.length = 0;
-    updateView();
+  function executeNext() {
+    if (nextStep >= steps.length) return;
+    const step = steps[nextStep];
+    // Pure simulated state transition: never execute commands on the host OS.
+    if (step.setMode) mountMode = step.setMode;
+    if (step.createFile) fileExists = true;
+
+    const display = "$ " + step.command + "\n" + step.output;
+    history.push(display);
+    elements.terminal.textContent = display;
+    elements.terminal.dataset.outcome = step.outcome || "info";
+    elements.request.textContent = step.request;
+    elements.check.textContent = step.check;
+    elements.result.textContent = step.result;
+    nextStep += 1;
+    render();
   }
 
-  buttons.forEach(button => {
-    button.addEventListener("click", () => execute(button.dataset.labCommand));
-  });
-  reset.addEventListener("click", restart);
-  restart();
+  function reset() {
+    nextStep = 0;
+    mountMode = "ro";
+    fileExists = false;
+    history.length = 0;
+    elements.terminal.textContent = "ここにコマンドの結果が表示されます。";
+    elements.terminal.dataset.outcome = "pending";
+    elements.request.textContent = "まだ実行していません";
+    elements.check.textContent = "—";
+    elements.result.textContent = "—";
+    render();
+  }
+
+  elements.next.addEventListener("click", executeNext);
+  elements.reset.addEventListener("click", reset);
+  reset();
 })();
