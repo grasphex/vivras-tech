@@ -64,6 +64,12 @@ body{background:#f6f5f0;color:#1e2521}
 .feature-body .quiz details:first-of-type{border-top:2px solid #29342d}
 .feature-body .references a{text-decoration:underline;text-underline-offset:3px;color:#27554c}
 @media(max-width:680px){.feature-head{padding:37px 18px 30px}.feature-head .breadcrumb{margin-bottom:38px}.feature-head h1{font-size:clamp(38px,10vw,58px)}.feature-body{padding:0 18px}.feature-body>section{margin-top:72px}.feature-body>section.overview{margin-top:40px}.concept-grid{display:block}.concept-grid>div,.concept-grid>div+div{border:0;border-bottom:1px solid #b4beb2;padding:18px 0}.concept-grid span{margin-bottom:8px}.evidence-pair{display:block}.evidence-pair>div{margin-bottom:20px}.chapter-index{padding:24px 18px;margin-top:50px}.research-list>div{grid-template-columns:32px 1fr}.research-list p{grid-column:2}.feature-body .compare th,.feature-body .compare td{font-size:13px;padding:10px 5px}}
+
+/* Overview uses editorial rows rather than generic equal cards. */
+.concept-grid{display:block;border-top:2px solid #1e2720;border-bottom:0}
+.concept-grid>div,.concept-grid>div+div{display:grid;grid-template-columns:180px minmax(0,1fr) minmax(0,1.25fr);gap:18px;align-items:start;padding:19px 0;border-left:0;border-bottom:1px solid #b0b9b0}
+.concept-grid span{margin:4px 0}.concept-grid strong{font-size:19px}.concept-grid p{margin:0}
+@media(max-width:760px){.concept-grid>div,.concept-grid>div+div{grid-template-columns:1fr;gap:6px;padding:18px 0}.concept-grid span{margin:0}.concept-grid p{margin-top:3px}}
 </style></head><body>
 <header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav><a href="../index.html#articles">記事一覧</a></nav></div></header>
 <main>
