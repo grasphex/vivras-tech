@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja"><head><base href="https://tech.grasphex.com/articles/"><meta name="robots" content="noindex,follow"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>【v10デザインレビュー】VIVRAS Tech｜Orange Pop</title><meta name="description" content="mountは保存領域をLinuxのディレクトリにつなぐ。remountは接続したまま設定を変更する。Linuxの仕組みを図と連続したコマンド実行結果で理解する。"><meta name="category" content="Linux"><meta name="keywords" content="Linux mount remount ファイルシステム ro rw 読み取り専用"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/linux-root-filesystem-remount.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script><link rel="stylesheet" href="../assets/mount-editorial.css"><link rel="stylesheet" href="../assets/orange-theme.css"></head>
+<body class="mount-editorial">
+<header class="ed-site-header"><div class="ed-site-inner">
+<a class="ed-brand" href="../index.html" aria-label="VIVRAS Techトップ">VIVRAS <span>TECH</span></a>
+<nav class="ed-nav" aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav>
+</div></header>
+<main class="ed-main">
+<div class="ed-meta"><a href="../topics/tech.html">技術 / Linux</a><time datetime="2026-11-15">2026.11.15</time></div>
+<header class="ed-hero">
+<h1>mount と remount の違い</h1>
+<p><strong>mount</strong> はつなぐ。<strong>remount</strong> はつないだまま条件を変える。</p>
+</header>
+<article>
+<section id="problem" aria-label="mountとremountの仕組み">
+<figure class="ed-visual">
+<div class="ed-visual-part">
+<p class="ed-visual-label"><em>01</em> mount — ファイルを見えるようにする</p>
+<div class="ed-file-flow">
+<div class="ed-artifact"><p class="ed-eyebrow">保存領域</p><p class="ed-path">/dev/sdb1</p><div class="ed-file-row">report.txt</div></div>
+<div class="ed-join"><strong>mount</strong><span class="ed-arrow" aria-hidden="true">→</span><small>接続</small></div>
+<div class="ed-artifact"><p class="ed-eyebrow">Linuxから見える場所</p><p class="ed-path">/mnt/data</p><div class="ed-file-row">report.txt</div></div>
+</div>
+<p class="ed-figure-note">ファイルが移動するのではなく、/mnt/data から同じ中身にアクセスできる。</p>
+</div>
+<div class="ed-visual-part">
+<p class="ed-visual-label"><em>02</em> remount — 接続先を変えずに、条件を変える</p>
+<div class="ed-mode-flow">
+<div class="ed-mode"><strong>ro</strong><small>読む ○　書く ×</small></div>
+<div class="ed-mode-transition"><code>remount,rw</code><span class="ed-arrow" aria-hidden="true">→</span></div>
+<div class="ed-mode ed-rw"><strong>rw</strong><small>読む ○　書く ○</small></div>
+</div>
+</div>
+
+</figure>
+<p class="ed-footnote">※ rwでも、書き込みにはファイル権限など別の条件が関係します。</p>
+</section>
+<section class="ed-trace" id="conditions" aria-labelledby="trace-heading">
+<div class="ed-trace-head"><span class="ed-trace-number">03</span><h2 id="trace-heading">コマンドと実行結果</h2><span class="ed-trace-caption">同じ touch が失敗 → 成功に変わる</span></div>
+<p class="ed-trace-assumption">前提：<code>/dev/sdb1</code> は <code>/mnt/data</code> に <strong>ro</strong> で接続済み。十分な権限があり、ほかのエラーは発生しないとします。</p>
+<pre class="ed-transcript" aria-label="読み取り専用でのエラーから、再マウント後にファイルが作成されるまでの連続したコマンド結果"><code><span class="ed-prompt">$</span> sudo touch /mnt/data/new.txt
+<span class="ed-error">touch: cannot touch '/mnt/data/new.txt': Read-only file system</span>
+
+<span class="ed-prompt">$</span> sudo mount -o remount,rw /mnt/data
+<span class="ed-prompt">$</span> sudo touch /mnt/data/new.txt
+<span class="ed-prompt">$</span> ls /mnt/data/new.txt
+<span class="ed-output">/mnt/data/new.txt</span></code></pre>
+<p class="ed-trace-takeaway">最初は <strong>ro</strong> で書き込みが拒否されます。<strong>remountでrwに変更</strong>すると、同じ <button type="button" class="vterm" data-explain="touchはファイルがなければ作成し、既に存在すればタイムスタンプを更新するLinuxコマンドです。" aria-label="touchの説明を開く">touch</button> が成功します（成功時は出力なし）。最後の <code>ls</code> でファイルの存在を確認します。</p>
+<p class="ed-trace-safety">これは操作を理解するための模擬出力です。実機でのマウント変更は権限・利用状況などにより結果が異なります。</p>
+</section>
+<div class="ed-extras">
+<section id="check"><details><summary>3問で理解を確認</summary><div class="ed-more ed-qa">
+<div><b>mountでファイルはコピーされる？</b><p>いいえ。保存領域にあるファイルが指定したディレクトリから見えるようになります。</p></div>
+<div><b>roの状態でtouchすると？</b><p>新しいファイルの作成は書き込みなので、roでは拒否されます。</p></div>
+<div><b>remountで何が変わる？</b><p>接続先は変えず、ro/rwなどのマウント設定を変えられます。</p></div>
+</div></details></section>
+<section id="verify"><details><summary>コマンド・参考資料</summary><div class="ed-more">
+<p><button class="vterm" type="button" data-explain="ファイルシステムを接続し、その中のファイルを表示するLinux側のディレクトリです。" aria-label="マウントポイントの説明を開く">マウントポイント</button>が実際に接続されているか、<button class="vterm" type="button" data-explain="現在のマウント情報を一覧・検索して表示するLinuxコマンドです。" aria-label="findmntの説明を開く">findmnt</button> で確認できます。</p>
+<pre class="ed-source-code">findmnt -no SOURCE,TARGET,FSTYPE,OPTIONS --mountpoint /mnt/data</pre>
+<p><button class="vterm" type="button" data-explain="読み取り専用（read-only）。ファイルシステムへの書き込みを禁止するマウント設定です。" aria-label="roの説明を開く">ro</button> / rwは <code>OPTIONS</code> に表示されます。</p>
+<p>一次資料：<a href="https://man7.org/linux/man-pages/man8/mount.8.html" target="_blank" rel="noopener noreferrer">mount(8)</a>・<a href="https://man7.org/linux/man-pages/man8/findmnt.8.html" target="_blank" rel="noopener noreferrer">findmnt(8)</a>・<a href="https://man7.org/linux/man-pages/man1/touch.1.html" target="_blank" rel="noopener noreferrer">touch(1)</a></p>
+</div></details></section>
+</div>
+</article>
+<footer class="ed-footer"><a href="../topics/tech.html">← 技術の記事一覧へ</a></footer>
+</main>
+</body></html>
