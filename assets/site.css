@@ -418,3 +418,13 @@ body{background:var(--bg);color:var(--ink)}
 .mount-lite-run{flex-direction:column;align-items:stretch}
 .mount-lite-run>span{text-align:right}
 }
+
+/* Mount first-view spacing: key mechanism must be visible without an extended scroll. */
+.mount-focus .article-header{margin:19px auto 13px}
+.mount-focus .breadcrumb{margin-bottom:12px}
+.mount-focus .article-header h1{font-size:clamp(26px,4.1vw,38px);margin:4px 0 9px;line-height:1.28}
+.mount-focus .article-lead{font-size:15px;line-height:1.66;margin:0}
+.mount-focus .tech-lesson>.lesson-section{margin-top:12px}
+.mount-focus .article-body{margin-bottom:50px}
+.mount-focus .tech-lesson>.mount-lite-section{margin-top:0;padding:0}
+.mount-focus .tech-lesson>.mount-lite-lab-section{margin-top:6px}
