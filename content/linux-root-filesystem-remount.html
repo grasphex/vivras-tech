@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>mountとremountの違い｜一目で分かるLinuxマウント｜VIVRAS Tech</title><meta name="description" content="mountは保存領域をLinuxのディレクトリにつなぐ。remountは接続したまま設定を変更する。Linuxの仕組みを一枚の図で理解する。"><meta name="category" content="Linux"><meta name="keywords" content="Linux mount remount ファイルシステム ro rw 読み取り専用"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/linux-root-filesystem-remount.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script><script src="../assets/mount-lab.js" defer></script><link rel="stylesheet" href="../assets/mount-editorial.css"></head>
+<title>Linuxのmountとremount｜接続と設定変更を図と実行結果で理解｜VIVRAS Tech</title><meta name="description" content="mountは保存領域をLinuxのディレクトリにつなぐ。remountは接続したまま設定を変更する。Linuxの仕組みを図と連続したコマンド実行結果で理解する。"><meta name="category" content="Linux"><meta name="keywords" content="Linux mount remount ファイルシステム ro rw 読み取り専用"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/linux-root-filesystem-remount.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script><link rel="stylesheet" href="../assets/mount-editorial.css"></head>
 <body class="mount-editorial">
 <header class="ed-site-header"><div class="ed-site-inner">
 <a class="ed-brand" href="../index.html" aria-label="VIVRAS Techトップ">VIVRAS <span>TECH</span></a>
@@ -9,8 +9,8 @@
 <main class="ed-main">
 <div class="ed-meta"><a href="../topics/tech.html">技術 / Linux</a><time datetime="2026-11-15">2026.11.15</time></div>
 <header class="ed-hero">
-<h1>mountとremountは、<br>何が違う？</h1>
-<p><strong>mount</strong> は保存領域をつなぐ。<strong>remount</strong> は接続したまま読み書きの条件を変える。</p>
+<h1>mount と remount の違い</h1>
+<p><strong>mount</strong> はつなぐ。<strong>remount</strong> はつないだまま条件を変える。</p>
 </header>
 <article>
 <section id="problem" aria-label="mountとremountの仕組み">
@@ -32,28 +32,24 @@
 <div class="ed-mode ed-rw"><strong>rw</strong><small>読む ○　書く ○</small></div>
 </div>
 </div>
-<figcaption class="ed-conclusion"><strong>違いは一つ。</strong> mount は「どこからファイルを見せるか」、remount は「接続した領域をどう扱うか」を変える。</figcaption>
+
 </figure>
 <p class="ed-footnote">※ rwでも、書き込みにはファイル権限など別の条件が関係します。</p>
 </section>
-<div class="ed-extras">
-<section id="conditions">
-<details><summary>コマンドで確認する</summary>
-<div class="ed-more">
-<p>同じ場所へ<strong>同じ書き込みコマンド</strong>を実行します。ro → remount,rw の前後で結果が変わることを確認します。</p>
-<p>前提：<code>/dev/sdb1</code> は <code>/mnt/data</code> に ro で接続済み。十分な権限があり、ファイルシステムは正常とします。</p>
-<div id="mount-command-lab" class="ed-lab">
-<div class="ed-lab-status"><span>設定：<strong id="mount-live-mode">ro（読み取り専用）</strong></span><span>ファイル：<strong id="mount-file-state">まだない</strong></span></div>
-<div class="ed-lab-stage"><span id="mount-lab-step">1 / 3</span><strong id="mount-lab-task">roで書き込みを試す</strong></div>
-<button type="button" class="ed-lab-run" data-lab-next><code id="mount-next-command">sudo touch /mnt/data/new.txt</code><span>実行</span></button>
-<pre id="mount-terminal" aria-live="polite">コマンドを実行すると結果が表示されます。</pre>
-<p id="mount-reason-result"><button type="button" class="vterm" data-explain="touchは指定したファイルがなければ空のファイルを作成し、既にあればタイムスタンプを更新するLinuxコマンドです。" aria-label="touchの説明を開く">touch</button> は新しいファイルを作るコマンドです。</p>
-<p id="mount-lab-conclusion" hidden><strong>分かったこと：</strong> 同じtouchがroでは失敗、rwでは成功。remountが変えたのは<strong>接続先ではなく書き込み条件</strong>です。</p>
-<button type="button" class="ed-lab-reset" data-lab-reset>最初から試す</button>
-</div>
-<p>実機への接続やコマンド実行は行いません。ルートディレクトリ <code>/</code> に対する実際の再マウントはシステムへ影響するため、学習目的で安易に実行しないでください。</p>
-</div></details>
+<section class="ed-trace" id="conditions" aria-labelledby="trace-heading">
+<div class="ed-trace-head"><span class="ed-trace-number">03</span><h2 id="trace-heading">コマンドと実行結果</h2><span class="ed-trace-caption">同じ touch が失敗 → 成功に変わる</span></div>
+<p class="ed-trace-assumption">前提：<code>/dev/sdb1</code> は <code>/mnt/data</code> に <strong>ro</strong> で接続済み。十分な権限があり、ほかのエラーは発生しないとします。</p>
+<pre class="ed-transcript" aria-label="読み取り専用でのエラーから、再マウント後にファイルが作成されるまでの連続したコマンド結果"><code><span class="ed-prompt">$</span> sudo touch /mnt/data/new.txt
+<span class="ed-error">touch: cannot touch '/mnt/data/new.txt': Read-only file system</span>
+
+<span class="ed-prompt">$</span> sudo mount -o remount,rw /mnt/data
+<span class="ed-prompt">$</span> sudo touch /mnt/data/new.txt
+<span class="ed-prompt">$</span> ls /mnt/data/new.txt
+<span class="ed-output">/mnt/data/new.txt</span></code></pre>
+<p class="ed-trace-takeaway">最初は <strong>ro</strong> で書き込みが拒否されます。<strong>remountでrwに変更</strong>すると、同じ <button type="button" class="vterm" data-explain="touchはファイルがなければ作成し、既に存在すればタイムスタンプを更新するLinuxコマンドです。" aria-label="touchの説明を開く">touch</button> が成功します（成功時は出力なし）。最後の <code>ls</code> でファイルの存在を確認します。</p>
+<p class="ed-trace-safety">これは操作を理解するための模擬出力です。実機でのマウント変更は権限・利用状況などにより結果が異なります。</p>
 </section>
+<div class="ed-extras">
 <section id="check"><details><summary>3問で理解を確認</summary><div class="ed-more ed-qa">
 <div><b>mountでファイルはコピーされる？</b><p>いいえ。保存領域にあるファイルが指定したディレクトリから見えるようになります。</p></div>
 <div><b>roの状態でtouchすると？</b><p>新しいファイルの作成は書き込みなので、roでは拒否されます。</p></div>
