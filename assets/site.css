@@ -358,80 +358,63 @@ body{background:var(--bg);color:var(--ink)}
 @media(max-width:620px){.tech-lesson>.lesson-section.lesson-compact{margin-top:12px}}
 
 
-/* Mount / remount lesson: explicit knowledge outcomes and a single consistent example */
-.mount-goal-list{margin:12px 0 0;border-top:2px solid #41674c}
-.mount-goal-list>div{display:grid;grid-template-columns:minmax(140px,175px) minmax(0,1fr);gap:16px;padding:13px 2px;border-bottom:1px solid #c1ccbe;align-items:baseline}
-.mount-goal-list dt{font-size:16px;font-weight:820;color:#284d37}
-.mount-goal-list dd{margin:0;font-size:14px;line-height:1.65}
-.mount-before-after{padding:15px 0;margin:13px 0 5px}
-.mount-source{padding:11px 15px;display:flex;gap:17px;align-items:baseline;flex-wrap:wrap;border:1px solid #b5c6b7}
-.mount-source span{font-size:11px;color:#566e5a;font-weight:760}
-.mount-source strong{font:800 18px/1.5 ui-monospace,monospace;color:#254b34}
-.mount-source small{font-size:12px;color:#536b57}
-.mount-state-list{margin:10px 0 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);align-items:center;gap:10px}
-.mount-state-list>div:not(.mount-move){min-width:0;border-top:3px solid #819887;background:#edf2eb;padding:12px}
-.mount-state-list>.mount-connected{border-top-color:#2b6945!important;background:#e2eee3!important}
-.mount-state-list span{display:block;font-size:11px;color:#586f5c;margin-bottom:5px}
-.mount-state-list strong{display:block;font:760 13px/1.6 ui-monospace,monospace;overflow-wrap:anywhere}
-.mount-state-list small{font-size:12px;line-height:1.5;color:#59705c;display:block;margin-top:5px}
-.mount-state-list .mount-move{text-align:center;min-width:0}
-.mount-state-list .mount-move code{font:680 11px/1.5 ui-monospace,monospace;white-space:normal;overflow-wrap:anywhere}
-.mount-state-list .mount-move span{font-size:20px;color:#37644a;margin:4px 0 0}
-.mount-figure-lesson{font-size:14px;line-height:1.6;border-top:1px solid #c0cebf;margin:12px 0 0;padding:10px 0 0}
-.mount-command-lab{padding:13px 0;background:transparent}
-.tech-lesson .mount-lab-note{font-size:12px;line-height:1.7;margin:0 0 11px;color:#5d715e}
-.mount-lab-fixed{border-block:1px solid #bbcabb;padding:9px 0;display:flex;justify-content:flex-start;flex-wrap:wrap;gap:16px;margin:0 0 12px}
-.mount-lab-fixed span{font:650 13px ui-monospace,monospace}
-.mount-lab-fixed b{font:760 12px sans-serif;margin-right:5px;color:#5a6f5d}
-.mount-lab-state{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.mount-lab-state>div{border-left:3px solid #82a087;padding:7px 12px;background:#eef3eb;min-width:0}
-.mount-lab-kicker{font-size:11px;color:#5a6f5d;font-weight:750;display:block;margin-bottom:4px}
-.mount-lab-state strong{font-size:16px;line-height:1.42;display:block;overflow-wrap:anywhere}
-.mount-lab-state #mount-live-mode[data-mode="ro"]{color:#93453a}
-.mount-lab-state #mount-live-mode[data-mode="rw"]{color:#286a46}
-.mount-lab-progress{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:0 0 12px}
-.mount-lab-progress span{padding:5px 0;text-align:center;font:760 11px ui-monospace,monospace;color:#667669;background:#e5ebe3}
-.mount-lab-progress span[data-state="completed"]{background:#d6e8d6;color:#2d6b42}
-.mount-lab-progress span[data-state="current"]{background:#295d3d;color:#fff}
-.mount-lab-next[hidden],.mount-lab-conclusion[hidden]{display:none!important}
-.mount-lab-next{padding:9px 0 11px}
-.mount-lab-stage{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:7px}
-.mount-lab-stage span{font:760 11px ui-monospace,monospace;color:#536e57}
-.mount-lab-stage strong{font-size:15px}
-.mount-lab-next button{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:12px;border:2px solid #356f4b;background:#f0f7ee;text-align:left;cursor:pointer}
-.mount-lab-next button:hover{background:#dcecdc}
-.mount-lab-next button:focus-visible,.mount-lab-reset:focus-visible{outline:3px solid #7eac87;outline-offset:2px}
-.mount-lab-next button code{font:790 13px/1.5 ui-monospace,monospace;color:#244d35;background:transparent;padding:0;overflow-wrap:anywhere;white-space:normal}
-.mount-lab-next button span{font-size:12px;font-weight:780;color:#2c6943;white-space:nowrap}
-.mount-lab-observation{border:1px solid #b9c7b9}
-.mount-lab-terminal-bar{background:#203b2a;color:#e2f0e2;padding:6px 12px;font-size:11px}
-.tech-lesson pre#mount-terminal{margin:0;background:#17251c;color:#e0efdd;padding:10px 13px;min-height:50px;max-height:140px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:500 12px/1.6 ui-monospace,monospace}
-.tech-lesson pre#mount-terminal[data-outcome="blocked"]{color:#f3d1bc}
-.mount-lab-explanation{border-top:1px solid #c3d2c3;padding:9px 12px}
-.mount-lab-explanation small{font-size:11px;font-weight:780;color:#536e58}
-.tech-lesson .mount-lab-explanation p{margin:5px 0 0;font-size:14px;line-height:1.7}
-.mount-learning{border-top:2px solid #4d7656;margin:15px 0 10px}
-.mount-learning>div{display:grid;grid-template-columns:minmax(120px,155px) minmax(0,1.2fr) minmax(0,1.3fr);gap:11px;align-items:baseline;border-bottom:1px solid #b9c8b9;padding:9px 0}
-.mount-learning>div span{font-size:11px;font-weight:780;color:#5d715f}
-.mount-learning>div strong{font-size:13px;line-height:1.5}
-.mount-learning>div small{font-size:12px;color:#758477;line-height:1.55}
-.mount-learning>div[data-earned="true"] small{color:#216b3e;font-weight:780}
-.tech-lesson .mount-lab-conclusion{border-left:3px solid #3f784d;padding:9px 13px;background:#e8f1e6;font-size:13px;line-height:1.75;margin:12px 0}
-.mount-lab-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
-.mount-lab-reset{background:transparent;color:#31573a;border:1px solid #8ca391;padding:7px 11px;font-size:12px;font-weight:760;cursor:pointer}
-.mount-lab-actions details{font-size:12px;flex:1;min-width:110px;text-align:right}
-.mount-lab-actions summary{font-size:12px;font-weight:750;cursor:pointer}
-.mount-lab-actions pre{background:#1d3224;color:#e1f0df;text-align:left;padding:12px;font-size:12px;white-space:pre-wrap;overflow:auto;max-height:260px}
-@media(max-width:680px){
-.mount-goal-list>div{grid-template-columns:95px 1fr;gap:10px;padding:10px 1px}
-.mount-goal-list dt{font-size:13px}.mount-goal-list dd{font-size:13px}
-.mount-source{gap:5px;padding:9px 10px;flex-direction:column}
-.mount-state-list{grid-template-columns:1fr;gap:4px}
-.mount-state-list>div:not(.mount-move){padding:10px;min-height:0}
-.mount-state-list .mount-move span{transform:rotate(90deg);height:18px;line-height:18px}
-.mount-lab-state{grid-template-columns:1fr;gap:5px}
-.mount-lab-progress{gap:3px}
-.mount-learning>div{grid-template-columns:1fr;gap:2px}
-.mount-lab-next button{flex-direction:column;align-items:stretch;gap:4px}
-.mount-lab-next button span{text-align:right}
+/* Mount article: editorial one-glance diagram, optional 3-command proof. */
+.tech-lesson .mount-lite-section{margin:6px 0 13px;padding:0}
+.tech-lesson .mount-lite-figure{border:0;border-top:2px solid #294b36;border-radius:0;background:transparent;box-shadow:none;padding:12px 0 9px;margin:0}
+.mount-lite-figure figcaption{font-size:12px;font-weight:750;color:#56705c;margin:0 0 11px}
+.mount-lite-connection{display:grid;grid-template-columns:minmax(0,1fr) 108px minmax(0,1.15fr);align-items:center;gap:9px}
+.mount-lite-place{min-width:0;border-top:2px solid #9cb29c;padding:10px 12px;background:#f2f5f0}
+.mount-lite-destination{border-color:#346d4b;background:#eaf1e9}
+.mount-lite-place small{display:block;color:#617265;font-size:11px;line-height:1.4}
+.mount-lite-place strong{display:block;font:760 clamp(13px,1.9vw,17px)/1.6 ui-monospace,monospace;overflow-wrap:anywhere}
+.mount-lite-place span{display:block;font-size:12px;color:#526d57;margin-top:3px}
+.mount-lite-arrow{text-align:center;display:flex;flex-direction:column;gap:1px;align-items:center}
+.mount-lite-arrow b{font:800 14px ui-monospace,monospace;color:#355b42}
+.mount-lite-arrow>span{font-size:29px;line-height:1;color:#376447}
+.mount-lite-arrow small{font-size:11px;color:#637664}
+.mount-lite-modes{display:grid;grid-template-columns:minmax(0,1fr) 130px minmax(0,1fr);gap:9px;align-items:center;margin:12px 0 0;border-top:1px solid #bccbbb;border-bottom:1px solid #bccbbb;padding:10px 0}
+.mount-lite-modes>div:not(.mount-lite-transition){display:flex;align-items:center;justify-content:space-between;gap:10px;padding:1px 5px}
+.mount-lite-modes strong{font:820 16px ui-monospace,monospace}
+.mount-lite-modes span{font-size:13px;color:#3b5542}
+.mount-lite-transition{display:flex;align-items:center;gap:5px;justify-content:center}
+.mount-lite-transition code{font:700 12px ui-monospace,monospace;color:#366747}
+.mount-lite-transition span{font-size:18px;color:#467554}
+.tech-lesson .mount-lite-bottom{font-size:14px;line-height:1.62;margin:10px 0 0}
+.tech-lesson .mount-lite-caveat{font-size:12px;color:#627063;line-height:1.5;margin:6px 0 2px}
+.tech-lesson .mount-lite-lab-section{padding:0;margin:8px 0 4px}
+.mount-lite-lab-section .article-expand{border-color:#b2c3b4}
+.mount-lite-lab-section .article-expand summary{padding:11px 22px 11px 0}
+.tech-lesson .mount-lite-lab-context{font-size:13px;line-height:1.7;margin:0 0 10px}
+.mount-lite-lab{border-top:1px solid #c1cbc0;padding-top:10px}
+.mount-lite-status{display:flex;gap:15px;flex-wrap:wrap;margin:0 0 12px}
+.mount-lite-status span{font-size:13px;color:#526654}
+.mount-lite-status strong{font-weight:800;color:#264b35}
+.mount-lite-stage{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;margin-bottom:7px}
+.mount-lite-stage span{font:750 12px ui-monospace,monospace;color:#58735d}
+.mount-lite-stage strong{font-size:14px}
+.mount-lite-run{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;background:#f0f6ef;border:1px solid #6d9879;padding:11px 12px;cursor:pointer}
+.mount-lite-run:hover{background:#e0eee2}
+.mount-lite-run:focus-visible{outline:3px solid #547c61;outline-offset:2px}
+.mount-lite-run[hidden],.mount-lite-learned[hidden]{display:none!important}
+.mount-lite-run code{font:750 12px/1.6 ui-monospace,monospace;overflow-wrap:anywhere;white-space:normal;color:#234e36}
+.mount-lite-run>span{white-space:nowrap;font-size:12px;font-weight:790;color:#2f6b47}
+.mount-lite-output{margin:11px 0}
+.tech-lesson .mount-lite-output pre{margin:0;padding:11px 13px;background:#19291e;color:#e3eee3;white-space:pre-wrap;overflow-wrap:anywhere;font:500 12px/1.6 ui-monospace,monospace}
+.tech-lesson .mount-lite-output p{margin:0;border-bottom:1px solid #c3d0c2;padding:9px 0;font-size:13px;line-height:1.62}
+.tech-lesson .mount-lite-learned{margin:10px 0;padding:10px 0;border-top:2px solid #4d795c;font-size:13px;line-height:1.7}
+.mount-lite-lab .mount-lab-reset{font-size:12px;cursor:pointer;background:transparent;color:#376349;border:0;padding:7px 0;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:640px){
+.mount-lite-connection{grid-template-columns:1fr;gap:2px}
+.mount-lite-place{padding:9px 11px}
+.mount-lite-arrow{flex-direction:row;justify-content:center;gap:9px}
+.mount-lite-arrow>span{transform:rotate(90deg);font-size:23px;line-height:20px}
+.mount-lite-modes{grid-template-columns:1fr 97px 1fr;gap:2px;padding:7px 0}
+.mount-lite-modes>div:not(.mount-lite-transition){display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+.mount-lite-modes span{font-size:11px}
+.mount-lite-modes strong{font-size:15px}
+.mount-lite-transition code{font-size:10px}
+.mount-lite-transition span{font-size:15px}
+.mount-lite-status{gap:5px;flex-direction:column}
+.mount-lite-run{flex-direction:column;align-items:stretch}
+.mount-lite-run>span{text-align:right}
 }
