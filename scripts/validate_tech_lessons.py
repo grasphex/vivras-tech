@@ -44,7 +44,9 @@ for filename, req in CASES.items():
         assert 'src="../assets/mount-lab.js"' in h, filename
         assert 'id="mount-command-lab"' in h and 'data-lab-next' in h, filename
         assert 'data-lab-command=' not in h, filename
-        assert 'sudo mount -o remount,rw /' in h and 'sudo touch /vivras-demo.txt' in h, filename
+        script = (ROOT.parent / "assets" / "mount-lab.js").read_text(encoding="utf-8")
+        assert 'sudo mount -o remount,rw /' in script and 'sudo touch /vivras-demo.txt' in script, filename
+        assert script.count('command: "sudo touch /vivras-demo.txt"') == 2, filename
         assert 'id="mount-file-state"' in h and 'id="mount-live-mode"' in h, filename
         assert 'id="mount-reason-request"' in h and 'id="mount-reason-check"' in h, filename
         assert 'id="mount-reason-result"' in h and 'id="mount-lab-conclusion"' in h, filename
