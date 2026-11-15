@@ -23,7 +23,8 @@
 .dns-lab .dns-down{text-align:center;font-size:22px;color:#333;line-height:1.4;margin:8px auto 4px}
 .dns-lab .dns-down small{display:block;color:#555;font-size:11px;line-height:1.2}
 .dns-lab .dns-hierarchy{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:720px;margin:0 auto}
-.dns-lab .dns-hierarchy .dns-unit{padding:13px 8px}
+.dns-lab .dns-hierarchy .dns-unit{padding:13px 8px;position:relative}
+.dns-lab .dns-hierarchy .dns-unit:not(:last-child):after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:#666;z-index:1;font-size:15px}
 .dns-lab .dns-hierarchy .dns-unit:last-child{border-bottom:3px solid var(--dns-accent)}
 .dns-lab .dns-chain-arrow{display:flex;align-items:center;justify-content:center;color:#444;font-size:12px;gap:5px}
 .dns-lab .dns-system-note{font-size:12px;color:#555;text-align:center;margin:13px 0 0!important}
@@ -34,7 +35,8 @@
 .dns-lab .dns-modes button{appearance:none;border:0;background:transparent;color:#333;font-size:13px;font-weight:650;padding:8px 12px;cursor:pointer}
 .dns-lab .dns-modes button[aria-pressed="true"]{background:#222;color:#fff}
 .dns-lab .dns-modes button:focus-visible,.dns-lab .dns-player button:focus-visible{outline:2px solid #a63813;outline-offset:2px}
-.dns-lab .dns-stage{border:1px solid var(--dns-rule);background:#fff;padding:20px 22px}
+.dns-lab .dns-packet{position:absolute;z-index:5;left:0;top:0;width:13px;height:13px;border-radius:50%;background:#f26a3d;border:2px solid #fff;box-shadow:0 0 0 1px #b64522;pointer-events:none;opacity:0;transform:translate(-50%,-50%)}
+.dns-lab .dns-stage{position:relative;border:1px solid var(--dns-rule);background:#fff;padding:20px 22px}
 .dns-lab .dns-stage h3{font-size:clamp(17px,2.5vw,22px);margin:10px 0 7px;line-height:1.35}
 .dns-lab .dns-stage p{font-size:14px;line-height:1.65;margin:6px 0}
 .dns-lab .dns-stage .dns-tally{font:700 11px ui-monospace,monospace;color:#555}
