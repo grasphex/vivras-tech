@@ -174,7 +174,7 @@ def render_section(group, articles):
 <title>{esc(data["title"])}の記事一覧｜VIVRAS Tech</title>
 <meta name="description" content="{esc(data["subtitle"])} VIVRAS Techの{esc(data["title"])}の記事を分類して探せます。">
 <link rel="canonical" href="https://tech.grasphex.com/{data["index"]}">
-<link rel="stylesheet" href="../assets/site.css"><link rel="stylesheet" href="../assets/orange-theme.css"></head>
+<link rel="stylesheet" href="../assets/site.css"><link rel="stylesheet" href="../assets/refined-orange-v11.css"></head>
 <body class="topic-page">
 <header class="site-header"><div class="container topbar">
 <a href="../index.html" class="logo" aria-label="VIVRAS Tech トップ"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a>
