@@ -14,7 +14,7 @@
 </section>
 
 <section class="lesson-section" id="flow">
-<div class="lesson-kicker">03 / 具体例で理解</div>
+<div class="lesson-kicker">02 / 具体例で理解</div>
 <h2>マウントすると、何が変わる？</h2>
 <figure class="lesson-figure mount-story">
 <figcaption>例：保存領域にある report.txt を /mnt/data から見せる</figcaption>
@@ -33,7 +33,7 @@
 <p class="lesson-note"><strong>では「/」へのマウントとは？</strong> <code>/</code>はLinuxのディレクトリ階層の一番上。起動時に<button type="button" class="vterm" data-explain="Linuxのディレクトリ階層の最上位である/として使われるファイルシステム。" aria-label="ルートファイルシステムの説明を開く">ルートファイルシステム</button>が<code>/</code>として利用されます。<code>/dev/sda1</code>が必ず<code>/</code>という意味ではなく、実際の接続元は構成によって異なります。</p>
 </section>
 <section class="lesson-section" id="conditions">
-<div class="lesson-kicker">04 / コマンドで理由を確かめる</div>
+<div class="lesson-kicker">03 / コマンドで理由を確かめる</div>
 <h2>同じ <code>touch</code> が、なぜ失敗から成功に変わる？</h2>
 <p><button type="button" class="vterm" data-explain="指定したファイルがなければ空のファイルを作り、あれば更新日時などを変更するLinuxコマンド。" aria-label="touchの説明を開く">touch</button> はファイルの作成を試みるコマンド。Linuxは<strong>ファイルを作ろうとする場所のマウント条件</strong>を確認します。</p>
 <div class="mount-rule-preview" aria-label="操作結果を決める仕組み">
