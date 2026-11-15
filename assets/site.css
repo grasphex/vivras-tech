@@ -89,3 +89,27 @@ body{background:var(--bg);color:var(--ink)}
 .manifesto-lead>p:last-child{max-width:440px}
 @media(max-width:850px){.hero-layout{grid-template-columns:1fr}.hero-aside{max-width:660px;padding:20px 0 0;border-left:0;border-top:1px solid #abb6a9}}
 @media(max-width:620px){.hero h1{font-size:clamp(38px,10vw,62px)}.hero-aside p{font-size:14px}}
+
+/* Compact homepage: one statement, then articles. */
+.home .hero{padding:54px 0 43px;min-height:0}
+.home .hero-eyebrow{display:block;margin:0 0 17px;color:#8d4e38;font-size:10px;letter-spacing:.07em}
+.home .hero h1{font-size:clamp(43px,6.7vw,86px);letter-spacing:-.078em;line-height:1.14;margin:0}
+.home .hero h1 .accent{font-family:inherit;font-weight:730;letter-spacing:inherit;color:#53684f}
+.home .hero-description{font-size:clamp(14px,1.6vw,16px);line-height:1.7;margin:20px 0 0;color:#425046;max-width:730px}
+.home .library-section{padding:30px 0 75px;border-top:1px solid #aab4a8}
+.home .section-heading{padding:0 0 12px}
+.home .section-heading h2{font-size:clamp(25px,3vw,34px);font-weight:700;letter-spacing:-.045em;margin:0}
+.home .section-count{font-size:11px;font-weight:500;vertical-align:middle;margin-left:8px}
+.home .filters{margin:14px 0 12px}
+.home .article-card{grid-template-columns:104px minmax(0,1fr) 110px;padding:20px 0}
+.home .article-card h3{font-size:clamp(19px,2.2vw,25px);margin-bottom:4px}
+.home .article-card p{font-size:12px;line-height:1.6}
+.home .article-footer{font-size:11px}
+.home .site-footer{margin-top:0}
+@media(max-width:620px){
+.home .hero{padding:37px 0 31px}.home .hero h1{font-size:clamp(36px,10vw,52px)}
+.home .hero-description{font-size:14px}.home .hero-description br{display:none}
+.home .library-section{padding:23px 0 40px}
+.home .article-card{grid-template-columns:1fr auto}
+.home .article-card h3{font-size:20px}
+}
