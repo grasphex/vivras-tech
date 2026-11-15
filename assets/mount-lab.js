@@ -47,7 +47,7 @@
       request: "接続済みの / のマウント条件を rw へ変更する",
       check: "remount は接続先やファイルを移動しない",
       result: "/ が ro → rw に変わった。ファイルはまだない",
-      output: "（正常終了：通常、出力なし）",
+      output: "",
       setMode: "rw"
     },
     {
@@ -56,7 +56,7 @@
       request: "手順2と同じ /vivras-demo.txt を作る",
       check: "/ のマウント条件は rw → 読み取り専用制限なし",
       result: "作成成功。ファイルが存在するようになった",
-      output: "（正常終了：通常、出力なし）",
+      output: "",
       outcome: "created",
       createFile: true
     },
@@ -107,7 +107,7 @@
     if (step.setMode) mountMode = step.setMode;
     if (step.createFile) fileExists = true;
 
-    const display = "$ " + step.command + "\n" + step.output;
+    const display = "$ " + step.command + (step.output ? "\n" + step.output : "");
     history.push(display);
     elements.terminal.textContent = display;
     elements.terminal.dataset.outcome = step.outcome || "info";
