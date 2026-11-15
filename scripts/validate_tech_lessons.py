@@ -33,21 +33,21 @@ for filename, req in CASES.items():
     pos = [h.find(f'id="{name}"') for name in order]
     assert all(p >= 0 for p in pos) and pos == sorted(pos), (filename, pos)
     assert 'id="terms"' not in h and 'class="lesson-terms"' not in h, filename
-    assert 'aria-live="polite"' in h, filename
+    if filename != "linux-root-filesystem-remount.html":
+        assert 'aria-live="polite"' in h, filename
     assert h.count('class="vterm"') >= 4 and 'assets/terms.js' in h, filename
     if filename == "linux-root-filesystem-remount.html":
         assert 'class="ed-visual"' in h and 'class="ed-file-flow"' in h and 'class="ed-mode-flow"' in h, filename
         assert 'class="mount-editorial"' in h and 'assets/mount-editorial.css' in h, filename
         assert h.count('<figure') == 1 and h.count('<h1') == 1, filename
-        assert h.count('<details>') == 3 and 'class="ed-extras"' in h, filename
-        assert 'class="mount-goal-list"' not in h and 'data-lab-progress=' not in h, filename
-        assert 'src="../assets/mount-lab.js"' in h and 'id="mount-command-lab"' in h, filename
-        assert 'id="mount-reason-result"' in h and 'id="mount-lab-conclusion"' in h, filename
-        script = (ROOT.parent / "assets" / "mount-lab.js").read_text(encoding="utf-8")
-        assert script.count('command: "sudo touch /mnt/data/new.txt"') == 2, filename
-        assert 'command: "sudo mount -o remount,rw /mnt/data"' in script, filename
-        assert script.count('command: "') == 3, filename
-        assert 'id="mount-mode"' not in h, filename
+        assert h.count('<details>') == 2 and 'class="ed-extras"' in h, filename
+        assert 'class="ed-transcript"' in h and 'Read-only file system' in h, filename
+        assert 'sudo mount -o remount,rw /mnt/data' in h, filename
+        assert h.count('sudo touch /mnt/data/new.txt') == 2, filename
+        assert 'ls /mnt/data/new.txt' in h, filename
+        assert h.index('touch: cannot touch') < h.index('sudo mount -o remount,rw /mnt/data') < h.rindex('sudo touch /mnt/data/new.txt') < h.index('ls /mnt/data/new.txt'), filename
+        assert 'mount-lab.js' not in h and 'mount-command-lab' not in h, filename
+        assert 'data-lab-next' not in h and 'id="mount-mode"' not in h, filename
     else:
         assert 'class="article-body tech-lesson"' in h, filename
         assert 'class="lesson-figure' in h, filename

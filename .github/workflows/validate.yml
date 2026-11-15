@@ -17,10 +17,6 @@ jobs:
         run: node --check assets/terms.js
       - name: Test term popup interactions
         run: node scripts/test_terms.cjs
-      - name: Check mount simulator syntax
-        run: node --check assets/mount-lab.js
-      - name: Test mount command transitions
-        run: node scripts/test_mount_lab.cjs
       - name: Build topic and article pages
         run: python3 scripts/build.py
       - name: Check metadata and local links
