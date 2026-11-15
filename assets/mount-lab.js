@@ -35,7 +35,7 @@
     {
       command: "sudo touch /vivras-demo.txt",
       task: "ファイルの作成を試す",
-      request: "まだ存在しない /vivras-demo.txt を作る",
+      request: "まだ存在しないファイル /vivras-demo.txt を作る",
       check: "/ のマウント条件は ro → 書き込み禁止",
       result: "拒否。ファイルは作られない",
       output: "touch: cannot touch '/vivras-demo.txt': Read-only file system",
