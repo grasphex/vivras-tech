@@ -232,3 +232,85 @@ body{background:var(--bg);color:var(--ink)}
 .firewall-request{grid-template-columns:1fr;gap:3px;padding:12px}.firewall-paths{grid-template-columns:1fr;gap:9px}.firewall-path{padding:11px 12px}.firewall-path strong{font-size:15px}
 .dns-query strong{font-size:16px}.dns-branches{grid-template-columns:1fr;gap:8px}.dns-branch{padding:11px}.dns-branch strong{font-size:15px}
 }
+
+
+/* Focused, logically complete technical lessons: problem -> terms -> example -> test. */
+.tech-lesson{max-width:880px;margin-bottom:85px}
+.tech-lesson>.lesson-section{margin-top:38px}
+.tech-lesson>.lesson-section:first-child{margin-top:14px}
+.tech-lesson .lesson-kicker{font:800 11px/1.5 ui-monospace,monospace;color:#4d7658;letter-spacing:.08em;margin-bottom:8px}
+.tech-lesson h2{font-size:clamp(22px,3vw,28px);letter-spacing:-.04em;line-height:1.42;border:0;padding:0 0 12px;margin:0 0 10px;border-bottom:1px solid #bfcbbc}
+.tech-lesson p,.tech-lesson li{font-size:15px;line-height:1.82}
+.tech-lesson p{margin:10px 0}
+.tech-lesson code{font-size:.88em;overflow-wrap:anywhere}
+.tech-lesson pre{background:#202e25;color:#e9f1e5;border-radius:0;padding:17px 19px;overflow-x:auto}
+.tech-lesson pre code{font-size:13px;line-height:1.8;white-space:pre;overflow-wrap:normal}
+.tech-lesson .lesson-answer{border-left:3px solid #376b47;background:#e9f1e6;padding:14px 18px;margin:19px 0 0}
+.tech-lesson .lesson-answer strong{color:#255a38}
+.tech-lesson .lesson-terms{margin:14px 0 0;border-top:2px solid #34503d}
+.tech-lesson .lesson-terms>div{display:grid;grid-template-columns:170px minmax(0,1fr);gap:17px;border-bottom:1px solid #c9d2c8;padding:11px 0}
+.tech-lesson .lesson-terms dt{font-size:14px;font-weight:770;margin:0}
+.tech-lesson .lesson-terms dd{font-size:14px;line-height:1.65;margin:0}
+.tech-lesson .lesson-figure{padding:16px 19px 13px;margin:20px 0 15px;background:#f0f4ee;border-top:3px solid #2a5c3c;border-bottom:1px solid #b4c6b5}
+.tech-lesson .lesson-figure figcaption{font-size:12px;font-weight:770;color:#48634d;margin-bottom:15px}
+.tech-lesson .lesson-result{padding:11px 13px;margin-top:14px;background:#2c4a35;color:#fff;font-size:14px;font-weight:780;line-height:1.65}
+.tech-lesson .lesson-result code{color:#fff;border-color:#6a846f;background:transparent}
+.tech-lesson .lesson-steps{counter-reset:step;list-style:none;padding:0;margin:11px 0 16px;border-top:1px solid #b8c5b7}
+.tech-lesson .lesson-steps li{position:relative;margin:0;padding:12px 8px 12px 41px;border-bottom:1px solid #c8d1c6}
+.tech-lesson .lesson-steps li:before{counter-increment:step;content:counter(step,decimal-leading-zero);position:absolute;top:15px;left:3px;font:800 12px ui-monospace,monospace;color:#3b7150}
+.tech-lesson .lesson-note{font-size:13px;color:#586d5d;line-height:1.72}
+.tech-lesson .lesson-try{background:#fff;padding:18px 19px;border:1px solid #b8c5b5;margin:18px 0 8px}
+.tech-lesson .lesson-try-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px solid #c4cfc4;padding-bottom:12px;margin-bottom:12px}
+.tech-lesson .lesson-try-head strong{font-size:15px}
+.tech-lesson .lesson-try-head span{font-size:11px;color:#607160}
+.tech-lesson .lesson-control{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.tech-lesson .lesson-control label{min-width:155px;flex:1;font-size:12px;font-weight:700;display:flex;flex-direction:column;gap:6px}
+.tech-lesson .lesson-control select{width:100%;min-width:0;min-height:42px;padding:7px 9px;background:#fff;border:1px solid #aabcae;border-radius:2px;font-size:14px}
+.tech-lesson .lesson-control .lesson-switch{display:flex;align-items:center;flex-direction:row;gap:8px;padding:9px 0;flex:1.2;cursor:pointer}
+.tech-lesson .lesson-switch input{width:18px;height:18px}
+.tech-lesson .lesson-status{margin-top:15px;font-size:17px;font-weight:800;padding:11px 13px;background:#edf4ed;color:#2f603f;border-left:4px solid #4c885b}
+.tech-lesson .lesson-status.is-blocked{background:#f9ece7;color:#923e34;border-left-color:#ae6556}
+.tech-lesson .lesson-why{font-size:13px;color:#536657;margin:8px 0 0}
+.tech-lesson .lesson-path{font-size:13px;font-weight:700;line-height:1.7;padding:12px;background:#ebf0e8}
+.tech-lesson .lesson-detail{border-top:1px solid #b6c2b6;border-bottom:1px solid #b6c2b6;padding:11px 0;margin:15px 0}
+.tech-lesson .lesson-detail summary{font-size:14px;cursor:pointer;font-weight:750}
+.tech-lesson .lesson-detail pre{margin:11px 0}
+.tech-lesson .lesson-quiz details{border:0;border-top:1px solid #b5c3b7;background:transparent;border-radius:0;margin:0;padding:14px 4px}
+.tech-lesson .lesson-quiz details:last-child{border-bottom:1px solid #b5c3b7}
+.tech-lesson .lesson-quiz summary{cursor:pointer;font-size:14px;font-weight:740}
+.tech-lesson .lesson-quiz details p{margin:10px 0 0;font-size:13px;color:#4e6553}
+.tech-lesson .lesson-sources{margin-top:35px;border-top:2px solid #2f4d39;padding-top:16px}
+.tech-lesson .lesson-sources h2{font-size:18px;border:0;margin:0 0 5px}
+.tech-lesson .lesson-sources p{font-size:13px}
+.tech-lesson a{text-decoration:underline;text-underline-offset:3px}
+.mount-pair{display:grid;grid-template-columns:1fr 82px 1fr;gap:9px;align-items:stretch}
+.mount-disk,.mount-dir{padding:16px;background:#fff;border:1px solid #b4c5b4;min-width:0}
+.mount-disk>span,.mount-dir>span{display:block;font-size:12px;color:#526853}
+.mount-disk strong,.mount-dir strong{display:block;font:850 clamp(17px,2.4vw,23px)/1.4 ui-monospace,monospace;margin:8px 0;color:#284b36;letter-spacing:-.04em}
+.mount-disk small,.mount-dir small{display:block;font-size:12px;color:#526954}
+.mount-bridge{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;color:#3c7151}
+.mount-bridge span{font-size:12px;font-weight:750}
+.mount-bridge b{font-size:29px;line-height:1}
+.firewall-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.firewall-two>div{border:1px solid #b7c5b7;background:#fff;padding:14px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.firewall-two span{font-size:12px;color:#556b59}
+.firewall-two strong{font-size:22px;line-height:1.2}
+.firewall-two small{font-size:13px}
+.firewall-two em{font-style:normal;font-size:13px;font-weight:800;line-height:1.5;padding:9px}
+.firewall-two .lesson-deny{color:#8c4036;background:#f8ece7}
+.firewall-two .lesson-allow{color:#205737;background:#e2f1e4}
+.dns-story-row{display:grid;grid-template-columns:120px minmax(0,1fr) minmax(0,.9fr);gap:12px;align-items:baseline;padding:10px 13px;border:1px solid #b4c5b7;background:#fff}
+.dns-story-row span{font-size:12px;color:#527057;font-weight:780}
+.dns-story-row strong{font-size:14px;line-height:1.45}
+.dns-story-row small{font-size:12px;line-height:1.55;color:#506454}
+.dns-story-row.is-final{background:#e0efe1;border-color:#93b19a}
+.dns-story-down{text-align:center;color:#3b7650;font-size:18px;height:19px;line-height:19px}
+@media(max-width:620px){
+.tech-lesson>.lesson-section{margin-top:29px}.tech-lesson .lesson-terms>div{grid-template-columns:1fr;gap:3px;padding:10px 0}
+.tech-lesson .lesson-figure{padding:12px}.tech-lesson .lesson-try{padding:13px}
+.tech-lesson .lesson-control{flex-direction:column;align-items:stretch}.tech-lesson .lesson-control label{width:100%;min-width:0}
+.tech-lesson .lesson-try-head{flex-wrap:wrap}
+.mount-pair{grid-template-columns:1fr;gap:2px}.mount-bridge{flex-direction:row;min-height:30px}.mount-bridge b{transform:rotate(90deg);font-size:23px}.mount-disk,.mount-dir{padding:12px}
+.firewall-two{grid-template-columns:1fr;gap:9px}
+.dns-story-row{grid-template-columns:1fr;gap:3px;padding:10px}
+}

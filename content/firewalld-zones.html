@@ -1,38 +1,79 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>firewalld｜同じ80番でも、zoneで結果が変わる｜VIVRAS Tech</title><meta name="description" content="firewalldのzone、ポート、プロトコルの意味を、新人SE向けに基礎から解説。通信がサーバーへ届く順序を図解し、許可設定を変更するシミュレーションと確認コマンドで理解します。"><meta name="category" content="Linux"><meta name="keywords" content="firewalld firewall-cmd zone port service TCP UDP ファイアウォール 通信制御"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/firewalld-zones.html"><link rel="stylesheet" href="../assets/site.css"><style>
-.article-body{max-width:880px}.article-body>section{margin-top:42px}.article-body p,.article-body li{line-height:1.75}.article-body h2{font-size:clamp(21px,3.4vw,27px)}.article-body h3{font-size:18px}.article-body pre{max-width:100%;overflow-x:auto}.article-body pre code{white-space:pre}.visual-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}.visual-tile{background:#f5f8fc;border:1px solid #dce4ed;border-radius:12px;padding:14px 10px;min-width:0}.visual-tile strong,.visual-tile small{display:block;overflow-wrap:anywhere}.visual-tile strong{font-size:14px}.visual-tile small{font-size:12px;color:#64748b;margin-top:4px}.term-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:14px 0}.term{background:#f8fafc;border:1px solid #dce4ed;border-radius:10px;padding:11px 13px;min-width:0}.term dt{font-weight:800;font-size:13px;color:#173d8b}.term dd{font-size:13px;line-height:1.65;margin:5px 0 0}.learning-path{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:15px 0}.learning-path>div{background:#fff;border:1px solid #ced9e9;border-radius:10px;padding:13px 9px;font-size:13px;line-height:1.55;min-width:0}.learning-path strong{display:block;color:#2152b1;margin-bottom:7px}.visual-stage{border:1px solid #dce4ed;background:#f5f8fc;border-radius:12px;padding:15px 10px;margin:15px 0}.visual-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;align-items:stretch}.visual-flow .diagram-node{min-width:0;padding:11px 2px;white-space:normal;overflow-wrap:anywhere;display:grid;place-items:center;font-size:12px}.visual-flow .diagram-node.active{border:2px solid var(--accent);background:#dceaff}.visual-flow .diagram-node.passed{background:#edf3ff}.visual-flow .diagram-node.fail{border-color:#c34242;background:#fff0f0}.track{height:7px;border-radius:5px;background:#d9e3f4;position:relative;margin:16px 5px 0;overflow:hidden}.track span{height:100%;display:block;width:25%;background:var(--accent);transition:transform .28s ease}.sim-controls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.sim-controls label{display:flex;flex-direction:column;gap:5px;flex:1 1 140px;min-width:0;font-size:12px;font-weight:750}.sim-controls select{min-width:0;width:100%;padding:9px;border:1px solid #b7c7df;border-radius:8px;background:white;font:inherit}.sim-stage-status{margin:12px 0 0;font-size:13px;color:#3d5474}.learning-path .focus{outline:2px solid var(--accent)}.mini-note{font-size:12px;color:#617086}.plain-steps{margin:12px 0;padding-left:23px}.plain-steps li{margin-bottom:10px}.plain-steps strong{color:#1a4a9c}.article-body .demo-result{font-size:14px;min-height:60px}@media(max-width:600px){.term-list{grid-template-columns:1fr}.visual-grid{grid-template-columns:1fr;gap:7px}.visual-tile{padding:10px 12px}.learning-path{grid-template-columns:repeat(2,minmax(0,1fr))}.article-body>section{margin-top:34px}.demo{padding:15px}.visual-flow .diagram-node{font-size:10px;padding:8px 1px}}
-</style></head>
-<body><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav></div></header><main><header class="article-header"><div class="breadcrumb"><a href="../index.html">トップ</a> / <a href="../topics/tech.html">技術</a> / <a href="../index.html?category=Linux#articles">Linux</a></div><span class="tag">LINUX · FIREWALL</span><h1>firewalld｜同じ80番でも、zoneで結果が変わる</h1><p class="article-lead">通信を許可するかは、<strong>まず適用するzone（ルールのまとまり）を選び、その中のポート・通信方式で決まる</strong>。違うzoneへ設定しても通りません。</p><div class="article-meta">2026-11-15 · 新卒〜3年目SE · 動く図解</div></header>
-<div class="article-one-glance"><figure class="explain-firewall" aria-label="送信元やネットワークの入口に対応するzoneが異なれば、同じ80/tcpの通信でも許可・拒否が変わる">
-<figcaption>最初に見る図 / 同じ通信でも、どのzoneのルールを使うかで結果が違う</figcaption>
-<div class="firewall-request"><small>届いた通信</small><strong>宛先ポート 80 / TCP</strong><span>Webサイトを見るときによく使う通信</span></div>
-<div class="firewall-branches" aria-hidden="true"><span>接続元やネットワークの入口でzoneを選択</span></div>
-<div class="firewall-paths">
-<div class="firewall-path"><span class="firewall-path-label">zone：internal</span><strong>許可：22/tcp・53/udp</strong><small>80/tcp は含まれていない</small><div class="firewall-out reject">拒否</div></div>
-<div class="firewall-path"><span class="firewall-path-label">zone：public</span><strong>許可：80/tcp</strong><small>80/tcp が一致する</small><div class="firewall-out accept">許可</div></div>
+<title>firewalldのzone｜どのルールが使われるのか｜VIVRAS Tech</title><meta name="description" content="firewalldはなぜzoneごとに通信を許可・拒否するのか。接続口からzoneを選び、ポート・TCP/UDPと照合する順序を、1つの具体例と確認コマンドで解説。"><meta name="category" content="Linux"><meta name="keywords" content="firewalld firewall-cmd zone port service TCP UDP ファイアウォール 通信制御"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/firewalld-zones.html"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav></div></header><main><header class="article-header"><div class="breadcrumb"><a href="../index.html">トップ</a> / <a href="../topics/tech.html">技術</a> / <a href="../index.html?category=Linux#articles">Linux</a></div>
+<span class="tag">LINUX / NETWORK SECURITY</span><h1>firewalld｜同じ80/tcpでも通る通信・通らない通信がある理由</h1>
+<p class="article-lead"><strong>「80/tcpを許可したのに、つながらない」</strong>。まず確認すべきなのは、<strong>その通信にどのzone（ルールのまとまり）が使われているか</strong>です。</p></header><article class="article-body tech-lesson">
+<section class="lesson-section" id="problem"><div class="lesson-kicker">01 / なぜ必要？</div>
+<h2>同じサーバーでも、接続する場所によって許可を変えたい。</h2>
+<p>例えば社内からの管理接続は許可し、インターネットからの不要な接続は防ぎたい。Linuxの<strong>firewalld</strong>は、こうした通信のルールを分かりやすく管理するサービスです。</p>
+<p class="lesson-answer"><strong>答え：</strong>通信を受け取ったら、<strong>①適用するzoneを決める → ②そのzoneの許可設定に合うか調べる</strong>。そのため、同じ80/tcpでも適用zoneが違えば結果が変わります。</p>
+</section>
+<section class="lesson-section" id="terms"><div class="lesson-kicker">02 / まず必要な3つの言葉</div>
+<h2>通信・ポート・zoneの役割を分ける。</h2>
+<dl class="lesson-terms">
+<div><dt><strong>ポート番号</strong></dt><dd>通信を受け取るアプリを区別する番号。例：<code>80</code>はWebサーバーのHTTP通信によく使われます。</dd></div>
+<div><dt><strong>TCP / UDP</strong></dt><dd>通信の方式。<code>80/tcp</code>と<code>80/udp</code>は別の条件です。</dd></div>
+<div><dt><strong>zone</strong></dt><dd>許可する通信をまとめた設定。<code>internal</code>や<code>public</code>という名前でも、<strong>何を許可するかは実際の設定次第</strong>です。</dd></div>
+</dl></section>
+<section class="lesson-section" id="flow"><div class="lesson-kicker">03 / 一つの例を最後まで追う</div>
+<h2>publicで80/tcpを許可したのに、なぜinternal側では通らない？</h2>
+<p>以下のように設定した<strong>架空のサーバー</strong>を考えます。ネットワークの接続口<code>eth0</code>は<code>internal</code>、<code>eth1</code>は<code>public</code>に割り当ててあるものとします。</p>
+<figure class="lesson-figure firewalld-story">
+<figcaption>どちらも80/tcpへのアクセス。適用されるzoneだけが違う</figcaption>
+<div class="firewall-two">
+<div><span>① eth0 に届く</span><strong>internal</strong><small>許可：22/tcp、53/udp</small><em class="lesson-deny">80/tcpは許可なし → 通過しない</em></div>
+<div><span>① eth1 に届く</span><strong>public</strong><small>許可：80/tcp</small><em class="lesson-allow">80/tcpに一致 → 通過</em></div>
 </div>
-<p class="concept-foot">上記の許可設定は説明用の仮定です。実際の既定ルールを示すものではありません。ほかのルール・zoneのtarget・接続状態などによって結果は変わります。</p>
-</figure></div>
-<article class="article-body">
-<section><h2>1. まず結論：zoneによって許可が違う</h2><p>firewalldは、Linuxへ届く通信に対し、<strong>適用するzoneを決め、そのzoneのルールで通信を判断する</strong>ための設定管理サービスです。</p><div class="callout"><p><strong>なぜ必要？</strong> 同じサーバーでも接続するネットワークによって、許可したい通信が異なるためです。たとえば社内向けの接続口ではSSHを許可し、公開向けの接続口ではWeb通信だけを許可する、といった管理ができます。</p></div></section>
-<section><h2>2. 通信の登場人物を整理</h2><dl class="term-list"><div class="term"><dt>パケット</dt><dd>ネットワーク上で送受信されるデータの単位。通信先IP・ポートなどの情報を含みます。</dd></div><div class="term"><dt>IPアドレス</dt><dd>ネットワークで通信先を特定するための番号。</dd></div><div class="term"><dt>ポート番号</dt><dd>受信した通信をどのサービスへ渡すかを区別する番号。例：80はHTTPによく使われます。</dd></div><div class="term"><dt>TCP / UDP</dt><dd>通信方式の区別。同じ80番でも80/tcpと80/udpは別の条件です。</dd></div><div class="term"><dt>インターフェース</dt><dd>Linuxがネットワークと接続する口。例：eth0。</dd></div><div class="term"><dt>zone</dt><dd>通信の入口に適用するルールのまとまり。内部向け・公開向けなどを区別します。</dd></div><div class="term"><dt>service / port</dt><dd>serviceは複数の通信条件を名前で定義したもの。portは番号とTCP/UDPを直接指定する方法です。</dd></div></dl></section>
-<section><h2>3. 受信した通信を判定する順序</h2><div class="learning-path"><div><strong>① 受信</strong>サーバーが新規パケットを受け取ります。</div><div><strong>② zone</strong>接続元やインターフェースの割当から適用zoneを決めます。割当がなければデフォルトzoneを使います。</div><div><strong>③ 照合</strong>そのzoneの許可ルールと、宛先ポート・プロトコルを比較します。</div><div><strong>④ 判定</strong>教材で定義したルールに合えば通過、合わなければ拒否となります。</div></div></section>
-<section><h2>4. zoneとポートを変えて確かめる</h2><div class="demo"><div class="demo-label">INTERACTIVE / VISUAL LAB</div><p class="demo-title">図の条件を変え、結果を確かめる</p><div class="sim-controls"><label for="sim-a">zone<select id="sim-a"><option value="internal">internal</option><option value="public">public</option></select></label><label for="sim-b">宛先<select id="sim-b"><option value="22/tcp">22/tcp (SSH)</option><option value="80/tcp">80/tcp (HTTP)</option><option value="53/udp">53/udp (DNS)</option></select></label><label for="sim-c">80/tcp追加<select id="sim-c"><option value="no">しない</option><option value="yes">このzoneで許可</option></select></label></div><div class="visual-stage"><div class="visual-flow"><div class="diagram-node" id="node-0">送信元</div><div class="diagram-node" id="node-1">zone</div><div class="diagram-node" id="node-2">許可ルール</div><div class="diagram-node" id="node-3">サーバー</div></div><div class="track"><span id="sim-track"></span></div><p id="sim-summary" class="sim-stage-status"></p></div><div class="step-bar"><button type="button" id="sim-prev">← 前へ</button><span id="sim-progress" class="step-status"></span><button type="button" id="sim-next">次へ →</button></div><p id="sim-result" class="demo-result" role="status" aria-live="polite"></p><p class="article-note">この例は受信方向の新規通信で、追加のrich rule・policy・状態追跡による例外がない場合を扱います。実際の判定はそれらやzone targetにも左右されます。</p></div></section>
-<section><h2>5. 設定を確認・変更する</h2><pre><code># firewalldの起動状態
+<div class="lesson-result">通信の入口 → 適用zone → zone内の許可ルール → 結果</div>
+</figure>
+<ol class="lesson-steps">
+<li><strong>接続口を確認：</strong>届いた通信の送信元やネットワークの入口（インターフェース）への割り当てから、使うzoneを決めます。</li>
+<li><strong>そのzoneを確認：</strong><code>internal</code>に80/tcpの許可がなければ、<code>public</code>の許可は使われません。zoneごとに設定が独立しているためです。</li>
+<li><strong>ポートと方式を照合：</strong>80/tcpを許可した場合でも、80/udpが自動で許可されるわけではありません。</li>
+</ol>
+<p class="lesson-note">この図は、新規の受信通信・単純な許可ルールを仮定。実際はzone target、rich rule、policy、接続状態なども影響します。インターフェースだけでなく送信元アドレスにもzoneを割り当てられます。</p>
+</section>
+<section class="lesson-section" id="try"><div class="lesson-kicker">04 / 条件を変えて納得</div>
+<h2>同じ80/tcpを、違うzoneへ通してみる。</h2>
+<div class="lesson-try">
+<div class="lesson-try-head"><strong>この例の設定を切り替える</strong><span>実機の設定は変わりません</span></div>
+<div class="lesson-control">
+<label for="fw-zone">適用するzone<select id="fw-zone"><option value="internal">internal（eth0）</option><option value="public">public（eth1）</option></select></label>
+<label for="fw-port">宛先ポート<select id="fw-port"><option value="80/tcp">80/tcp：Web</option><option value="22/tcp">22/tcp：SSH</option><option value="53/udp">53/udp：DNS</option></select></label>
+<label class="lesson-switch" for="fw-add"><input id="fw-add" type="checkbox"> internalに80/tcpを追加</label>
+</div>
+<div id="fw-status" class="lesson-status" aria-live="polite"></div><p id="fw-why" class="lesson-why"></p>
+</div>
+<p class="lesson-note">許可された場合でも、Webサーバーが起動していない・経路が壊れている等の理由で接続できないことはあります。</p>
+</section>
+<section class="lesson-section" id="commands"><div class="lesson-kicker">05 / 実機で何を見る？</div>
+<h2>「設定したzone」と「実際に使うzone」を別々に確認する。</h2>
+<pre><code># サービスの起動状態
 sudo firewall-cmd --state
-# 実際に使われるzoneと接続口
+# どの接続口・送信元にどのzoneが使われるか
 sudo firewall-cmd --get-active-zones
-# internalの設定（例）
+# internalに登録した許可（services / ports 等）
 sudo firewall-cmd --zone=internal --list-all
-# 変更例：internalにHTTPを永続的に許可
+# publicに登録した許可
+sudo firewall-cmd --zone=public --list-all</code></pre>
+<p><code>--get-active-zones</code>で「通信に適用されるzone」を見てから、<code>--list-all</code>の<strong>services（サービス名）</strong>と<strong>ports（ポート番号・方式）</strong>を読みます。<strong>設定したzoneが実際の通信に適用されていなければ、許可を増やしても直りません。</strong></p>
+<details class="lesson-detail"><summary>実際に80/tcpの許可を追加するときは？</summary>
+<pre><code># 一時的な設定（実行中の設定だけ）
+sudo firewall-cmd --zone=internal --add-port=80/tcp
+# 永続設定（次の再起動後も残したい場合）
 sudo firewall-cmd --permanent --zone=internal --add-port=80/tcp
-# 永続設定を実行時に反映（既存のruntimeのみの設定には注意）
-sudo firewall-cmd --reload
-# 反映後の確認
-sudo firewall-cmd --zone=internal --list-ports</code></pre><h3>出力のどこを見る？</h3><p><code>--get-active-zones</code>はインターフェースや送信元がどのzoneに紐付いているかを示します。<code>--list-all</code>の<code>services</code>と<code>ports</code>に設定済みの許可が出ます。<code>--permanent</code>による変更は直ちに実行時へ反映されず、<code>--reload</code>で反映します。<strong>注：</strong>設定変更は管理用通信を切断する危険があるため、実機では影響を確認してから操作してください。</p><p class="article-note">出力はOSや設定によって異なります。上記はコマンド例であり、実機実行結果の転載ではありません。</p></section>
-<section><h2>6. よくある誤解</h2><dl class="term-list"><div class="term"><dt>zone＝通信先の場所？</dt><dd>いいえ。ここでは受信通信に適用するルールセットです。</dd></div><div class="term"><dt>80/tcpを開ければ80/udpも通る？</dt><dd>いいえ。番号とプロトコルの両方を照合します。</dd></div><div class="term"><dt>firewallの許可＝必ずサービスに接続できる？</dt><dd>いいえ。受信アプリが待受しているか、経路や別の制御があるかも別に確認します。</dd></div></dl></section>
-<section><h2>7. 3問で理解を確認</h2><div class="quiz"><details><summary>Q1. internalに22/tcpだけ許可。80/tcpは通る？</summary><p><strong>答え：</strong>通りません。許可条件に80/tcpがないためです。</p></details><details><summary>Q2. publicに80/tcpを追加したらinternalにも反映される？</summary><p><strong>答え：</strong>反映されません。zoneはそれぞれ独立したルールを持ちます。</p></details><details><summary>Q3. --permanentで許可を追加し、まだreloadしていない。実行中の設定は変わる？</summary><p><strong>答え：</strong>通常は変わりません。永続設定と実行時設定は別です。</p></details></div></section>
-<section><h2>8. 一次資料</h2><p><a href="https://firewalld.org/documentation/man-pages/firewall-cmd.html" target="_blank" rel="noopener noreferrer">firewalld: firewall-cmd manual</a></p><p><a href="https://firewalld.org/documentation/zone/connections-interfaces-and-sources" target="_blank" rel="noopener noreferrer">firewalld: Connections, Interfaces and Sources</a></p><p><a href="https://firewalld.org/documentation/zone/default-zone.html" target="_blank" rel="noopener noreferrer">firewalld: Default Zone</a></p><p class="article-note">公式資料に基づく独自の教育用解説です。図解は概念モデルであり、実機のすべての処理を再現するものではありません。試験問題や社内資料の転載はありません。</p></section>
-<div class="article-end"><a href="../topics/tech.html">← 技術の記事一覧に戻る</a></div></article></main><footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span></div></footer>
-<script>(()=>{"use strict";const $=id=>document.getElementById(id),a=$("sim-a"),b=$("sim-b"),c=$("sim-c"),prev=$("sim-prev"),next=$("sim-next");let step=0;function scenario(){const z=a.value,p=b.value;const rules=z==="internal"?["22/tcp","53/udp"]:["80/tcp"];if(c.value==="yes"&&!rules.includes("80/tcp"))rules.push("80/tcp");const ok=rules.includes(p);return {notes:["送信元が "+p+" の通信を送信。","通信には "+z+" zoneが適用される設定。","許可条件は "+rules.join("、")+"。宛先 "+p+" を照合。",ok?"一致したため通過。":"一致する許可がないため拒否。"],ok,summary:z+"：許可 "+rules.join("、")};}function draw(){const v=scenario(),last=v.notes.length-1;step=Math.min(step,last);$("sim-summary").textContent=v.summary;$("sim-result").textContent=v.notes[step];$("sim-result").className="demo-result "+(step===last?(v.ok?"is-allowed":"is-blocked"):"");$("sim-progress").textContent=(step+1)+" / "+v.notes.length;prev.disabled=step===0;next.disabled=step===last;for(let i=0;i<4;i++){const n=$("node-"+i);n.classList.toggle("active",i===Math.min(3,Math.floor(step*4/v.notes.length)));n.classList.toggle("passed",i<Math.floor(step*4/v.notes.length));n.classList.toggle("fail",step===last&&!v.ok&&i===3)}$("sim-track").style.transform="translateX("+(step/(last||1)*300)+"%)"}[a,b,c].forEach(el=>el.addEventListener("change",()=>{step=0;draw()}));prev.addEventListener("click",()=>{step=Math.max(0,step-1);draw()});next.addEventListener("click",()=>{step=Math.min(scenario().notes.length-1,step+1);draw()});draw()})();</script></body></html>
+# 永続設定を実行中にも反映
+sudo firewall-cmd --reload</code></pre>
+<p><code>--permanent</code>だけではすぐ反映されず、<code>--reload</code>で適用されます。<strong>reloadは別の一時設定に影響することがあります。接続が切れると困るリモート機器では、事前確認が必要です。</strong></p></details>
+</section>
+<section class="lesson-section" id="check"><div class="lesson-kicker">06 / 誤解を防ぐ</div>
+<h2>最後に3問。</h2><div class="lesson-quiz">
+<details><summary>Q1. publicに80/tcpを許可すれば、internalでも使える？</summary><p>使えません。別のzoneの許可設定だからです。internal側の通信にはinternalのルールを確認します。</p></details>
+<details><summary>Q2. 80/tcpを許可すれば80/udpも許可される？</summary><p>いいえ。番号が同じでもTCPとUDPは別の通信方式です。</p></details>
+<details><summary>Q3. firewalldが通信を許可したら、Webに必ずアクセスできる？</summary><p>いいえ。Webサーバーが動いているか、別の通信制御やネットワーク経路に問題がないかは別に確認します。</p></details></div></section>
+<section class="lesson-section lesson-sources"><h2>参照した公式資料</h2>
+<p><a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_firewalls_and_packet_filters/using-and-configuring-firewalld_firewall-packet-filters" target="_blank" rel="noopener noreferrer">Red Hat：firewalldの設定</a> ／ <a href="https://firewalld.org/documentation/man-pages/firewall-cmd.html" target="_blank" rel="noopener noreferrer">firewall-cmdマニュアル</a></p>
+<p class="lesson-note">図中のinternal・publicの許可ポートは説明用の独自設定です。ディストリビューションの既定値ではありません。</p></section>
+<div class="article-end"><a href="../topics/tech.html">← 技術の記事一覧へ</a></div>
+</article></main><footer class="site-footer"><div class="container footer-row">© VIVRAS Tech</div></footer><script>(()=>{"use strict";const z=document.getElementById("fw-zone"),p=document.getElementById("fw-port"),add=document.getElementById("fw-add"),status=document.getElementById("fw-status"),why=document.getElementById("fw-why");function draw(){const allow=z.value==="internal"?["22/tcp","53/udp"]:["80/tcp"];if(z.value==="internal"&&add.checked)allow.push("80/tcp");const pass=allow.includes(p.value);status.textContent=pass?"この例のルールでは通過":"この例のルールでは通過しない";status.className="lesson-status "+(pass?"is-allowed":"is-blocked");why.textContent="適用zone："+z.value+" ／ 許可："+allow.join("・")+" ／ 宛先："+p.value+"。"+(pass?"一致する許可があるため。":"一致する許可がないため。");}z.addEventListener("change",draw);p.addEventListener("change",draw);add.addEventListener("change",draw);draw()})();</script></body></html>
