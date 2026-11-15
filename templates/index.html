@@ -1,42 +1,29 @@
 <!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <title>VIVRAS Tech — 仕事と学び、日々の気づきを記録する個人メディア</title>
-  <meta name="description" content="システムエンジニアとしての仕事や技術学習を起点に、教養・ニュース・日々の経験・考えたことをコンテンツとして記録・公開する個人メディア。各テーマをまず全体像から、図解と具体例で理解する。">
-  <meta property="og:title" content="VIVRAS Tech — 仕事と学び、日々の気づきを発信">
-  <meta property="og:description" content="SEの仕事と技術学習を出発点に、教養・ニュース・日常・考えたことまで記録する個人メディア。">
-  <meta property="og:type" content="website">
-  <link rel="stylesheet" href="assets/site.css">
-  <script src="assets/catalog.js" defer></script>
-</head>
-<body>
-  <header class="site-header"><div class="container topbar">
-    <a href="index.html" class="logo" aria-label="VIVRAS Tech トップ"><span class="logo-mark">V</span><span>VIVRAS<span class="logo-light"> TECH</span></span></a>
-    <nav aria-label="メインナビ"><a href="#articles">記事を探す</a><a href="#about">このサイトについて</a></nav>
-  </div></header>
-  <main>
-    <section class="hero container" aria-labelledby="hero-title">
-<div class="hero-topline"><span>VIVRAS TECH — READING ROOM</span><span>TECH / LEARNING / LIFE / NOTES</span></div>
-<div class="hero-layout"><div><p class="hero-eyebrow">PERSONAL MEDIA / VIVRAS TECH</p><h1 id="hero-title">学んだことを、<br><span class="accent">伝わる形に。</span></h1></div>
-<div class="hero-aside"><span>ABOUT / なぜ書くのか</span><p>システムエンジニアとして仕事で調べた技術や、日々の勉強から始まった記録。いまは教養・ニュース・暮らしの体験・自分の考えも、テーマを限定せず発信しています。</p><p>調べたことを、そのまま並べるのではなく、初めて読む人に伝わるまで整理する。それがこのサイトの編集方針です。</p><a href="#about">このサイトについて <span aria-hidden="true">↘</span></a></div></div>
-<div class="hero-principles" aria-label="このサイトの発信テーマ"><div><span>01</span><strong>技術・仕事</strong><small>SEの実務・資格・開発</small></div><div><span>02</span><strong>学習・教養</strong><small>医学・経済・社会・地理</small></div><div><span>03</span><strong>暮らし・思考</strong><small>体験・試行錯誤・意見</small></div></div>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VIVRAS Tech｜学んだことを、ひと目で。</title>
+<meta name="description" content="SEの仕事から教養、暮らし、日々の考えまで。学んだことを短い言葉と図で伝える個人メディア。">
+<meta property="og:title" content="VIVRAS Tech｜学んだことを、ひと目で。">
+<meta property="og:description" content="技術・教養・暮らしを、短く、図でわかる形に。"><meta property="og:type" content="website">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/catalog.js" defer></script>
+</head><body class="home">
+<header class="site-header"><div class="container topbar">
+<a href="index.html" class="logo" aria-label="VIVRAS Tech"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a>
+<nav><a href="#articles">記事一覧</a></nav>
+</div></header>
+<main>
+<section class="hero container" aria-labelledby="hero-title">
+<p class="hero-eyebrow">PERSONAL MEDIA / TECH · KNOWLEDGE · LIFE</p>
+<h1 id="hero-title">学んだことを、<br><span class="accent">ひと目で。</span></h1>
+<p class="hero-description">SEの仕事から、教養・暮らし・日々の考えまで。<br>自分が学んだことを、短い言葉と図で発信しています。</p>
 </section>
-<section class="home-feature container"><div><p class="feature-label">FEATURED READING / 医学・脳科学</p><h2>ADHDは、脳で<br>何が起きている？</h2><p>ドーパミン不足という説明は正しいのか。症状・脳の研究・治療を、全体像から順に整理する。</p><a href="articles/adhd-brain-dopamine.html">この記事を読む <span aria-hidden="true">↗</span></a></div><div class="feature-number" aria-hidden="true"><span>001</span><small>UNDERSTAND THE SYSTEM</small></div></section>
 <section class="library-section" id="articles"><div class="container">
-      <div class="section-heading"><div><p class="overline">THE LIBRARY / ALL ARTICLES</p><h2>知識を探す。</h2><p>技術記事、教養解説、個人的な考察や記録を横断して探せます。</p></div><span class="section-count">__ARTICLE_COUNT__ ARTICLES</span></div>
-      <div class="filters"><label class="search-box" for="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="記事を検索（例：Linux、ADHD、経済）" autocomplete="off"></label><div class="filter-chips" id="categories" aria-label="カテゴリで絞り込み"><!--CATEGORY_BUTTONS--></div></div>
-      <div id="article-list" class="article-grid">
-        <!--ARTICLE_LIST-->
-      </div>
-      <p id="empty" class="empty-state" hidden>条件に一致する記事がありません。キーワードを変えてみてください。</p>
-      <p id="result-count" class="result-count" aria-live="polite"></p>
-    </div></section>
-    <section class="manifesto container" id="about"><div class="manifesto-lead"><p class="overline">ABOUT / THIS PERSONAL MEDIA</p><h2>仕事から始まり、<br>生活へ広がる。</h2><p>「Tech」はエンジニアとして学んできた出発点。いま記録する対象は、仕事・技術だけでなく、自分が興味を持ったこと全般です。知識のまとめ、考察、体験談は区別しながら公開します。</p></div>
-<div class="method-list"><div><span>01 / SCOPE</span><h3>扱うテーマは限定しない</h3><p>仕事・勉強・生活・ニュース・趣味。その時々に実際に調べたことや考えたことを扱う。</p></div><div><span>02 / STRUCTURE</span><h3>まず全体像、次に各論</h3><p>最初の画面で要点をつかめるようにし、専門用語や因果関係は順を追って説明する。</p></div><div><span>03 / ORIGINALITY</span><h3>図と体験で、独自の理解へ</h3><p>一般的な説明の要約だけでは終えず、比較・図解・独自例・操作を通して理解を助ける。</p></div></div></section>
-  </main>
-  <footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech / independent learning notes</span><span>特定の資格試験主催者とは無関係の独立した解説サイトです。</span></div></footer>
-</body>
-</html>
+<div class="section-heading"><h2>記事一覧 <span class="section-count">__ARTICLE_COUNT__</span></h2></div>
+<div class="filters"><label class="search-box" for="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="キーワードで検索" autocomplete="off"></label>
+<div class="filter-chips" id="categories" aria-label="カテゴリで絞り込み"><!--CATEGORY_BUTTONS--></div></div>
+<div id="article-list" class="article-grid"><!--ARTICLE_LIST--></div>
+<p id="empty" class="empty-state" hidden>該当する記事はありません。</p><p id="result-count" class="result-count" aria-live="polite"></p>
+</div></section>
+</main>
+<footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span><span>仕事・学び・日々の記録</span></div></footer>
+</body></html>
