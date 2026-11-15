@@ -77,6 +77,30 @@ def validate():
             if target.is_dir():
                 target = target / "index.html"
             assert target.is_file(), f"Broken internal path {link} in {page.relative_to(DIST)}"
+    # Every article teaches terms exactly where they appear; no separate glossary is required.
+    for a in articles:
+        article_file = DIST / a["url"]
+        source = article_file.read_text(encoding="utf-8")
+        assert 'src="../assets/terms.js"' in source, f"Missing common term interaction in {a['slug']}"
+        assert '<button type="button" class="vterm"' in source, f"No inline terms in {a['slug']}"
+        assert '<details class="article-expand"' in source, f"No progressive disclosure in {a['slug']}"
+        assert 'id="words"' not in source, f"Old standalone glossary in {a['slug']}"
+        class TermButtons(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.terms = []
+            def handle_starttag(self, tag, attrs):
+                a = dict(attrs)
+                if tag == "button" and "vterm" in a.get("class", "").split():
+                    self.terms.append(a)
+        buttons = TermButtons()
+        buttons.feed(source)
+        assert len(buttons.terms) >= 3, f"Expected at least three contextual definitions in {a['slug']}"
+        for btn in buttons.terms:
+            assert len(btn.get("data-explain", "")) >= 15, f"Missing definition in {a['slug']}"
+            assert btn.get("type") == "button" and btn.get("aria-label"), f"Inaccessible term in {a['slug']}"
+    assert (DIST / "assets" / "terms.js").is_file(), "Shared glossary interaction missing"
+
     for name in EXPECTED_TOPICS:
         group_page = (DIST / "topics" / f"{name}.html").read_text(encoding="utf-8")
         for a in articles:
