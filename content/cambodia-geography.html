@@ -59,7 +59,7 @@ html{scroll-behavior:smooth}body{background:var(--p);color:var(--ink)}.geo{font-
 </main><footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span><span><a href="../topics/society.html">社会・教養の一覧に戻る</a></span></div></footer>
 <script>
 (function(){const dry=document.getElementById('dry'),wet=document.getElementById('wet'),lake=document.getElementById('lakewater'),river=document.getElementById('riverwater'),arrow=document.getElementById('flowarrow'),label=document.getElementById('flowlabel'),explain=document.getElementById('waterexplain');function render(isWet){dry.setAttribute('aria-pressed',String(!isWet));wet.setAttribute('aria-pressed',String(isWet));lake.setAttribute('y',isWet?'91':'101');lake.setAttribute('height',isWet?'89':'79');river.setAttribute('y',isWet?'57':'124');river.setAttribute('height',isWet?'123':'56');arrow.setAttribute('d',isWet?'M301 103 L283 114 L301 125':'M399 103 L417 114 L399 125');label.textContent=isWet?'川 → 湖':'湖 → 川';explain.textContent=isWet?'雨季：メコン川の水位が上がり、川から湖へ逆流して水域が拡大する。':'乾季：メコン川の水位が下がり、湖からメコン川へ排水される。'}dry.addEventListener('click',()=>render(false));wet.addEventListener('click',()=>render(true));render(false)})();
-</script><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""><\/script>
+</script><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 (function(){
 var el=document.getElementById('cambodia-map');
