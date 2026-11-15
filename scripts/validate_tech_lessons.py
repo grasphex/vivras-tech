@@ -32,11 +32,22 @@ for filename, req in CASES.items():
     assert 'id="terms"' not in h and 'class="lesson-terms"' not in h, filename
     assert 'class="article-body tech-lesson"' in h, filename
     assert 'class="lesson-figure' in h, filename
-    assert 'class="lesson-try"' in h and 'aria-live="polite"' in h, filename
+    assert 'aria-live="polite"' in h, filename
+    if filename == "linux-root-filesystem-remount.html":
+        assert 'class="mount-command-lab"' in h, filename
+    else:
+        assert 'class="lesson-try"' in h, filename
     assert h.count('class="vterm"') >= 4 and 'assets/terms.js' in h, filename
     assert h.count('<details class="article-expand') >= 4, filename
     assert 'class="lesson-quiz"' in h, filename
-    assert '<script>' in h, filename
+    if filename == "linux-root-filesystem-remount.html":
+        assert 'src="../assets/mount-lab.js"' in h, filename
+        assert 'id="mount-command-lab"' in h and 'data-lab-command="write"' in h, filename
+        assert 'sudo mount -o remount,rw /' in h and 'sudo touch /vivras-demo.txt' in h, filename
+        assert 'id="mount-ro-write"' in h and 'id="mount-rw-write"' in h, filename
+        assert 'id="mount-mode"' not in h and '<script>(()=>' not in h, filename
+    else:
+        assert '<script>' in h, filename
     assert all(x in h for x in req["examples"]), filename
     assert req["source"] in h, filename
     # Term help markup increases source length without adding scrolling.
