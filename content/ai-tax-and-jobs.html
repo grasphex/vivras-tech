@@ -4,94 +4,242 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
-<meta name="description" content="米国で議論されるAI課税とは何か。AIによる仕事の変化、税金の流れ、実際の法案、賛否の論点を100件の問い合わせ業務の図解で理解する。">
+<title>AI課税はなぜ議論される？――給与・企業利益・税収の関係｜VIVRAS Tech</title>
+<meta name="description" content="米国で提出されたAI課税法案とアンドリュー・ヤン氏の主張を起点に、税金の仕組み、AI導入前後の給与・企業利益、所得税と法人税の関係を一つの具体例で図解。AI課税が必要とされる理由と反論を分けて解説します。">
 <meta name="category" content="教養">
-<meta name="keywords" content="AI税 AI課税 人工知能 税制 米国 アンドリュー・ヤン 雇用 法人税 トークン課税">
+<meta name="keywords" content="AI税 AI課税 アンドリュー・ヤン AI Tax and Work Protection Act Make AI Work for Americans Act 所得税 法人税 税制 雇用 自動化">
 <meta name="published" content="2026-11-15">
 <link rel="canonical" href="https://tech.grasphex.com/articles/ai-tax-and-jobs.html">
-<meta property="og:title" content="AIに仕事を任せると、税金はどうなる？｜VIVRAS Tech">
-<meta property="og:description" content="AI税の仕組みを、100件の問い合わせと税金の流れの図解で理解する。">
+<meta property="og:title" content="AI課税はなぜ議論される？――給与・企業利益・税収の関係">
+<meta property="og:description" content="米国の法案→税金の仕組み→AI導入前後のお金の流れを、数字と図で追う。">
 <link rel="stylesheet" href="../assets/site.css">
-<title>AIに仕事を任せると、税金はどうなる？｜VIVRAS Tech</title>
 <style>
-:root{--ink:#1c211e;--muted:#58615d;--paper:#f9faf6;--white:#fff;--line:#d8ded8;--deep:#154c3a;--mint:#d7ede1;--ai:#ed7e49;--aiwash:#fff0e4;--good:#154c3a;--bad:#8b3c21;--font: -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo",sans-serif}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;line-height:1.75}a{color:inherit;text-underline-offset:.24em}button{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #8acbaa;outline-offset:4px}::selection{background:#b9dfcb}p{margin:0}h1,h2,h3{margin:0;letter-spacing:-.05em;line-height:1.36}h1{font-size:clamp(2.2rem,4.25vw,4rem);font-weight:800}h2{font-size:clamp(1.55rem,2.6vw,2.5rem);font-weight:800}h3{font-size:1.22rem;font-weight:750}.shell{width:min(1120px,calc(100% - 48px));margin-inline:auto}.top{border-bottom:1px solid var(--line);background:var(--white)}.top .shell{height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}.wordmark{font-size:1.17rem;font-weight:900;letter-spacing:-.065em;text-decoration:none}.wordmark span{font-size:.63rem;vertical-align:middle;letter-spacing:.18em;font-weight:850;margin-left:7px}.top nav{display:flex;align-items:center;gap:24px;font-size:.77rem;font-weight:750;color:var(--muted)}.top nav a{text-decoration:none}.top nav a:hover{text-decoration:underline}.top .state{color:var(--deep);border:1px solid #a8cbbb;padding:3px 9px;font-size:.71rem}.hero{padding:75px 0 42px}.eyebrow{font-size:.76rem;font-weight:800;letter-spacing:.08em;color:var(--deep);display:flex;align-items:center;gap:11px;margin-bottom:18px}.eyebrow:before{content:"";display:block;width:24px;height:2px;background:var(--deep)}.hero h1{max-width:900px}.hero .lead{font-size:clamp(1rem,1.6vw,1.29rem);margin-top:22px;max-width:815px;line-height:1.86;color:#303a33;font-weight:500}.dek{color:var(--muted);font-size:.89rem;margin-top:14px}.threefacts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin-top:38px}.fact{padding:15px 19px 18px}.fact:first-child{padding-left:0}.fact+.fact{border-left:1px solid var(--line)}.fact .k{font-size:.72rem;color:var(--muted);font-weight:750;margin-bottom:5px}.fact strong{font-size:1.01rem;line-height:1.5;display:block}.lesson-head{display:grid;grid-template-columns:200px 1fr;gap:35px;align-items:start;margin:0 auto 24px;padding-top:8px}.lesson-number{color:var(--deep);font-size:.83rem;font-weight:850;letter-spacing:.08em;margin-top:12px}.lesson-head p{color:var(--muted);font-size:1rem;max-width:710px;margin-top:11px;line-height:1.85}.demo{background:#e6f0e7;border-top:1px solid #c5d9cc;border-bottom:1px solid #c5d9cc;padding:54px 0 64px}.demo-grid{display:grid;grid-template-columns:minmax(0,.88fr) minmax(400px,1.12fr);gap:62px;align-items:center}.demo h2{max-width:490px}.demo .scenario{font-size:1.05rem;margin-top:20px;line-height:1.88}.demo .scenario strong{box-shadow:inset 0 -.4em #c1e4c9}.demo .interaction-brief{margin-top:28px;display:flex;align-items:center;gap:9px;font-weight:750;color:#275845;font-size:.88rem}.demo .interaction-brief span{font-size:1.4rem;line-height:1}.viz{background:var(--white);border:1px solid #bed0c3;padding:27px 27px 23px;box-shadow:9px 9px 0 #ccdecd}.viz-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:13px}.viz-top .viz-title{font-size:.85rem;font-weight:800}.viz-top .total{font-size:2.2rem;font-weight:850;letter-spacing:-.05em;line-height:1}.viz-top .total small{font-size:.88rem;margin-left:2px}.viz-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 17px}.toggle{border:1px solid #a7bbb0;padding:12px 9px;background:var(--white);cursor:pointer;text-align:center;font-size:.89rem;font-weight:800;transition:background .16s,border-color .16s}.toggle[aria-pressed="true"]{background:var(--ink);color:white;border-color:var(--ink)}.ticket-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;list-style:none;margin:0;padding:0}.ticket{width:100%;aspect-ratio:1.18;background:#305c49;border-radius:1px;transition:background-color .38s cubic-bezier(.2,.7,.2,1),transform .38s ease}.ticket.is-ai{background:var(--ai)}.viz-stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:19px;align-items:center;font-size:.85rem;font-weight:750}.stat{display:flex;align-items:center;gap:8px}.stat i{width:11px;height:11px;display:inline-block;background:#305c49}.stat.ai i{background:var(--ai)}.stat .n{font-variant-numeric:tabular-nums}.viz-note{border-top:1px solid var(--line);margin-top:18px;padding-top:13px;font-size:.76rem;line-height:1.6;color:var(--muted)}.section{padding:83px 0;border-bottom:1px solid var(--line)}.content-column{max-width:930px;margin-left:auto}.problem{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:38px}.rail{border:1px solid var(--line);background:var(--white);padding:25px 26px 27px;min-height:270px}.rail .rail-label{display:flex;gap:9px;align-items:center;font-size:.77rem;color:var(--muted);font-weight:800;letter-spacing:.035em}.rail .rail-label b{font-size:.87rem;color:var(--ink)}.rail h3{font-size:1.25rem;margin:12px 0 22px}.money-flow{display:flex;flex-direction:column;gap:8px;max-width:320px}.flow-pill{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 12px;border:1px solid var(--line);font-size:.86rem;background:#fff}.flow-pill em{font-style:normal;font-size:.72rem;color:var(--muted);white-space:nowrap}.flow-arrow{padding-left:18px;font-size:.75rem;color:var(--muted);line-height:1.25}.flow-result{font-size:.83rem;font-weight:750;line-height:1.7;margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}.rail.person .flow-result{color:var(--deep)}.rail.machine .flow-result{color:#a54a24}.definition{margin-top:20px;display:flex;gap:12px;align-items:baseline;background:#edf4ef;padding:15px 20px;font-size:.9rem}.definition strong{white-space:nowrap;color:var(--deep)}.policy{margin-top:38px;background:#183e31;color:#fff;padding:35px 36px 39px}.policy h3{font-size:1.35rem;color:#fff}.policy .policy-intro{margin:10px 0 28px;color:#d5e4d8;font-size:.92rem}.chain{display:grid;grid-template-columns:1fr 36px 1fr 36px 1fr;gap:10px;align-items:stretch}.chain-node{border-top:2px solid #a9d2b7;padding-top:14px}.chain-node small{display:block;color:#a9d2b7;font-size:.76rem;letter-spacing:.06em;font-weight:750;margin-bottom:7px}.chain-node strong{font-size:1.12rem;display:block;line-height:1.5}.chain-node p{margin-top:10px;color:#d3e2d8;font-size:.78rem;line-height:1.65}.chain-arrow{font-size:1.6rem;color:#a9d2b7;align-self:center;text-align:center}.policy .caution{font-size:.8rem;color:#d5e4d8;margin-top:25px;padding-top:20px;border-top:1px solid #547264}.compare{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:29px}.compare-column{padding-top:17px;border-top:4px solid var(--deep)}.compare-column.careful{border-top-color:var(--ai)}.compare h3{margin-bottom:12px}.compare p{font-size:.98rem;line-height:1.9}.compare .claim{font-size:1.13rem;font-weight:800;margin-bottom:8px}.example{margin-top:30px;background:#f0efe9;border-left:4px solid #83998b;padding:18px 22px;font-size:.9rem;line-height:1.8}.example b{display:block;font-size:.82rem;letter-spacing:.05em;margin-bottom:4px}.quiz{background:#f2ead7;padding:65px 0 76px}.quiz-panel{max-width:880px;margin-left:auto}.quiz h2{margin-bottom:10px}.quiz .quiz-sub{color:#5c594f;margin-bottom:24px;font-size:.91rem}.quiz-question{background:var(--white);border:1px solid #d7cebd;padding:26px 30px}.quiz-qtop{font-size:.75rem;color:#6d6559;font-weight:800;letter-spacing:.08em}.quiz h3{font-size:1.13rem;line-height:1.65;margin:9px 0 17px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answer{padding:13px 14px;border:1px solid #b9b2a4;background:var(--white);text-align:left;cursor:pointer;line-height:1.6;font-weight:700;font-size:.9rem}.answer:hover{border-color:var(--ink)}.answer.correct{background:#e1efe4;border-color:#31704f}.answer.incorrect{background:#f9e6dc;border-color:#bb603d}.answer:disabled{cursor:default}.feedback{margin-top:17px;border-top:1px solid var(--line);padding-top:14px;font-size:.91rem;display:none}.feedback.show{display:block}.feedback b{display:block;margin-bottom:4px}.reset{border:0;background:none;color:var(--ink);font-weight:850;text-decoration:underline;text-underline-offset:4px;cursor:pointer;margin-top:13px;padding:4px 0}.endnote{padding:55px 0 85px}.endnote h2{font-size:1.45rem;margin-bottom:15px}.summary-flow{display:flex;gap:7px;flex-wrap:wrap;font-size:.9rem;font-weight:750;line-height:1.7}.summary-flow span{background:#e4eee6;padding:10px 15px}.summary-flow i{font-style:normal;align-self:center;color:var(--muted)}.sources{margin-top:48px;border-top:1px solid var(--line);padding-top:23px}.sources h3{font-size:1.01rem;margin-bottom:12px}.sources ol{margin:0;padding-left:1.3em;font-size:.83rem;color:var(--muted)}.sources li{padding:4px 0}.foot{border-top:1px solid var(--line);padding:23px 0 38px;font-size:.77rem;color:var(--muted)}.micro{font-size:.8rem;color:var(--muted)}
-@media (max-width:850px){.shell{width:min(100% - 40px,650px)}.lesson-head{grid-template-columns:1fr;gap:9px}.lesson-number{margin-top:0}.demo-grid{grid-template-columns:1fr;gap:19px}.demo .scenario{margin-top:14px}.content-column{max-width:100%}.section{padding:65px 0}.top nav a:nth-child(2){display:none}.hero{padding:51px 0 38px}.chain{grid-template-columns:1fr 24px 1fr 24px 1fr;gap:5px}.chain-node strong{font-size:.98rem}.chain-node p{font-size:.74rem}.chain-arrow{font-size:1.1rem}}
-@media (max-width:600px){.shell{width:calc(100% - 36px)}.top .shell{height:59px}.top nav{gap:10px;font-size:.73rem}.top nav a{display:none}.hero{padding:27px 0 24px}.hero h1{font-size:clamp(2.05rem,9.1vw,2.9rem)}.hero .lead{font-size:.91rem;line-height:1.75;margin-top:14px}.dek{font-size:.76rem;margin-top:9px}.threefacts{margin-top:19px;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}.fact,.fact:first-child{padding:10px 7px 9px;display:block}.fact:first-child{padding-left:0}.fact+.fact{border-left:1px solid var(--line);border-top:0}.fact .k{margin:0 0 4px;font-size:.64rem}.fact strong{font-size:.73rem;line-height:1.5}.demo{padding:28px 0 40px}.demo h2{font-size:1.67rem}.demo .scenario{font-size:.91rem;line-height:1.7}.demo .interaction-brief{margin-top:9px}.viz{padding:18px 17px 18px;box-shadow:5px 5px 0 #ccdecd}.viz-top .total{font-size:1.83rem}.ticket-grid{gap:3px}.viz-actions{margin:14px 0}.toggle{font-size:.82rem;padding:10px 6px}.viz-stats{gap:16px;font-size:.78rem}.section{padding:51px 0}.lesson-head{margin-bottom:16px}.lesson-head h2{font-size:1.6rem}.lesson-head p{font-size:.9rem;margin-top:8px}.problem{grid-template-columns:1fr;gap:11px;margin-top:22px}.rail{min-height:0;padding:18px 18px 20px}.rail h3{margin:9px 0 16px}.rail .money-flow{max-width:100%}.definition{display:block;margin-top:14px;font-size:.85rem;padding:12px 14px}.definition strong{display:block;margin-bottom:4px}.policy{padding:22px 18px 25px;margin-top:21px}.policy .policy-intro{margin-bottom:22px}.chain{grid-template-columns:1fr;gap:5px}.chain-node{border-top:0;border-left:2px solid #a9d2b7;padding:1px 0 5px 13px}.chain-node small{margin:0}.chain-node p{margin-top:2px}.chain-arrow{text-align:left;transform:rotate(90deg);padding-left:9px;align-self:start;line-height:1}.policy .caution{margin-top:15px}.compare{grid-template-columns:1fr;gap:25px}.compare-column{padding-top:12px}.compare h3{margin-bottom:5px}.example{margin-top:21px;padding:14px 17px}.quiz{padding:49px 0 60px}.quiz-panel h2{font-size:1.7rem}.quiz-question{padding:21px 17px}.answers{grid-template-columns:1fr}.endnote{padding:48px 0 58px}.summary-flow{display:block}.summary-flow span{display:block}.summary-flow i{display:block;text-align:center;padding:0;line-height:1.7;transform:rotate(90deg)}.sources{margin-top:36px}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ticket,.toggle{transition:none!important}}
+#ai-lesson{--ink:#202521;--dim:#4f5b54;--line:#cbd0ca;--accent:#72543c;--salary:#315a51;--other:#b6bbb3;--ai:#be8255;--profit:#e1d4c5;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;font-size:16px;line-height:1.76}
+#ai-lesson *{box-sizing:border-box}
+#ai-lesson .wrap{max-width:850px;margin:auto;padding:0 22px}
+#ai-lesson .topline{font-size:12px;letter-spacing:.05em;color:var(--dim);border-bottom:1px solid var(--line);padding:20px 0 12px}
+#ai-lesson h1{font-size:clamp(29px,4.2vw,49px);line-height:1.32;letter-spacing:-.055em;margin:26px 0 18px;font-weight:850}
+#ai-lesson h2{font-size:clamp(22px,3.1vw,31px);line-height:1.38;letter-spacing:-.04em;margin:0 0 13px}
+#ai-lesson h3{font-size:18px;letter-spacing:-.03em;line-height:1.45;margin:0 0 10px}
+#ai-lesson p{margin:0 0 13px}
+#ai-lesson .standfirst{font-size:19px;font-weight:650;line-height:1.7;max-width:760px}
+#ai-lesson .dek{font-size:14px;color:var(--dim)}
+#ai-lesson .lead-points{margin:25px 0 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+#ai-lesson .lead-points div{display:grid;grid-template-columns:130px 1fr;gap:12px;border-bottom:1px solid var(--line);padding:12px 0;font-size:14px}
+#ai-lesson .lead-points div:last-child{border-bottom:0}
+#ai-lesson .lead-points dt{color:var(--dim);font-weight:700}
+#ai-lesson .lead-points dd{margin:0;font-weight:700}
+#ai-lesson section{padding:48px 0;border-bottom:1px solid var(--line)}
+#ai-lesson .sectionno{display:block;font:700 12px/1.3 ui-monospace,monospace;color:var(--accent);letter-spacing:.06em;margin-bottom:12px}
+#ai-lesson .route{margin:22px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+#ai-lesson .route li{display:grid;grid-template-columns:145px 1fr;gap:12px;border-bottom:1px solid var(--line);padding:14px 0;font-size:14px}
+#ai-lesson .route strong{font-size:14px}
+#ai-lesson .route span{color:var(--dim)}
+#ai-lesson .plain-note{font-size:13px;color:var(--dim);margin-top:14px}
+#ai-lesson .muted-title{font-size:13px;font-weight:750;color:var(--dim);margin:20px 0 8px}
+#ai-lesson .flow{display:grid;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr) 18px minmax(0,1.1fr);gap:7px;align-items:center;margin:17px 0 12px}
+#ai-lesson .node{border-top:2px solid var(--salary);padding:10px 6px;font-size:13px;min-height:72px}
+#ai-lesson .node strong,#ai-lesson .node small{display:block}
+#ai-lesson .node small{color:var(--dim);font-size:12px;margin-top:5px}
+#ai-lesson .chev{text-align:center;color:var(--dim);font-size:18px}
+#ai-lesson .factline{border-left:3px solid var(--accent);padding:7px 0 7px 14px;margin:20px 0;font-weight:700}
+#ai-lesson .example{padding:20px 0 0}
+#ai-lesson .example-top{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid var(--ink);gap:12px;padding-bottom:10px;margin-bottom:14px}
+#ai-lesson .example-top strong{font-size:19px}
+#ai-lesson .example-top small{font-size:12px;color:var(--dim)}
+#ai-lesson .controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
+#ai-lesson button{font:inherit;cursor:pointer}
+#ai-lesson .tab{border:1px solid #858e87;background:#fff;color:var(--ink);padding:9px 15px;font-weight:750;font-size:14px;min-width:120px}
+#ai-lesson .tab[aria-pressed="true"]{color:#fff;background:var(--ink);border-color:var(--ink)}
+#ai-lesson button:focus-visible,#ai-lesson a:focus-visible{outline:3px solid #ba8d65;outline-offset:3px}
+#ai-lesson .money-bar{display:flex;height:66px;border:1px solid #8a938a;width:100%;overflow:hidden;background:#fff}
+#ai-lesson .seg{height:100%;transition:width .4s ease}
+#ai-lesson .salary{background:var(--salary)}
+#ai-lesson .other{background:var(--other)}
+#ai-lesson .ai{background:var(--ai)}
+#ai-lesson .profit{background:var(--profit)}
+#ai-lesson .key{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 22px;margin:20px 0 0}
+#ai-lesson .keyitem{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:9px 0;font-size:14px}
+#ai-lesson .swatch{height:11px;width:11px;flex-shrink:0;display:inline-block;margin-right:7px}
+#ai-lesson .keyitem .name{display:flex;align-items:center}
+#ai-lesson .keyitem strong{font-variant-numeric:tabular-nums}
+#ai-lesson .observations{margin:18px 0 0;padding:0;list-style:none}
+#ai-lesson .observations li{padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
+#ai-lesson .observations strong{font-variant-numeric:tabular-nums}
+#ai-lesson .transition{font-weight:750;margin:16px 0;color:var(--ink)}
+#ai-lesson .two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:23px}
+#ai-lesson .two-col>div{border-top:2px solid var(--ink);padding-top:15px}
+#ai-lesson .two-col h3{margin-bottom:8px}
+#ai-lesson .two-col p{font-size:14px}
+#ai-lesson .legislation{border-collapse:collapse;width:100%;margin:18px 0 10px;font-size:14px}
+#ai-lesson .legislation th,#ai-lesson .legislation td{vertical-align:top;text-align:left;padding:12px 10px;border-top:1px solid var(--line)}
+#ai-lesson .legislation th{width:30%;font-size:13px}
+#ai-lesson .legislation tr:last-child th,#ai-lesson .legislation tr:last-child td{border-bottom:1px solid var(--line)}
+#ai-lesson details{border-top:1px solid var(--line);padding:15px 0;font-size:14px}
+#ai-lesson details:last-child{border-bottom:1px solid var(--line)}
+#ai-lesson summary{font-weight:750;cursor:pointer}
+#ai-lesson details p{margin-top:10px;color:var(--dim)}
+#ai-lesson .sources{font-size:13px;line-height:1.8}
+#ai-lesson .sources li{margin-bottom:12px}
+#ai-lesson .footer-note{padding:25px 0 50px;color:var(--dim);font-size:13px}
+#ai-lesson .summary{margin:23px 0;border-top:3px solid var(--ink);padding-top:16px;font-size:18px;font-weight:750}
+@media(max-width:600px){
+#ai-lesson .wrap{padding:0 16px}
+#ai-lesson section{padding:36px 0}
+#ai-lesson .lead-points div{grid-template-columns:90px 1fr}
+#ai-lesson .route li{grid-template-columns:96px 1fr}
+#ai-lesson .flow{grid-template-columns:1fr;gap:3px}
+#ai-lesson .node{min-height:0;padding:7px 12px}
+#ai-lesson .chev{transform:rotate(90deg);height:20px}
+#ai-lesson .key{grid-template-columns:1fr}
+#ai-lesson .two-col{grid-template-columns:1fr;gap:17px}
+#ai-lesson .legislation th{width:36%}
+}
+@media(prefers-reduced-motion:reduce){#ai-lesson .seg{transition:none}}
 </style>
 </head>
 <body>
-<header class="top"><div class="shell"><a href="../index.html" class="wordmark" aria-label="VIVRAS Tech トップ">VIVRAS <span>TECH</span></a><nav aria-label="ページナビゲーション"><a href="../index.html#articles">記事一覧</a><a href="#lesson1">しくみ</a><a href="#policy">制度案</a><a href="#quiz">確認問題</a><span class="state">2026.11.15</span></nav></div></header>
-<main id="top">
-  <section class="hero shell" aria-labelledby="page-title">
-    <div class="eyebrow">教養 / 経済と社会 · 米国の政策議論</div>
-    <h1 id="page-title">AIに仕事を任せると、<br>税金はどうなる？</h1>
-    <p class="lead">米国で議論されている「AI税」は、<strong>AIを使う企業などから税金を集め、働く人の支援に充てる</strong>という政策案です。AI自身が税金を払うわけではありません。</p>
-    <p class="dek">「なぜ課税するのか」を、身近な仕事の例で見ていきます。</p>
-    <div class="threefacts" aria-label="最初に知る3つのこと">
-      <div class="fact"><div class="k">どこの話？</div><strong>米国の政策提案</strong></div>
-      <div class="fact"><div class="k">誰が払う案？</div><strong>AIの利用企業・提供企業など</strong></div>
-      <div class="fact"><div class="k">もう決まった？</div><strong>いいえ。審議・提案の段階</strong></div>
-    </div>
-  </section>
-  <section class="demo" aria-labelledby="demo-title"><div class="shell demo-grid">
-    <div>
-      <div class="eyebrow">最初に、例を見てみよう</div>
-      <h2 id="demo-title">1日100件の問い合わせ。<br>AIを導入すると？</h2>
-      <p class="scenario">ある会社では、社員が毎日100件の問い合わせを処理しています。<br><strong>30件をAIに任せる</strong>場合を見てみましょう。</p>
-      <p class="interaction-brief"><span aria-hidden="true">↘</span> 下のボタンで切り替えられます</p>
-    </div>
-    <div class="viz" aria-label="仕事の担当割合の切り替え例">
-      <div class="viz-top"><span class="viz-title">問い合わせの処理件数 / 日</span><span class="total">100<small>件</small></span></div>
-      <div class="viz-actions" role="group" aria-label="AI導入の前後"><button class="toggle" id="before" aria-pressed="true" type="button">導入前</button><button class="toggle" id="after" aria-pressed="false" type="button">AI導入後</button></div>
-      <div class="ticket-grid" id="tickets" aria-hidden="true"></div>
-      <div class="viz-stats" aria-live="polite"><span class="stat"><i></i>社員が処理 <strong class="n" id="humans">100件</strong></span><span class="stat ai"><i></i>AIが処理 <strong class="n" id="ais">0件</strong></span></div>
-      <p class="viz-note">※仕組みを説明するための仮定。AIが30件を処理しても、社員数が30%減るという意味ではありません。</p>
-    </div>
-  </div></section>
-  <section class="section" id="lesson1"><div class="shell">
-    <div class="lesson-head"><div class="lesson-number">01 / なぜ税金の話に？</div><div><h2>仕事の担当が変わると、<br>お金の流れも変わる。</h2><p>会社が「人に給料を払う」ときと「AIサービスに利用料を払う」ときでは、お金の行き先が違います。</p></div></div>
-    <div class="content-column">
-      <div class="problem">
-        <div class="rail person"><div class="rail-label">01 <b>人が仕事をするとき</b></div><h3>会社は給料を払う</h3><div class="money-flow"><div class="flow-pill"><b>会社</b><em>給料を支払う</em></div><div class="flow-arrow">↓ 給与</div><div class="flow-pill"><b>働く人</b><em>所得を得る</em></div><div class="flow-arrow">↓ 所得税・社会保険料など</div><div class="flow-pill"><b>国・保険制度など</b><em>収入を受け取る</em></div></div><p class="flow-result">働く人の所得・雇用に関連した税金や保険料が生じる。</p></div>
-        <div class="rail machine"><div class="rail-label">02 <b>AIに仕事を任せるとき</b></div><h3>会社は利用料を払う</h3><div class="money-flow"><div class="flow-pill"><b>会社</b><em>サービス料を支払う</em></div><div class="flow-arrow">↓ AI利用料</div><div class="flow-pill"><b>AI提供企業</b><em>売上を得る</em></div><div class="flow-arrow">↓ 利益に応じた法人税など</div><div class="flow-pill"><b>国など</b><em>税収を受け取る</em></div></div><p class="flow-result">給与に関係する税とは別の仕組みで税がかかる。</p></div>
-      </div>
-      <div class="definition"><strong>ここがポイント</strong><span>AIの利用が広がり、人の賃金総額が減ると、給与に関連する税収や保険料収入も減る可能性があります。<b>ただし、AI企業や利用企業が無税になるわけではありません。</b></span></div>
-    </div>
-  </div></section>
-  <section class="section" id="policy"><div class="shell">
-    <div class="lesson-head"><div class="lesson-number">02 / 政策の考え方</div><div><h2>そこで「AIの利用や利益にも<br>課税しては？」という提案。</h2><p>米国ではAIの利用量や関連利益などに課税し、その税収を雇用対策などに使う法案が提出されています。</p></div></div>
-    <div class="content-column">
-      <div class="policy">
-        <h3>AI課税の基本的な構図</h3><p class="policy-intro">何から集め、何に使うのかを分けると整理しやすくなります。</p>
-        <div class="chain" role="img" aria-label="AIの利用企業や提供企業などに課税し、税収を集め、職業訓練や生活支援に充てるという政策案の流れ"><div class="chain-node"><small>課税の対象</small><strong>AIの利用・<br>関連利益など</strong><p>法案によって対象が異なる</p></div><div class="chain-arrow" aria-hidden="true">→</div><div class="chain-node"><small>税収</small><strong>国が<br>財源を確保</strong><p>課税制度を新たに設計</p></div><div class="chain-arrow" aria-hidden="true">→</div><div class="chain-node"><small>使い道</small><strong>職業訓練・<br>雇用支援など</strong><p>影響を受ける人を支える</p></div></div>
-        <p class="caution">これは米国で提案されている政策の考え方。日本で導入された税金ではなく、米国で一律に施行されている税金でもありません。</p>
-      </div>
-      <div class="example"><b>具体的な法案</b>2026年8月、米下院に <strong>AI Tax and Work Protection Act</strong> が提出されました。AIモデルのトークン使用量への課税や雇用保護の仕組みを提案しています。<a href="https://www.govinfo.gov/content/pkg/BILLS-119hr10044ih/html/BILLS-119hr10044ih.htm" target="_blank" rel="noopener noreferrer">米政府公開の法案原文 ↗</a></div>
-    </div>
-  </div></section>
-  <section class="section"><div class="shell">
-    <div class="lesson-head"><div class="lesson-number">03 / なぜ意見が割れる？</div><div><h2>税収を確保したい。<br>でも、AIの発展は妨げたくない。</h2><p>「AIを使うべきか」だけではなく、技術の利益と負担をどう分けるかが論点です。</p></div></div>
-    <div class="content-column"><div class="compare"><div class="compare-column"><h3>課税に期待すること</h3><p class="claim">社会への還元</p><p>AIで生まれる利益を、職業訓練や失業者支援の財源に使える可能性があります。</p></div><div class="compare-column careful"><h3>課税で懸念されること</h3><p class="claim">導入コストの増加</p><p>AIの利用料が高くなるなどして、企業の投資や技術導入が遅れるおそれがあります。</p></div></div><div class="definition"><strong>重要な注意点</strong><span>AIは仕事を奪うだけでなく、人が働くのを助けたり、新しい需要を生んだりもします。雇用や税収への最終的な影響は、まだ一方向には決まりません。</span></div></div>
-  </div></section>
-  <section id="quiz" class="quiz"><div class="shell"><div class="lesson-head"><div class="lesson-number">04 / 理解度チェック</div><div><h2>最後に1問。</h2><p>ここまでの説明を理解できたか確認しましょう。</p></div></div><div class="quiz-panel"><div class="quiz-question"><p class="quiz-qtop">QUESTION 01</p><h3>「AIを使う会社には、いま税金が一切かかっていない」── 正しい？</h3><div class="answers"><button type="button" class="answer" data-choice="wrong">A. 正しい。AIには税金がかからない</button><button type="button" class="answer" data-choice="right">B. 間違い。既存の法人税などは適用され得る</button></div><p class="feedback" id="feedback" role="status" aria-live="polite"></p><button class="reset" type="button" id="reset" hidden>もう一度答える ↻</button></div></div></div></section>
-  <section class="endnote"><div class="shell"><h2>この記事で押さえたこと</h2><div class="summary-flow"><span>AIが仕事の一部を担う</span><i aria-hidden="true">→</i><span>賃金・税収の構造が変わる可能性</span><i aria-hidden="true">→</i><span>AIへの新たな課税が議論される</span></div>
-    <div class="sources"><h3>さらに知りたい人へ / 出典</h3><ol><li><a href="https://www.govinfo.gov/content/pkg/BILLS-119hr10044ih/html/BILLS-119hr10044ih.htm" target="_blank" rel="noopener noreferrer">米下院 H.R. 10044：AI Tax and Work Protection Act（2026年8月提出）</a></li><li><a href="https://www.govinfo.gov/content/pkg/BILLS-119s5518is/xhtml/BILLS-119s5518is.html" target="_blank" rel="noopener noreferrer">米上院 S. 5518：Make AI Work for Americans Act（2026年9月提出）</a></li><li><a href="https://blog.andrewyang.com/p/tax-ai-not-humans-again" target="_blank" rel="noopener noreferrer">Andrew Yang：Tax AI, Not Humans, Again（2026年6月）</a></li></ol><p class="micro" style="margin-top:15px">本記事は2026年11月15日の日経朝刊で取り上げられた議論を入口に制作した独立の基礎解説です。実際の政策案と説明用の仮定を区別しています。新聞記事の転載ではありません。</p></div>
-  </div></section>
+<header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav><a href="../index.html#articles">記事一覧</a></nav></div></header>
+<main>
+<article id="ai-lesson">
+<div class="wrap">
+<header>
+<div class="topline"><a href="../index.html">記事一覧</a> / 教養・経済 / 税制　　2026年11月15日</div>
+<h1>AI課税はなぜ議論される？<br>給与・企業利益・税収の関係</h1>
+<p class="standfirst">米国では、AIの利用や利益に新しい税を課す法案が提出されている。背景にあるのは、AIが仕事を代替したとき、税金の集まり方も変わるという問題だ。</p>
+<p class="dek">法案の内容から始め、今の税金の仕組み、AI導入前後の数字、課税する理由の順に確認する。</p>
+<dl class="lead-points">
+<div><dt>何の話？</dt><dd>AIへの新たな課税を検討する米国の政策議論</dd></div>
+<div><dt>誰が提案？</dt><dd>議会法案はグレッグ・カサー議員ら、マーク・ケリー議員。アンドリュー・ヤン氏は課税の必要性を提唱</dd></div>
+<div><dt>決まった？</dt><dd>紹介する2法案はいずれも提出段階（2026年11月15日時点）</dd></div>
+</dl>
+</header>
+<section id="proposal">
+<span class="sectionno">01 / 米国で何が提案されている？</span>
+<h2>AIから新たに税を集め、働く人を支援する。</h2>
+<p>米議会には、AIの「利用量」や「追加利益」などに着目して課税し、その財源を雇用・生活支援に活用する法案が提出されている。すべてのAI利用に一律の税をかける法案が成立したわけではない。</p>
+<ol class="route">
+<li><strong>2026年8月</strong><span>カサー下院議員が「AI Tax and Work Protection Act」を提出。AIのトークン使用への課税と、労働者保護の仕組みを提案。</span></li>
+<li><strong>2026年9月</strong><span>ケリー上院議員が「Make AI Work for Americans Act」を提出。AIの利用、超過利益などに関する課税と支援基金を提案。</span></li>
+<li><strong>ヤン氏の主張</strong><span>元米大統領候補アンドリュー・ヤン氏は、AIやロボットに課税する一方、人間の労働への負担を軽減すべきだと提唱している。</span></li>
+</ol>
+<p class="plain-note">※ヤン氏はここで紹介した議会法案の提出者ではない。政策提言と、議員が提出した具体的な法案を区別する。</p>
+<p class="transition">では、なぜ「AIを使うこと」に税を設けようとするのか。</p>
+</section>
+<section id="tax-system">
+<span class="sectionno">02 / 前提：税金はどう集まる？</span>
+<h2>税金は、人の給与にも、会社の利益にもかかる。</h2>
+<p>国や地方自治体は、税収を公共サービスなどの財源にする。会社が仕事をして収益を生み出すと、複数の経路で税が発生する。</p>
+<div class="muted-title">① 人を雇うとき</div>
+<div class="flow" aria-label="企業が労働者に給料を払い、給与には所得税などがかかる">
+<div class="node"><strong>会社</strong><small>給料を支払う</small></div><div class="chev" aria-hidden="true">→</div><div class="node"><strong>労働者</strong><small>給料を受け取る</small></div><div class="chev" aria-hidden="true">→</div><div class="node"><strong>国・地方など</strong><small>所得税・地方税・社会保険料など</small></div>
+</div>
+<div class="muted-title">② 会社に利益が出たとき</div>
+<div class="flow" aria-label="会社の売上から費用を引いて利益が出ると法人税が課され得る">
+<div class="node"><strong>会社の売上</strong><small>商品・サービスを販売</small></div><div class="chev" aria-hidden="true">→</div><div class="node"><strong>費用を引いた利益</strong><small>税法上の課税所得と必ずしも一致しない</small></div><div class="chev" aria-hidden="true">→</div><div class="node"><strong>国・地方など</strong><small>課税所得に法人税など</small></div>
+</div>
+<p class="plain-note">社会保険料は厳密には税とは別の制度上の負担。ただし、雇用が減った場合の財源への影響を考えるうえで重要。</p>
+<p class="factline">つまり、給与が減れば給与由来の税収などが減る可能性がある。一方、会社の利益が増えれば法人税などが増える可能性もある。</p>
+<p class="transition">両方が同時に起きる状況を、具体的な数字で見てみよう。</p>
+</section>
+<section id="example">
+<span class="sectionno">03 / AI導入前後の変化を比較</span>
+<h2>給与が減り、利益が増える場合。</h2>
+<p>ある会社の年間売上を1,000万円とする。「社員が担当していた業務の一部をAIに任せる」前後の例だ。売上とその他費用は固定し、給与支出とAI利用料だけを変更する。</p>
+<div class="example" id="interactive-demo">
+<div class="example-top"><strong>売上 1,000万円の使い道</strong><small>説明用の仮定</small></div>
+<div class="controls" role="group" aria-label="AI導入の前後を切り替える">
+<button class="tab" id="ai-before" type="button" aria-pressed="true">AI導入前</button>
+<button class="tab" id="ai-after" type="button" aria-pressed="false">AI導入後</button>
+</div>
+<div class="money-bar" role="img" id="money-bar" aria-label="AI導入前：給与600万円、その他費用200万円、AI利用料0万円、利益200万円">
+<div id="bar-salary" class="seg salary" style="width:60%"></div>
+<div id="bar-other" class="seg other" style="width:20%"></div>
+<div id="bar-ai" class="seg ai" style="width:0%"></div>
+<div id="bar-profit" class="seg profit" style="width:20%"></div>
+</div>
+<div class="key" aria-live="polite">
+<div class="keyitem"><span class="name"><span class="swatch salary"></span>社員への給与</span><strong id="val-salary">600万円</strong></div>
+<div class="keyitem"><span class="name"><span class="swatch other"></span>その他の費用</span><strong id="val-other">200万円</strong></div>
+<div class="keyitem"><span class="name"><span class="swatch ai"></span>AI提供会社への利用料</span><strong id="val-ai">0万円</strong></div>
+<div class="keyitem"><span class="name"><span class="swatch profit"></span>残る利益（税引き前）</span><strong id="val-profit">200万円</strong></div>
+</div>
+<p class="plain-note" id="demo-text" aria-live="polite">導入前：会社は社員に600万円を支払っている。給与や利益がそれぞれ課税の対象となり得る。</p>
+</div>
+<ul class="observations">
+<li><strong>社員への給与：</strong>600万円 → 300万円（300万円減）</li>
+<li><strong>この会社の利益：</strong>200万円 → 400万円（200万円増）</li>
+<li><strong>AI提供企業の売上：</strong>0万円 → 100万円（100万円増）。ただし提供企業の利益ではない</li>
+</ul>
+<p class="plain-note">※「給与の支出が減る」というモデルであり、実際に何人解雇されるかは示していない。企業全体・経済全体の利益や税収の変化も、この図だけでは決まらない。</p>
+<p class="factline">この会社では給与から生じる税・保険料の基盤が縮小する。しかし、企業利益は増えている。では、その法人税で補えるのでは？</p>
+</section>
+<section id="why-tax">
+<span class="sectionno">04 / それでも新しい税が議論される理由</span>
+<h2>法人税があるのに、なぜ「AI税」？</h2>
+<p>その疑問は正しい。企業の利益には、もともと法人税がある。新たなAI課税を考える理由は、既存の税だけで負担と分配を十分に調整できるか不確かなためだ。</p>
+<ol class="route">
+<li><strong>給与の税・保険料</strong><span>人件費が減れば給与に連動する税や保険料の収入が減る可能性がある。</span></li>
+<li><strong>企業利益への税</strong><span>利益が増えれば法人税が増える可能性もある。ただし、税法上の利益・控除・赤字などで金額は変わる。</span></li>
+<li><strong>AI提供企業</strong><span>利用料はAI企業の売上になるが、開発費などが大きく赤字なら法人税の課税所得が生じない場合もある。</span></li>
+<li><strong>負担の再配分</strong><span>利益が一部企業に集中する一方、職を失った人への再訓練や生活支援が必要になる場合がある。</span></li>
+</ol>
+<p class="factline">だから「企業がAIを使う量」や「AIで得た追加利益」などに着目し、別の財源を確保しようという提案が出てくる。</p>
+<p>一方、AIで新しい仕事や消費が増えれば税収が増える可能性もある。AIが普及すれば税収が必ず減る、という意味ではない。</p>
+</section>
+<section id="policy">
+<span class="sectionno">05 / 提案と論点を区別する</span>
+<h2>課税の方法は、まだ一つに決まっていない。</h2>
+<table class="legislation">
+<tbody>
+<tr><th>カサー議員の法案</th><td><strong>AIのトークン使用量</strong>に課税する案。仕事の保護・支援につなげることを掲げる。<br><a href="https://www.govinfo.gov/app/details/BILLS-119hr10044ih" target="_blank" rel="noopener noreferrer">H.R.10044 原文・提出情報</a></td></tr>
+<tr><th>ケリー議員の法案</th><td><strong>AI利用への課税や超過利益課税</strong>などを含む案。財源を支援基金に回す構想。<br><a href="https://www.govinfo.gov/app/details/BILLS-119s5518is" target="_blank" rel="noopener noreferrer">S.5518 原文・提出情報</a></td></tr>
+<tr><th>ヤン氏の提言</th><td>人を雇う際の税・社会保険料などの負担とAI利用の負担を比べ、<strong>AIに課税し、人間の労働への負担を減らす</strong>べきだと主張。<br><a href="https://blog.andrewyang.com/p/tax-ai-not-humans-again" target="_blank" rel="noopener noreferrer">ヤン氏本人の論考</a></td></tr>
+</tbody>
+</table>
+<div class="two-col">
+<div><h3>課税を支持する理由</h3><p>AIによる利益を労働者支援などに還元できる。人の雇用だけに負担が偏る構造を見直せる。</p></div>
+<div><h3>課税に慎重な理由</h3><p>AI利用を高くすると生産性向上が遅れるかもしれない。課税対象の定義も難しい。</p></div>
+</div>
+<p class="summary">要するに、AI税は「AIが無税だから作る税」ではなく、「AI時代の税負担と社会保障の財源をどう設計するか」という議論だ。</p>
+</section>
+<section id="quiz">
+<span class="sectionno">06 / 理解度チェック</span>
+<h2>3問で確認する。</h2>
+<details><summary>Q1. ヤン氏が上記の米議会法案を提出した？</summary><p>いいえ。ヤン氏は政策提言者。紹介した法案の提出者はカサー下院議員とケリー上院議員。</p></details>
+<details><summary>Q2. AI導入で社員への給与が減ったら、国全体の税収も必ず減る？</summary><p>いいえ。所得税や社会保険料などが減る場合でも、企業利益や別の雇用・消費から税収が増える可能性がある。</p></details>
+<details><summary>Q3. 企業の利益には既存の税金がかからないからAI税が必要？</summary><p>いいえ。企業の課税所得には既存の法人税などがある。新たな課税の是非は、税負担の配分と必要な財源をどう確保するかという問題。</p></details>
+</section>
+<section id="references">
+<span class="sectionno">参考資料</span>
+<h2>原文に当たる。</h2>
+<ol class="sources">
+<li><a href="https://www.govinfo.gov/app/details/BILLS-119hr10044ih" target="_blank" rel="noopener noreferrer">米政府出版局：H.R. 10044 / AI Tax and Work Protection Act</a>（2026年8月6日提出）</li>
+<li><a href="https://www.govinfo.gov/app/details/BILLS-119s5518is" target="_blank" rel="noopener noreferrer">米政府出版局：S. 5518 / Make AI Work for Americans Act</a>（2026年9月24日提出）</li>
+<li><a href="https://blog.andrewyang.com/p/tax-ai-not-humans-again" target="_blank" rel="noopener noreferrer">Andrew Yang: Tax AI, Not Humans, Again</a>（2026年6月8日）</li>
+</ol>
+<p class="plain-note">本記事は制度の理解を目的とした独自の解説。収支の数値は説明用に作成した仮定で、現実の税収予測ではない。政策案と成立済みの制度を区別した。</p>
+</section>
+<div class="footer-note"><a href="../index.html">← 記事一覧へ戻る</a>　　VIVRAS Tech / 教養</div>
+</div>
+</article>
 </main>
-<footer class="foot"><div class="shell">© VIVRAS Tech — 理解のための図解と基礎知識</div></footer>
+<footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span></div></footer>
 <script>
-(()=>{
- const grid=document.getElementById('tickets');
- const before=document.getElementById('before'), after=document.getElementById('after');
- const tickets=Array.from({length:100},(_,i)=>{const el=document.createElement('span');el.className='ticket';el.title=`${i+1}件目`;grid.appendChild(el);return el;});
- function setDemo(ai){before.setAttribute('aria-pressed', String(!ai));after.setAttribute('aria-pressed', String(ai));tickets.forEach((item,i)=>item.classList.toggle('is-ai', ai&&i>=70));document.getElementById('humans').textContent=(ai?70:100)+'件';document.getElementById('ais').textContent=(ai?30:0)+'件';}
- before.addEventListener('click',()=>setDemo(false));after.addEventListener('click',()=>setDemo(true));setDemo(false);
- const feedback=document.getElementById('feedback'),reset=document.getElementById('reset'),answers=[...document.querySelectorAll('.answer')];
- answers.forEach(answer=>answer.addEventListener('click',()=>{const correct=answer.dataset.choice==='right';answers.forEach(a=>{a.disabled=true;a.classList.toggle('correct',a.dataset.choice==='right');if(a===answer&&!correct)a.classList.add('incorrect');});feedback.innerHTML=correct?'<b>正解。</b>AIを利用している企業にも、法人税など既存の税制が適用され得ます。「AI税」は、それとは別に新たな負担を設けるべきかという議論です。':'<b>不正解。</b>AI企業やAI利用企業にも、既存の法人税などが適用され得ます。新しい「AI税」は、それに加えて何を課税対象にするかという政策案です。';feedback.classList.add('show');reset.hidden=false;}));
- reset.addEventListener('click',()=>{feedback.classList.remove('show');feedback.textContent='';reset.hidden=true;answers.forEach(a=>{a.disabled=false;a.classList.remove('correct','incorrect')});});
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+const before=$("ai-before"),after=$("ai-after"),money=$("money-bar");
+function show(ai){
+ const values=ai?{salary:300,other:200,ai:100,profit:400}:{salary:600,other:200,ai:0,profit:200};
+ for(const name of ["salary","other","ai","profit"]){
+  $("bar-"+name).style.width=values[name]/10+"%";
+  $("val-"+name).textContent=values[name]+"万円";
+ }
+ money.setAttribute("aria-label",(ai?"AI導入後：":"AI導入前：")+"給与"+values.salary+"万円、その他費用"+values.other+"万円、AI利用料"+values.ai+"万円、税引き前利益"+values.profit+"万円");
+ before.setAttribute("aria-pressed",String(!ai));after.setAttribute("aria-pressed",String(ai));
+ $("demo-text").textContent=ai?"導入後：給与は300万円減り、利益は200万円増える。AI提供会社には100万円が支払われる。ただし国全体の税収はこの数字だけでは決まらない。":"導入前：会社は社員に600万円を支払っている。給与や利益がそれぞれ課税の対象となり得る。";
+}
+before.addEventListener("click",()=>show(false));after.addEventListener("click",()=>show(true));show(false);
 })();
 </script>
-</body>
-</html>
+</body></html>
