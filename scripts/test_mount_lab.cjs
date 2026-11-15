@@ -39,7 +39,7 @@ assert.equal(get("#mount-learning-1").textContent, "未確認");
 // Stage 1: target directory exists, but contents of /dev/sdb1 not yet visible.
 go();
 assert.match(get("#mount-terminal").textContent, /No such file or directory/);
-assert.match(get("#mount-reason-result").textContent, /まだ .* 接続していない/);
+assert.match(get("#mount-reason-result").textContent, /まだ .*接続していない/);
 assert.equal(get("#mount-live-mode").dataset.mode, "unmounted");
 
 // Stage 2: mount -o ro makes report.txt visible, mode is read-only.
