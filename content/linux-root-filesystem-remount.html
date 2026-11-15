@@ -5,7 +5,7 @@
 <div class="breadcrumb"><a href="../index.html">トップ</a> / <a href="../topics/tech.html">技術</a> / <a href="../index.html?category=Linux#articles">Linux</a></div>
 <span class="tag">LINUX / FILESYSTEM</span>
 <h1>Linuxのmountとremount｜何が変わるのか</h1>
-<p class="article-lead"><strong>このページで覚えるのは3つ。</strong> <code>mount</code> は保存領域をつなぐ、<code>ro/rw</code> は書き込み条件、<code>remount</code> は接続したまま条件を変える。<strong>1つの保存領域・1つの接続先で</strong>違いを確認します。</p>
+<p class="article-lead"><strong>このページで覚えるのは3つ。</strong> <button type="button" class="vterm" data-explain="指定したファイルシステムを、Linuxのディレクトリから利用できるようにつなぐ操作。ファイルのコピーではありません。" aria-label="mountの説明を開く">mount</button> は保存領域をつなぐ、<button type="button" class="vterm" data-explain="roは読み取り専用、rwは読み書きを許可するマウントの設定です。rwでもアクセス権限などにより書き込みできないことがあります。" aria-label="roとrwの説明を開く">ro/rw</button> は書き込み条件、<button type="button" class="vterm" data-explain="既に接続してあるファイルシステムの設定を、接続先を変えずに変更する操作。読み取り専用から読み書き可能へ変えるなどに使います。" aria-label="remountの説明を開く">remount</button> は接続したまま条件を変える。<strong>1つの保存領域・1つの接続先で</strong>違いを確認します。</p>
 <p class="term-hint">点線の用語を押すと補足が開きます。</p></header><article class="article-body tech-lesson">
 <section class="lesson-section mount-goals" id="problem">
 <div class="lesson-kicker">学習ゴール / 3つの違い</div>
@@ -20,7 +20,7 @@
 <section class="lesson-section" id="flow">
 <div class="lesson-kicker">01 / 使うのは最後まで同じ例</div>
 <h2>保存領域をつなぐと、何が見える？</h2>
-<p>保存領域 <code>/dev/sdb1</code> に <code>report.txt</code> が入っているとします。Linux側には空のディレクトリ <code>/mnt/data</code> が用意されています。</p>
+<p>保存領域 <code>/dev/sdb1</code> に <code>report.txt</code> が入っているとします。Linux側には空の<button type="button" class="vterm" data-explain="ファイルやフォルダーを整理するための場所。Windowsのフォルダーに相当します。" aria-label="ディレクトリの説明を開く">ディレクトリ</button> <code>/mnt/data</code> が用意されています。</p>
 <figure class="lesson-figure mount-story mount-before-after">
 <figcaption>コマンド前後：ファイルが移動するのではなく、見える場所が変わる</figcaption>
 <div class="mount-source"><span>保存元（最初からファイルがある）</span><strong>/dev/sdb1</strong><small>中身：report.txt</small></div>
