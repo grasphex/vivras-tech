@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja"><head><base href="https://tech.grasphex.com/articles/"><meta name="robots" content="noindex,follow"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>【v7レビュー】Linux mountを一目で理解｜VIVRAS Tech</title><meta name="description" content="mountは保存領域をつなぐ。ro/rwは書き込み条件、remountはその条件変更。Linuxのマウントを一枚の図と最小限の操作で理解する。"><meta name="category" content="Linux"><meta name="keywords" content="Linux mount remount ファイルシステム ro rw 読み取り専用"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/linux-root-filesystem-remount.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script><script src="../assets/mount-lab.js" defer></script></head>
+<body class="mount-focus"><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav></div></header><main><header class="article-header">
+<div class="breadcrumb"><a href="../index.html">トップ</a> / <a href="../topics/tech.html">技術</a> / Linux</div>
+<h1>Linuxのマウント。何が変わる？</h1>
+<p class="article-lead"><strong>保存領域をフォルダーにつなぐのが <button type="button" class="vterm" data-explain="ファイルシステムをLinuxのディレクトリ階層に接続する操作です。ファイルをコピーする操作ではありません。" aria-label="mountの意味を開く">mount</button>。</strong> つないだまま設定を変えるのが <button type="button" class="vterm" data-explain="マウントしたファイルシステムについて、接続先を変えずに読み書きなどの設定を変更する操作です。" aria-label="remountの意味を開く">remount</button> です。</p>
+</header>
+<article class="article-body tech-lesson">
+<section class="lesson-section mount-lite-section" id="problem">
+<figure class="lesson-figure mount-lite-figure" aria-label="保存領域のreport.txtをmountで/mnt/dataに接続し、remountで書き込み可否だけを変更する図">
+<figcaption>保存領域をつなぎ、読み書きの条件を変える</figcaption>
+<div class="mount-lite-connection">
+<div class="mount-lite-place"><small>保存領域</small><strong>/dev/sdb1</strong><span>report.txt</span></div>
+<div class="mount-lite-arrow"><b>mount</b><span aria-hidden="true">→</span><small>つなぐ</small></div>
+<div class="mount-lite-place mount-lite-destination"><small>Linuxから見える場所</small><strong>/mnt/data/report.txt</strong><span>同じファイルが見える</span></div>
+</div>
+<div class="mount-lite-modes">
+<div><strong><button type="button" class="vterm" data-explain="read-only。読み取り専用の設定です。ファイルは読めますが、書き込みは拒否されます。" aria-label="roの説明を開く">ro</button></strong><span>読む ○　書く ×</span></div>
+<div class="mount-lite-transition"><code>remount,rw</code><span aria-hidden="true">→</span></div>
+<div><strong><button type="button" class="vterm" data-explain="read-write。読み書き可能なマウント設定です。実際の書き込みにはアクセス権限なども必要です。" aria-label="rwの説明を開く">rw</button></strong><span>読む ○　書く ○*</span></div>
+</div>
+<p class="mount-lite-bottom"><strong>mount</strong>で見えるようにする。<strong>remount</strong>では接続先は変わらず、書き込み条件だけが変わる。ファイルは移動・コピーされない。</p>
+</figure>
+<p class="mount-lite-caveat">*読み取り・書き込みにはファイル権限なども影響します。</p>
+</section>
+<section class="lesson-section mount-lite-lab-section" id="conditions">
+<details class="article-expand mount-lite-toggle">
+<summary>コマンドで確認する（3操作）</summary>
+<div class="article-expand-body">
+<p class="mount-lite-lab-context">例：<code>/dev/sdb1</code> は <code>/mnt/data</code> に <strong>roで接続済み</strong>。その中の <code>report.txt</code> は読めます。これから同じ場所へファイルを作れるか試します。</p>
+<div id="mount-command-lab" class="mount-lite-lab" aria-label="読み取り専用から読み書き可能への変化を確認する仮想コマンド実験">
+<div class="mount-lite-status"><span>現在の設定：<strong id="mount-live-mode">ro（読み取り専用）</strong></span><span>新しいファイル：<strong id="mount-file-state">まだない</strong></span></div>
+<div class="mount-lite-stage"><span id="mount-lab-step">1 / 3</span><strong id="mount-lab-task">まず同じ場所への書き込みを試す</strong></div>
+<button type="button" class="mount-lite-run" data-lab-next><code id="mount-next-command">sudo touch /mnt/data/new.txt</code><span>実行</span></button>
+<div class="mount-lite-output"><pre id="mount-terminal" aria-live="polite">コマンドを実行すると結果が表示されます。</pre><p id="mount-reason-result">touchは新しいファイルを作るコマンドです。</p></div>
+<p class="mount-lite-learned" id="mount-lab-conclusion" hidden><strong>分かったこと：</strong>同じ <code>touch</code> が、roでは失敗、rwでは成功。<code>remount</code> が変えたのは、接続先ではなく<strong>書き込みの条件</strong>です。</p>
+<button type="button" data-lab-reset class="mount-lab-reset">最初から試す</button>
+</div>
+<p class="lesson-note">画面上のシミュレーションであり、実際のLinuxには変更しません。<code>/</code> の再マウントはシステムに影響するため、実機で安易に実行しないでください。</p>
+</div>
+</details>
+</section>
+<section class="lesson-section lesson-compact" id="verify"><details class="article-expand"><summary>コマンドで確認</summary><div class="article-expand-body">
+
+
+<pre><code># /mnt/dataの保存元・種類・設定を確認
+findmnt -no SOURCE,TARGET,FSTYPE,OPTIONS --mountpoint /mnt/data</code></pre>
+<p><strong>SOURCE</strong>は保存元、<strong>TARGET</strong>は接続先、<strong>FSTYPE</strong>はファイルシステムの種類、<strong>OPTIONS</strong>はro/rwなどの条件です。<code>--mountpoint</code>は指定した場所が実際のマウントポイントかどうかを調べます。</p>
+
+</div></details></section>
+<section class="lesson-section lesson-compact" id="check"><details class="article-expand"><summary>3問で理解度を確認</summary><div class="article-expand-body">
+
+
+<div class="lesson-quiz">
+<details><summary>Q1. <code>mount</code>すると、何が変わる？</summary><p>保存領域の中にあるファイルが、指定したディレクトリから見えるようになります。元のファイルがコピー・移動するわけではありません。</p></details>
+<details><summary>Q2. roで接続した場合、なぜtouchが失敗する？</summary><p>touchは新しいファイルの作成を要求しますが、roでマウントされた領域への書き込みは禁止されているためです。</p></details>
+<details><summary>Q3. remountで変わるもの・変わらないものは？</summary><p>接続元と接続先をそのままに、roからrwなどのマウント設定を変更できます。ただしrwでも権限などの別条件によって書き込みに失敗する場合があります。</p></details>
+</div></div></details></section>
+<section class="lesson-section lesson-compact" id="sources"><details class="article-expand"><summary>一次資料・参考文献</summary><div class="article-expand-body">
+
+<p><a href="https://man7.org/linux/man-pages/man8/mount.8.html" target="_blank" rel="noopener noreferrer">Linux mount(8)</a> ／ <a href="https://man7.org/linux/man-pages/man8/findmnt.8.html" target="_blank" rel="noopener noreferrer">Linux findmnt(8)</a> ／ <a href="https://man7.org/linux/man-pages/man1/touch.1.html" target="_blank" rel="noopener noreferrer">GNU touch(1)</a></p>
+<p class="lesson-note">実機の出力例ではなく、学習用に単純化した図です。実際のマウント対象・権限・エラーは環境によって異なります。</p>
+</div></details></section>
+<div class="article-end"><a href="../topics/tech.html">← 技術の記事一覧へ</a></div>
+</article></main><footer class="site-footer"><div class="container footer-row">© VIVRAS Tech</div></footer></body></html>
