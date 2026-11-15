@@ -121,6 +121,23 @@
 .related-voice h3{font-size:17px;line-height:1.45;margin-bottom:10px}
 .related-voice p{font-size:14px;line-height:1.69;margin-bottom:9px}
 .related-voice p:last-child{margin-bottom:0}
+
+/* Yang's policy logic: distinguish employer payroll burden from employee income tax */
+.related-voice .yang-comparison{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:15px 0 12px}
+.related-voice .yang-comparison>div{padding:13px 12px 12px;border-top:3px solid var(--green);background:#fff;min-width:0}
+.related-voice .yang-comparison>div:nth-child(2){border-top-color:var(--umber)}
+.related-voice .yang-tag{display:block;font-size:12px;color:var(--ash);font-weight:800;margin-bottom:7px}
+.related-voice .yang-comparison strong{display:block;font-size:15px;line-height:1.48}
+.related-voice .yang-comparison small{display:block;margin-top:6px;font-size:12px;color:var(--ash);line-height:1.5}
+.related-voice .yang-conclusion{font-size:14px;font-weight:650;margin:13px 0 16px}
+.related-voice .yang-solution{border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);padding:11px 0;margin:13px 0}
+.related-voice .yang-solution>div{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:14px;border-bottom:1px solid var(--stroke);padding:10px 0;font-size:13px}
+.related-voice .yang-solution>div strong{color:var(--green)}
+.related-voice .yang-solution>div:first-child strong{color:var(--umber)}
+.related-voice .yang-solution>div span{color:var(--ash)}
+.related-voice .yang-solution>p{margin:13px 0 4px;font-size:14px}
+.related-voice .related-voice-end{font-size:12px;color:var(--ash)}
+@media(max-width:610px){.related-voice .yang-comparison{gap:7px}.related-voice .yang-comparison>div{padding:10px 8px}.related-voice .yang-comparison strong{font-size:12px}.related-voice .yang-comparison small{font-size:11px}.related-voice .yang-solution>div{grid-template-columns:1fr;gap:3px}}
 </style>
 </head>
 <body>
@@ -225,10 +242,21 @@
 <div class="boxed"><strong>共通点：</strong>AIで仕事が変わるとき、負担を働く人だけに押し付けず、AIなどで稼ぐ側にも税金を負担してもらう。</div>
 <p class="detail-note">両案は同時提出の共同法案ではなく別々の提案。両方の要素を組み合わせることは政策上あり得るが、現時点で一本化された法律ではない。</p>
 <aside class="related-voice" aria-label="関連する提言：アンドリュー・ヤン氏">
-<div class="related-voice-label">関連する考え方 ― 法案とは別の提言</div>
-<h3>AI課税を提唱する、もう一人の人物</h3>
-<p>米大統領選への出馬経験がある実業家、<strong>アンドリュー・ヤン氏</strong>も、同じ問題を指摘している。人を雇えば給与に関係する税や保険料が生じる一方、AIの利用料には<strong>同じ給与関連の負担が生じない</strong>という点だ。</p>
-<p>そこでヤン氏は、<strong>AIに課税し、人間の労働にかかる負担を軽くする</strong>よう提案している。働く人が不利にならないよう税制を見直すという点で、2法案と問題意識が重なる。ただし、<strong>ヤン氏は2法案の提出者ではなく、提案内容も同一ではない。</strong> <a href="https://blog.andrewyang.com/p/tax-ai-not-humans-again" target="_blank" rel="noopener noreferrer">ヤン氏本人の主張（原文）</a></p>
+<div class="related-voice-label">関連する考え方 ― 2法案とは別の提言</div>
+<h3>人を雇うよりAIを選びやすい。税金がその差を広げていないか？</h3>
+<p>同じ問題に取り組む人物に、米大統領選への出馬経験がある実業家<strong>アンドリュー・ヤン氏</strong>もいる。ヤン氏が注目するのは、会社が<strong>同じ仕事を「人に任せるか、AIに任せるか」</strong>を選ぶときの費用の違いだ。</p>
+<div class="yang-comparison" role="group" aria-label="会社が仕事を人に任せる場合とAIに任せる場合の費用の違い">
+<div><span class="yang-tag">人を雇う</span><strong>給与 ＋ 給与に応じた会社負担の税・保険料</strong><small>人を雇えば、給料以外の費用もかかる</small></div>
+<div><span class="yang-tag">AIを使う</span><strong>AIの利用料</strong><small>利用料に、人の給与にかかる税・保険料は発生しない</small></div>
+</div>
+<p class="yang-conclusion"><strong>この違いが、税金の仕組みまでAIへの置き換えを後押ししてしまう</strong>――これがヤン氏の問題意識だ。</p>
+<div class="yang-solution">
+<div><strong>AIへの課税を増やす</strong><span>AIを使う側の税負担を増やす</span></div>
+<div><strong>人を雇う際の税負担を減らす</strong><span>人を雇う側の費用を減らす</span></div>
+<p><strong>→ 税制による費用の差を縮め、人を雇う選択が不利になりにくくする。</strong></p>
+</div>
+<p>さらに働く人自身の所得税も軽くできれば、給料の手取りも増える。ただし<strong>従業員の所得税は、会社が給料に上乗せして支払う費用とは別</strong>。また、AIサービスやAI企業にほかの税金が一切かからないという意味ではない。</p>
+<p class="related-voice-end">これはヤン氏の<strong>税負担のバランスを変える提案</strong>であり、カサー案・ケリー案と問題意識は重なるが、同じ制度ではない。<strong>ヤン氏は2法案の提出者ではない。</strong> <a href="https://blog.andrewyang.com/p/tax-ai-not-humans-again" target="_blank" rel="noopener noreferrer">ヤン氏本人の主張（原文）</a></p>
 </aside>
 </div></div></section>
 <section id="tax" class="section"><div class="wrap">
