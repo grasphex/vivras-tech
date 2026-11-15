@@ -45,12 +45,14 @@ for filename, req in CASES.items():
         assert 'id="mount-command-lab"' in h and 'data-lab-next' in h, filename
         assert 'data-lab-command=' not in h, filename
         script = (ROOT.parent / "assets" / "mount-lab.js").read_text(encoding="utf-8")
-        assert 'sudo mount -o remount,rw /' in script and 'sudo touch /vivras-demo.txt' in script, filename
-        assert script.count('command: "sudo touch /vivras-demo.txt"') == 2, filename
+        assert 'sudo mount -o ro /dev/sdb1 /mnt/data' in script, filename
+        assert 'sudo mount -o remount,rw /mnt/data' in script, filename
+        assert script.count('command: "sudo touch /mnt/data/new.txt"') == 2, filename
         assert 'id="mount-file-state"' in h and 'id="mount-live-mode"' in h, filename
-        assert 'id="mount-reason-request"' in h and 'id="mount-reason-check"' in h, filename
         assert 'id="mount-reason-result"' in h and 'id="mount-lab-conclusion"' in h, filename
-        assert h.count('data-lab-progress=') == 5, filename
+        assert 'id="mount-learning-1"' in h and 'id="mount-learning-2"' in h and 'id="mount-learning-3"' in h, filename
+        assert h.count('data-lab-progress=') == 7, filename
+        assert 'class="mount-goal-list"' in h, filename
         assert 'src="../assets/mount-lab.js"' in h, filename
         assert 'id="mount-mode"' not in h and '<script>(()=>' not in h, filename
     else:
