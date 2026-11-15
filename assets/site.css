@@ -79,3 +79,13 @@ body{background:var(--bg);color:var(--ink)}
 @media(max-width:850px){.container{padding-inline:22px}.hero-layout{grid-template-columns:1fr;min-height:0;gap:24px;padding-block:55px 44px}.hero h1{font-size:clamp(50px,10vw,85px)}.hero-aside{max-width:590px}.home-feature{padding-block:55px}.feature-number span{font-size:110px}.filters{align-items:stretch}.manifesto{grid-template-columns:1fr;gap:24px}.manifesto-lead>p:last-child{max-width:620px}}
 @media(max-width:620px){.container{padding-inline:18px}.hero-topline{font-size:9px}.hero-topline span:last-child{display:none}.hero-layout{padding-top:45px}.hero h1{font-size:clamp(40px,10.4vw,63px)}.hero-principles>div{grid-template-columns:1fr;padding:13px 8px 15px 0}.hero-principles>div+div{padding-left:10px}.hero-principles span{grid-row:auto;margin-bottom:6px}.hero-principles strong{font-size:16px}.hero-principles small{font-size:10px}.home-feature{grid-template-columns:1fr}.home-feature h2{font-size:43px}.feature-number{display:none}.library-section{padding-block:65px}.section-heading{gap:12px}.section-heading h2{font-size:43px}.filters{margin-top:22px}.article-card{grid-template-columns:1fr auto;grid-template-areas:"type foot" "title title" "desc desc";gap:0 8px;padding:20px 0}.article-top{padding-top:0}.article-card h3{margin-top:14px;font-size:23px}.article-footer{padding:0;align-items:flex-end}.article-footer span{display:none}.method-list>div{grid-template-columns:95px 1fr}.method-list h3{font-size:17px}.topbar nav{gap:12px}.topbar nav a{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.article-card{transition:none}}
+
+/* Individual media identity and editorial rhythm – 2026-11-15 */
+.hero-layout{grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:clamp(34px,6vw,95px)}
+.hero-aside{border-left:1px solid #aeb8ae;padding:7px 0 6px 29px}
+.hero-aside p{line-height:1.8;margin:12px 0 15px;font-size:15px}
+.hero-aside p+p{margin-bottom:23px}
+.hero h1{font-size:clamp(54px,7vw,104px);letter-spacing:-.08em}
+.manifesto-lead>p:last-child{max-width:440px}
+@media(max-width:850px){.hero-layout{grid-template-columns:1fr}.hero-aside{max-width:660px;padding:20px 0 0;border-left:0;border-top:1px solid #abb6a9}}
+@media(max-width:620px){.hero h1{font-size:clamp(38px,10vw,62px)}.hero-aside p{font-size:14px}}
