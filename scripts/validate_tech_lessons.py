@@ -20,7 +20,7 @@ CASES = {
     "dns-resolution.html": {
         "condition": "cache",
         "commands": "commands",
-        "examples": ("ルートDNS", ".comのDNS", "ブラウザが取得したIPアドレス"),
+        "examples": ("ルートDNS", "権威DNS", "TTL切れ"),
         "source": "cloudflare.com",
     },
 }
@@ -28,6 +28,8 @@ for filename, req in CASES.items():
     h = (ROOT / filename).read_text(encoding="utf-8")
     if filename == "linux-root-filesystem-remount.html":
         order = ("problem", "conditions", "check", "verify")
+    elif filename == "dns-resolution.html":
+        order = ("overview", "animation", "cache", "commands", "check")
     else:
         order = ("problem", "flow", req["condition"], req["commands"], "check")
     pos = [h.find(f'id="{name}"') for name in order]
@@ -48,6 +50,19 @@ for filename, req in CASES.items():
         assert h.index('touch: cannot touch') < h.index('sudo mount -o remount,rw /mnt/data') < h.rindex('sudo touch /mnt/data/new.txt') < h.index('ls /mnt/data/new.txt'), filename
         assert 'mount-lab.js' not in h and 'mount-command-lab' not in h, filename
         assert 'data-lab-next' not in h and 'id="mount-mode"' not in h, filename
+    elif filename == "dns-resolution.html":
+        assert 'class="article-body tech-lesson"' in h, filename
+        assert 'class="dns-figure"' in h and 'class="dns-cache-grid"' in h, filename
+        assert 'id="dns-workbench"' in h and 'class="dns-flow-rail"' in h, filename
+        assert all(f'id="{part}"' in h for part in ("dns-play", "dns-prev", "dns-next")), filename
+        assert all(f'data-dns-mode="{mode}"' in h for mode in ("cold", "hit", "expired")), filename
+        assert h.count('<details class="article-expand') >= 3 and 'class="lesson-quiz"' in h, filename
+        assert 'src="../assets/dns-visual.js"' in h and 'href="../assets/dns-visual.css"' in h, filename
+        asset_root = ROOT.parent / "assets"
+        visual_js = (asset_root / "dns-visual.js").read_text(encoding="utf-8")
+        visual_css = (asset_root / "dns-visual.css").read_text(encoding="utf-8")
+        assert 'function movePacket(' in visual_js and 'setInterval(advance' in visual_js, filename
+        assert 'prefers-reduced-motion' in visual_css and 'max-width:650px' in visual_css, filename
     else:
         assert 'class="article-body tech-lesson"' in h, filename
         assert 'class="lesson-figure' in h, filename
