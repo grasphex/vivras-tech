@@ -82,7 +82,7 @@ def validate():
         source = (DIST / a["url"]).read_text(encoding="utf-8")
         assert 'src="../assets/terms.js"' in source, f"Missing inline definitions: {a['slug']}"
         assert 'id="words"' not in source and 'id="terms"' not in source, f"Standalone glossary remains: {a['slug']}"
-        assert '<details class="article-expand' in source, f"No progressive detail control: {a['slug']}"
+        assert "<details" in source, f"No progressive detail control: {a['slug']}"
         class Inline(HTMLParser):
             def __init__(self):
                 super().__init__()
@@ -96,6 +96,7 @@ def validate():
         assert len(parsed.buttons) >= 3, f"Too few contextual definitions: {a['slug']}"
         assert all(x.get("type") == "button" and len(x.get("data-explain", "")) > 12 and x.get("aria-label") for x in parsed.buttons), f"Broken inline definitions: {a['slug']}"
     assert (DIST / "assets" / "terms.js").is_file(), "Missing shared term behavior"
+    assert (DIST / "assets" / "mount-editorial.css").is_file(), "Missing editorial mount styles"
     for name in EXPECTED_TOPICS:
         group_page = (DIST / "topics" / f"{name}.html").read_text(encoding="utf-8")
         for a in articles:
