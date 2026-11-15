@@ -42,7 +42,8 @@ for filename, req in CASES.items():
     assert 'class="lesson-quiz"' in h, filename
     if filename == "linux-root-filesystem-remount.html":
         assert 'src="../assets/mount-lab.js"' in h, filename
-        assert 'id="mount-command-lab"' in h and 'data-lab-command="write"' in h, filename
+        assert 'id="mount-command-lab"' in h and 'data-lab-next' in h, filename
+        assert 'data-lab-command=' not in h, filename
         assert 'sudo mount -o remount,rw /' in h and 'sudo touch /vivras-demo.txt' in h, filename
         assert 'id="mount-file-state"' in h and 'id="mount-live-mode"' in h, filename
         assert 'id="mount-reason-request"' in h and 'id="mount-reason-check"' in h, filename
