@@ -344,3 +344,15 @@ body{background:var(--bg);color:var(--ink)}
 .vterm:after{width:13px;height:13px}
 }
 @media(prefers-reduced-motion:reduce){.vterm-note{scroll-behavior:auto}}
+
+
+/* Keep extra technical steps visually compact when disclosures are closed. */
+.tech-lesson>.lesson-section.lesson-compact{margin-top:14px}
+.tech-lesson .article-expand{border-radius:0}
+.tech-lesson .article-expand>summary{padding:12px 24px 12px 0;line-height:1.55}
+.tech-lesson .article-expand-body{padding:6px 0 16px}
+.tech-lesson .article-expand-body .lesson-try{margin:7px 0 9px}
+.tech-lesson .article-expand-body .lesson-steps{margin:3px 0 7px}
+.tech-lesson .article-expand-body .lesson-quiz{margin-top:8px}
+.tech-lesson .term-hint{margin-top:6px}
+@media(max-width:620px){.tech-lesson>.lesson-section.lesson-compact{margin-top:12px}}
