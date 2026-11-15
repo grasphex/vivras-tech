@@ -7,7 +7,7 @@ const choices=[...lab.querySelectorAll("[data-flow-mode]")],nodes=[...lab.queryS
 const counter=document.getElementById("location-counter"),heading=document.getElementById("location-heading"),detail=document.getElementById("location-detail"),caption=document.getElementById("location-caption");
 const back=document.getElementById("location-back"),next=document.getElementById("location-next"),play=document.getElementById("location-play");
 const reduced=window.matchMedia("(prefers-reduced-motion: reduce)");
-const packet=document.createElement("span");packet.className="flow-packet";packet.setAttribute("aria-hidden","true");lab.querySelector(".flow-board").append(packet);
+const packet=document.createElement("span");packet.className="flow-packet";packet.setAttribute("aria-hidden","true");lab.append(packet);
 const cases={
  sdk:[
  {from:0,to:0,heading:"位置情報の利用を許可",description:"利用者がアプリに位置情報へのアクセスを許可。これは第三者への販売に同意したこととは別です。"},
@@ -27,7 +27,7 @@ function steps(){return cases[mode];}
 function stop(){if(timer!==null){clearInterval(timer);timer=null;}play.textContent="再生";play.setAttribute("aria-pressed","false");}
 function animate(from,to){if(reduced.matches||typeof packet.animate!=="function"||from===to)return;
  const src=nodes.find(x=>+x.dataset.flowIndex===from),dst=nodes.find(x=>+x.dataset.flowIndex===to);
- if(!src||!dst)return;const bounds=lab.querySelector(".flow-board").getBoundingClientRect(),a=src.getBoundingClientRect(),b=dst.getBoundingClientRect();
+ if(!src||!dst)return;const bounds=lab.getBoundingClientRect(),a=src.getBoundingClientRect(),b=dst.getBoundingClientRect();
  const x1=a.left+a.width/2-bounds.left,y1=a.top+a.height/2-bounds.top,x2=b.left+b.width/2-bounds.left,y2=b.top+b.height/2-bounds.top;
  packet.getAnimations().forEach(anim=>anim.cancel());
  packet.animate([{left:x1+"px",top:y1+"px",opacity:0,offset:0},{left:x1+"px",top:y1+"px",opacity:1,offset:.1},{left:x2+"px",top:y2+"px",opacity:1,offset:.88},{left:x2+"px",top:y2+"px",opacity:0,offset:1}],{duration:1050,easing:"ease-in-out"});
