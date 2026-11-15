@@ -15,6 +15,8 @@ jobs:
           python-version: '3.12'
       - name: Validate glossary interaction JavaScript
         run: node --check assets/terms.js
+      - name: Test glossary interactions
+        run: node scripts/test_terms.cjs
       - name: Build topic and article pages
         run: python3 scripts/build.py
       - name: Check metadata and local links
