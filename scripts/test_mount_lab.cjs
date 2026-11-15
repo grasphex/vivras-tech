@@ -67,7 +67,7 @@ assert.match(e("#mount-reason-check").textContent, /接続先やファイルを�
 // 4. SAME touch succeeds under rw and creates the file.
 go();
 assert.match(e("#mount-terminal").textContent, /sudo touch \/vivras-demo.txt/);
-assert.match(e("#mount-terminal").textContent, /正常終了/);
+assert.equal(e("#mount-terminal").textContent, "$ sudo touch /vivras-demo.txt");
 assert.equal(e("#mount-file-state").textContent, "作成済み");
 assert.match(e("#mount-reason-check").textContent, /rw/);
 
@@ -81,7 +81,7 @@ assert.ok(progress.every(x => x.dataset.state === "completed"));
 const history = e("#mount-history").textContent;
 assert.equal((history.match(/sudo touch \/vivras-demo.txt/g)||[]).length, 2);
 assert.match(history, /Read-only file system/);
-assert.match(history, /正常終了/);
+assert.match(history, /\$ sudo mount -o remount,rw \/\n\n\$ sudo touch/);
 
 // 6. Reset is a real reset, not a state-label toggle.
 e("[data-lab-reset]").click();
