@@ -206,6 +206,17 @@ def build():
     shutil.copytree(ROOT / "assets", DIST / "assets")
     if (ROOT / "static").is_dir():
         shutil.copytree(ROOT / "static", DIST, dirs_exist_ok=True)
+        # Earlier review-only URLs are kept working but should always lead
+        # readers to the maintained, canonical article rather than old copies.
+        target = "https://tech.grasphex.com/articles/ai-tax-and-jobs.html"
+        for old in (ROOT / "static").glob("ai-tax-*.html"):
+            redirect = (f'<!doctype html><html lang="ja"><head><meta charset="utf-8">'
+                        f'<meta name="robots" content="noindex,follow">'
+                        f'<meta http-equiv="refresh" content="0;url={target}">'
+                        f'<link rel="canonical" href="{target}">'
+                        f'<title>最新版の記事へ移動｜VIVRAS Tech</title></head>'
+                        f'<body><p>記事は<a href="{target}">最新版</a>に更新されました。</p></body></html>')
+            (DIST / old.name).write_text(redirect, encoding="utf-8")
     articles = []
     for path in sorted(CONTENT.glob("*.html")):
         if not FILENAME_RE.fullmatch(path.name):
