@@ -160,6 +160,7 @@ example.com.  295  IN  A  192.0.2.10</code></pre>
 <p class="dns-result-read"><strong>読むところ：</strong>2回目のTTLが小さくなれば、同じキャッシュの残存時間が減った可能性があります。ただしサーバー側の分散処理や再取得により単調減少しないこともあり、<strong>2行の差だけでキャッシュ利用を断定できません。</strong></p>
 </div>
 <p class="lesson-note">比較のため数値を統一していますが、実際の<code>example.com</code>のAレコードを示したものではありません。許可されたネットワークから読み取り専用のDNS問い合わせとして実行できます。</p>
+<details class="article-expand"><summary>実行結果が例と違う場合は？</summary><div class="article-expand-body"><p>同じドメインでも、キャッシュ・問い合わせ先・時刻・地域・CDNの構成でIPアドレスやTTLは変わります。<code>NXDOMAIN</code>なら対象名が存在しない応答、<code>SERVFAIL</code>なら名前解決処理に失敗した応答です。<code>+trace</code>はDNSSECや追加レコードも表示します。教材中の各IPは実在の測定値ではありません。</p></div></details>
 </section>
 
 <section class="lesson-section lesson-compact" id="check">
