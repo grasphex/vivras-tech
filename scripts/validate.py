@@ -97,6 +97,16 @@ def validate():
         assert all(x.get("type") == "button" and len(x.get("data-explain", "")) > 12 and x.get("aria-label") for x in parsed.buttons), f"Broken inline definitions: {a['slug']}"
     assert (DIST / "assets" / "terms.js").is_file(), "Missing shared term behavior"
     assert (DIST / "assets" / "mount-editorial.css").is_file(), "Missing editorial mount styles"
+    orange_css = DIST / "assets" / "orange-theme.css"
+    assert orange_css.is_file(), "Missing orange brand stylesheet"
+    stylesheet = orange_css.read_text(encoding="utf-8")
+    assert "--brand-orange:#FF6933" in stylesheet, "Orange identity token changed"
+    assert "@media(max-width:600px)" in stylesheet, "Missing mobile branding treatment"
+    assert "prefers-reduced-motion" in stylesheet, "Reduced-motion preference unsupported"
+    for page in pages:
+        source = page.read_text(encoding="utf-8")
+        expected = 'href="assets/orange-theme.css"' if page.name == "index.html" and page.parent == DIST else 'href="../assets/orange-theme.css"'
+        assert expected in source, f"Orange theme not loaded in {page.relative_to(DIST)}"
     for name in EXPECTED_TOPICS:
         group_page = (DIST / "topics" / f"{name}.html").read_text(encoding="utf-8")
         for a in articles:
