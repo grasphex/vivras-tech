@@ -264,7 +264,9 @@ body.mount-editorial{
  .mount-editorial .ed-visual-part{padding:17px 0}
  .mount-editorial .ed-visual-label{font-size:13px;margin-bottom:11px}
  .mount-editorial .ed-file-flow{grid-template-columns:1fr;gap:5px}
- .mount-editorial .ed-join{width:115px;margin:0 auto;display:flex;justify-content:center;gap:9px;flex-direction:row;min-height:32px;padding:4px 7px}
+ .mount-editorial .ed-join{width:155px;margin:0 auto;display:flex;justify-content:center;gap:11px;flex-direction:row;align-items:center;min-height:32px;padding:5px 12px}
+ .mount-editorial .ed-join small{white-space:nowrap;font-size:11px}
+ .mount-editorial .ed-join strong{white-space:nowrap}
  .mount-editorial .ed-join .ed-arrow{transform:rotate(90deg);font-size:22px}
  .mount-editorial .ed-path{font-size:20px}
  .mount-editorial .ed-file-row{font-size:13px;padding:7px 10px}
