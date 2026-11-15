@@ -1,110 +1,96 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Linuxのマウント｜保存領域とディレクトリがつながる理由｜VIVRAS Tech</title><meta name="description" content="Linuxのマウントを、保存領域とディレクトリの違いから解説。/dev/sdb1を/mnt/dataにつなぐ例でro・rw・remountと確認コマンドまで理解する。"><meta name="category" content="Linux"><meta name="keywords" content="Linux mount remount root ファイルシステム 読み取り専用 ro rw bootparam"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/linux-root-filesystem-remount.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script><script src="../assets/mount-lab.js" defer></script></head>
+<title>Linuxのmountとremount｜接続・ro/rw・再マウントの違い｜VIVRAS Tech</title><meta name="description" content="Linuxのmount、ro/rw、remountを1つの事例で解説。/dev/sdb1と/mnt/dataを通して、接続で何が見えるか、読み取り専用で何が拒否されるか、再マウントで何が変わるかを実験する。"><meta name="category" content="Linux"><meta name="keywords" content="Linux mount remount root ファイルシステム 読み取り専用 ro rw bootparam"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/linux-root-filesystem-remount.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script><script src="../assets/mount-lab.js" defer></script></head>
 <body><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav></div></header><main><header class="article-header">
 <div class="breadcrumb"><a href="../index.html">トップ</a> / <a href="../topics/tech.html">技術</a> / <a href="../index.html?category=Linux#articles">Linux</a></div>
 <span class="tag">LINUX / FILESYSTEM</span>
-<h1>Linuxのマウント｜なぜ保存領域を「つなぐ」のか</h1>
-<p class="article-lead">ファイルを保存する場所と、ファイルを開くための<strong>ディレクトリ（フォルダー）</strong>は別物。<strong>両者を結び付ける操作が<button type="button" class="vterm" data-explain="保存装置にあるファイルを、Linuxのディレクトリから利用できるようにつなぐ操作。コピーではありません。" aria-label="マウントの説明を開く">マウント</button></strong>です。</p><p class="term-hint">点線の用語をタップすると説明が開きます。</p></header><article class="article-body tech-lesson">
-<section class="lesson-section" id="problem">
-<div class="lesson-kicker">01 / なぜ必要？</div>
-<h2>別のディスクのファイルを、いつものパスで開きたい。</h2>
-<p>Linuxのアプリは、<code>/mnt/data/report.txt</code>のような<strong><button type="button" class="vterm" data-explain="ファイルやフォルダーがどこにあるか示す名前。例えば/mnt/data/report.txt。" aria-label="パス（ファイルの場所を示す名前）の説明を開く">パス（ファイルの場所を示す名前）</button></strong>でファイルを開きます。一方、データはSSDなどの保存領域にあります。では、<strong>保存領域のどのファイルを、どのパスで見せるか</strong>は誰が決めるのでしょうか。</p>
-<p class="lesson-answer"><strong>答え：</strong>Linuxが保存領域内の<button type="button" class="vterm" data-explain="保存領域の中でファイル名とデータを整理する仕組み。例：ext4。" aria-label="ファイルシステムの説明を開く">ファイルシステム</button>を、指定したディレクトリへ<strong>マウント</strong>して結び付けます。</p>
+<h1>Linuxのmountとremount｜何が変わるのか</h1>
+<p class="article-lead"><strong>このページで覚えるのは3つ。</strong> <code>mount</code> は保存領域をつなぐ、<code>ro/rw</code> は書き込み条件、<code>remount</code> は接続したまま条件を変える。<strong>1つの保存領域・1つの接続先で</strong>違いを確認します。</p>
+<p class="term-hint">点線の用語を押すと補足が開きます。</p></header><article class="article-body tech-lesson">
+<section class="lesson-section mount-goals" id="problem">
+<div class="lesson-kicker">学習ゴール / 3つの違い</div>
+<h2>操作した後、何を説明できればいい？</h2>
+<dl class="mount-goal-list">
+<div><dt>1. <code>mount</code></dt><dd>保存領域のファイルを、指定したディレクトリから見られるようにする。<strong>ファイルは移動しない。</strong></dd></div>
+<div><dt>2. <code>ro / rw</code></dt><dd>つないだ領域の書き込み条件。<strong>roは書き込み禁止、rwは読み取り専用の制限なし。</strong></dd></div>
+<div><dt>3. <code>remount</code></dt><dd>保存元と接続先を変えずに、<strong>つないだ領域の設定を変える。</strong></dd></div>
+</dl>
 </section>
 
 <section class="lesson-section" id="flow">
-<div class="lesson-kicker">02 / 具体例で理解</div>
-<h2>マウントすると、何が変わる？</h2>
-<figure class="lesson-figure mount-story">
-<figcaption>例：保存領域にある report.txt を /mnt/data から見せる</figcaption>
-<div class="mount-pair">
-<div class="mount-disk"><span>保存領域</span><strong>/dev/sdb1</strong><small>ext4 に report.txt がある</small></div>
-<div class="mount-bridge"><span>マウント</span><b aria-hidden="true">→</b></div>
-<div class="mount-dir"><span>Linux側の接続先</span><strong>/mnt/data</strong><small>report.txt が見える</small></div>
+<div class="lesson-kicker">01 / 使うのは最後まで同じ例</div>
+<h2>保存領域をつなぐと、何が見える？</h2>
+<p>保存領域 <code>/dev/sdb1</code> に <code>report.txt</code> が入っているとします。Linux側には空のディレクトリ <code>/mnt/data</code> が用意されています。</p>
+<figure class="lesson-figure mount-story mount-before-after">
+<figcaption>コマンド前後：ファイルが移動するのではなく、見える場所が変わる</figcaption>
+<div class="mount-source"><span>保存元（最初からファイルがある）</span><strong>/dev/sdb1</strong><small>中身：report.txt</small></div>
+<div class="mount-state-list">
+<div><span>マウント前</span><strong>/mnt/data/</strong><small>report.txt は見えない</small></div>
+<div class="mount-move"><code>sudo mount -o ro /dev/sdb1 /mnt/data</code><span aria-hidden="true">↓</span></div>
+<div class="mount-connected"><span>マウント後</span><strong>/mnt/data/report.txt</strong><small>同じ保存領域のファイルが見える（roで接続）</small></div>
 </div>
-<div class="lesson-result">結果：<code>/mnt/data/report.txt</code> というパスで、保存領域のファイルを開ける</div>
+<p class="mount-figure-lesson"><strong>得た知識 ①：</strong><code>mount</code>は<strong>保存元と見せる場所を結びつける操作</strong>。コピーではありません。</p>
 </figure>
-<details class="article-expand lesson-steps-extra"><summary>図の流れを一つずつ確認</summary><div class="article-expand-body"><ol class="lesson-steps">
-<li><strong>接続前：</strong><code>/mnt/data</code>というディレクトリはあっても、<code>/dev/sdb1</code>のファイルはそこから見えません。</li>
-<li><strong>接続時：</strong><code>mount /dev/sdb1 /mnt/data</code>のように指定すると、Linuxがそのファイルシステムをディレクトリに関連付けます。</li>
-<li><strong>接続後：</strong>アプリが<code>/mnt/data/report.txt</code>を開くと、Linuxは接続先のファイルシステムにアクセスします。<strong>コピーやファイル移動はしていません。</strong></li>
-</ol></div></details>
-<p class="lesson-note"><strong>では「/」へのマウントとは？</strong> <code>/</code>はLinuxのディレクトリ階層の一番上。起動時に<button type="button" class="vterm" data-explain="Linuxのディレクトリ階層の最上位である/として使われるファイルシステム。" aria-label="ルートファイルシステムの説明を開く">ルートファイルシステム</button>が<code>/</code>として利用されます。<code>/dev/sda1</code>が必ず<code>/</code>という意味ではなく、実際の接続元は構成によって異なります。</p>
 </section>
+
 <section class="lesson-section" id="conditions">
-<div class="lesson-kicker">03 / コマンドで理由を確かめる</div>
-<h2>同じ <code>touch</code> が、なぜ失敗から成功に変わる？</h2>
-<p><button type="button" class="vterm" data-explain="指定したファイルがなければ空のファイルを作り、あれば更新日時などを変更するLinuxコマンド。" aria-label="touchの説明を開く">touch</button> はファイルの作成を試みるコマンド。Linuxは<strong>ファイルを作ろうとする場所のマウント条件</strong>を確認します。</p>
-<div class="mount-rule-preview" aria-label="操作結果を決める仕組み">
-<div><small>同じ要求</small><strong><code>touch /vivras-demo.txt</code></strong></div>
-<span class="mount-rule-arrow" aria-hidden="true">→</span>
-<div><small>Linuxが確認</small><strong><code>/</code> のマウント条件</strong></div>
-<span class="mount-rule-arrow" aria-hidden="true">→</span>
-<div><small>書き込みの扱い</small><strong><code>ro</code>：禁止 / <code>rw</code>：許可*</strong></div>
+<div class="lesson-kicker">02 / 動かして確かめる</div>
+<h2>接続・書き込み制限・設定変更を、一続きで。</h2>
+<p><button type="button" class="vterm" data-explain="touch は、指定したファイルがなければ空ファイルを作り、既にあれば更新時刻などを変更するコマンドです。" aria-label="touchの説明を開く">touch</button> で新しいファイルを作れるかを比べます。<strong>変更するのは同じ <code>/mnt/data</code> の設定だけ</strong>です。</p>
+<details class="article-expand lesson-simulator" open>
+<summary>操作教材｜7つのコマンドで確認</summary>
+<div class="article-expand-body">
+<div id="mount-command-lab" class="mount-command-lab">
+<p class="mount-lab-note"><strong>学習用の仮想Linux。</strong> <code>/mnt/data</code> は空で存在し、<code>/dev/sdb1</code> には <code>report.txt</code> がある前提。権限や障害による別のエラーはありません。実機には何も実行しません。</p>
+<div class="mount-lab-fixed" aria-label="実験中に変わらないもの">
+<span><b>保存元</b> /dev/sdb1</span><span><b>接続先</b> /mnt/data</span>
 </div>
-<p class="lesson-note">*rwはマウントの読み取り専用制限を解除するだけ。ファイル権限や障害など、ほかの条件で失敗する場合もあります。</p>
-<details class="article-expand lesson-simulator"><summary>5つのコマンドで因果関係を体験する</summary><div class="article-expand-body">
-<div class="mount-command-lab" id="mount-command-lab">
-<p class="mount-lab-headline"><strong>今回変えるのは「/」の設定だけ。</strong> <code>touch</code>と作成先は変えない。</p>
-<p class="mount-lab-note">仮想Linuxです。初期状態は <code>/</code> が <code>ro</code>。<code>/vivras-demo.txt</code> はまだ存在せず、必要な権限はある前提です。実機には一切変更しません。</p>
-<div class="mount-lab-progress" role="list" aria-label="5段階の実験手順">
-<span role="listitem" data-lab-progress="0" aria-current="step">1 状態</span>
-<span role="listitem" data-lab-progress="1">2 書込</span>
-<span role="listitem" data-lab-progress="2">3 変更</span>
-<span role="listitem" data-lab-progress="3">4 再試行</span>
-<span role="listitem" data-lab-progress="4">5 確認</span>
+<div class="mount-lab-state" aria-label="実験中に変わるもの">
+<div><span class="mount-lab-kicker">接続状態・書き込み設定</span><strong id="mount-live-mode" data-mode="unmounted">未接続</strong></div>
+<div><span class="mount-lab-kicker">/mnt/data に見えるファイル</span><strong id="mount-file-state">（なし）</strong></div>
 </div>
-<div class="mount-lab-state" aria-label="変化を観察する場所">
-<div><span class="mount-lab-kicker">変える条件 / の設定</span><strong id="mount-live-mode" data-mode="ro">ro：読み取り専用</strong></div>
-<div><span class="mount-lab-kicker">確認する対象 /vivras-demo.txt</span><strong id="mount-file-state">存在しない</strong></div>
+<div class="mount-lab-progress" aria-label="操作の進捗">
+<span data-lab-progress="0" aria-current="step">1</span><span data-lab-progress="1">2</span><span data-lab-progress="2">3</span><span data-lab-progress="3">4</span><span data-lab-progress="4">5</span><span data-lab-progress="5">6</span><span data-lab-progress="6">7</span>
 </div>
 <div class="mount-lab-next" id="mount-next-panel">
-<div class="mount-lab-stage"><span id="mount-lab-step">STEP 1 / 5</span><strong id="mount-lab-task">まず設定を調べる</strong></div>
-<button type="button" id="mount-next" data-lab-next><code id="mount-next-command">findmnt -no TARGET,OPTIONS /</code><span>このコマンドを実行 <span aria-hidden="true">↵</span></span></button>
+<div class="mount-lab-stage"><span id="mount-lab-step">STEP 1 / 7</span><strong id="mount-lab-task">最初の状態を確認</strong></div>
+<button type="button" data-lab-next><code id="mount-next-command">ls /mnt/data/report.txt</code><span>実行 ↵</span></button>
 </div>
 <div class="mount-lab-observation" aria-live="polite" aria-atomic="true">
-<div class="mount-lab-terminal-bar"><span>仮想Linuxの実行結果</span><span>実機には接続しません</span></div>
-<pre id="mount-terminal" role="log" tabindex="0">ここにコマンドの結果が表示されます。</pre>
-<div class="mount-lab-causes" aria-label="要求・条件・結果">
-<div><span>① コマンドが要求したこと</span><strong id="mount-reason-request">まだ実行していません</strong></div>
-<div><span>② Linuxが確認する条件</span><strong id="mount-reason-check">—</strong></div>
-<div><span>③ だから起きた結果</span><strong id="mount-reason-result">—</strong></div>
+<div class="mount-lab-terminal-bar"><span>仮想Linux / 実行結果</span></div>
+<pre id="mount-terminal" role="log" tabindex="0">コマンドを実行すると結果が表示されます。</pre>
+<div class="mount-lab-explanation">
+<small>結果から分かること</small>
+<p id="mount-reason-result">まず、接続前にファイルが見えるかを調べます。</p>
 </div>
 </div>
-<div id="mount-lab-conclusion" class="mount-lab-conclusion" hidden>
-<strong>結論：操作は同じ。変わったのは「/」のマウント設定。</strong>
-<div class="mount-lab-compare">
-<div><span>変更前：<code>ro</code> ＋ <code>touch</code></span><strong>拒否 → ファイルなし</strong></div>
-<div><span>変更後：<code>rw</code> ＋ 同じ <code>touch</code></span><strong>許可 → ファイルが作成された</strong></div>
+<div class="mount-learning" aria-label="操作で得た知識">
+<div data-learning="mount"><span>学び 1 / mount</span><strong>保存領域とディレクトリを結び付ける</strong><small id="mount-learning-1">未確認</small></div>
+<div data-learning="mode"><span>学び 2 / ro・rw</span><strong>書き込みの許可条件</strong><small id="mount-learning-2">未確認</small></div>
+<div data-learning="remount"><span>学び 3 / remount</span><strong>つないだまま設定を変える</strong><small id="mount-learning-3">未確認</small></div>
 </div>
-<p>ここでの <code>sudo mount -o remount,rw /</code> は、ファイルやマウント先を移動せず<strong>既存の「/」の設定だけを変更</strong>しました。</p>
-</div>
-<div class="mount-lab-actions">
-<button type="button" class="mount-lab-reset" data-lab-reset>最初からやり直す</button>
-<details><summary>実行履歴を見る</summary><pre id="mount-history">まだ履歴はありません。</pre></details>
+<p id="mount-lab-conclusion" class="mount-lab-conclusion" hidden><strong>理解できたこと：</strong> <code>mount</code>はファイルを見せる場所を作る。<code>ro/rw</code>は書き込みの条件。<code>remount</code>は保存元・接続先を維持したまま条件を変える。<strong>操作の結果が違うのは、Linuxが確認する条件が違うから。</strong></p>
+<div class="mount-lab-actions"><button class="mount-lab-reset" type="button" data-lab-reset>最初からやり直す</button><details><summary>7コマンドの実行履歴</summary><pre id="mount-history">未実行</pre></details></div>
 </div>
 </div>
-<p class="lesson-note"><strong>前の図との違い：</strong> 前の節の <code>/mnt/data</code> は「保存領域を接続する」例。この実験の <code>/</code> は、すでに接続されているルートファイルシステムの設定を変える例です。実際の <code>/</code> の再マウントはシステムに影響するため、実機で安易に実行しないでください。</p>
-</div></details>
+</details>
+<p class="lesson-note">※<code>rw</code>でも権限・障害など別の原因で書き込めない場合があります。また、ルートディレクトリ <code>/</code> に対して <code>sudo mount -o remount,rw /</code> と実行する例もありますが、この教材では混乱を避けて <code>/mnt/data</code> のみ扱います。実機での再マウントはシステムに影響するため、安易に実行しないでください。</p>
 </section>
 <section class="lesson-section lesson-compact" id="verify"><details class="article-expand"><summary>コマンドで確認</summary><div class="article-expand-body">
 
 
-<pre><code># / に接続されている保存元・ファイルシステム・条件
-findmnt -no SOURCE,FSTYPE,OPTIONS /
-# /mnt/data に個別のマウントがあるか確認
-findmnt --mountpoint /mnt/data</code></pre>
-<p>結果の<strong>SOURCE</strong>は接続元、<strong>FSTYPE</strong>はファイルシステムの種類、<strong>OPTIONS</strong>はro・rwなどの条件です。<code>findmnt --mountpoint /mnt/data</code>は、その場所自体がマウントポイントでなければ、通常は何も表示しません。</p>
+<pre><code># /mnt/dataの保存元・種類・設定を確認
+findmnt -no SOURCE,TARGET,FSTYPE,OPTIONS --mountpoint /mnt/data</code></pre>
+<p><strong>SOURCE</strong>は保存元、<strong>TARGET</strong>は接続先、<strong>FSTYPE</strong>はファイルシステムの種類、<strong>OPTIONS</strong>はro/rwなどの条件です。<code>--mountpoint</code>は指定した場所が実際のマウントポイントかどうかを調べます。</p>
 
 </div></details></section>
 <section class="lesson-section lesson-compact" id="check"><details class="article-expand"><summary>3問で理解度を確認</summary><div class="article-expand-body">
 
 
 <div class="lesson-quiz">
-<details><summary>Q1. <code>/dev/sdb1</code>と<code>/mnt/data</code>は同じ場所？</summary><p>違います。前者は保存領域を指す名前、後者はLinuxがファイルを見せるディレクトリです。マウントして両者を結び付けます。</p></details>
-<details><summary>Q2. マウントするとファイルがコピーされる？</summary><p>されません。別の場所へ複製せず、ディレクトリからアクセスできるようになります。</p></details>
-<details><summary>Q3. rwなら必ず書き込める？</summary><p>いいえ。rwは書き込みを禁止しないマウント条件です。実際にはファイル権限やエラーなども影響します。</p></details>
+<details><summary>Q1. <code>mount</code>すると、何が変わる？</summary><p>保存領域の中にあるファイルが、指定したディレクトリから見えるようになります。元のファイルがコピー・移動するわけではありません。</p></details>
+<details><summary>Q2. roで接続した場合、なぜtouchが失敗する？</summary><p>touchは新しいファイルの作成を要求しますが、roでマウントされた領域への書き込みは禁止されているためです。</p></details>
+<details><summary>Q3. remountで変わるもの・変わらないものは？</summary><p>接続元と接続先をそのままに、roからrwなどのマウント設定を変更できます。ただしrwでも権限などの別条件によって書き込みに失敗する場合があります。</p></details>
 </div></div></details></section>
 <section class="lesson-section lesson-compact" id="sources"><details class="article-expand"><summary>一次資料・参考文献</summary><div class="article-expand-body">
 
