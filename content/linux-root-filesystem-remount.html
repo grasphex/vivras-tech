@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Linuxのマウント｜保存領域とディレクトリがつながる理由｜VIVRAS Tech</title><meta name="description" content="Linuxのマウントを、保存領域とディレクトリの違いから解説。/dev/sdb1を/mnt/dataにつなぐ例でro・rw・remountと確認コマンドまで理解する。"><meta name="category" content="Linux"><meta name="keywords" content="Linux mount remount root ファイルシステム 読み取り専用 ro rw bootparam"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/linux-root-filesystem-remount.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script></head>
+<title>Linuxのマウント｜保存領域とディレクトリがつながる理由｜VIVRAS Tech</title><meta name="description" content="Linuxのマウントを、保存領域とディレクトリの違いから解説。/dev/sdb1を/mnt/dataにつなぐ例でro・rw・remountと確認コマンドまで理解する。"><meta name="category" content="Linux"><meta name="keywords" content="Linux mount remount root ファイルシステム 読み取り専用 ro rw bootparam"><meta name="published" content="2026-11-15"><link rel="canonical" href="https://tech.grasphex.com/articles/linux-root-filesystem-remount.html"><link rel="stylesheet" href="../assets/site.css"><script src="../assets/terms.js" defer></script><script src="../assets/mount-lab.js" defer></script></head>
 <body><header class="site-header"><div class="container topbar"><a href="../index.html" class="logo"><span class="logo-mark">V</span>VIVRAS<span class="logo-light"> TECH</span></a><nav aria-label="記事の分野"><a href="../topics/tech.html">技術</a><a href="../topics/society.html">社会・教養</a><a href="../topics/health.html">健康・暮らし</a></nav></div></header><main><header class="article-header">
 <div class="breadcrumb"><a href="../index.html">トップ</a> / <a href="../topics/tech.html">技術</a> / <a href="../index.html?category=Linux#articles">Linux</a></div>
 <span class="tag">LINUX / FILESYSTEM</span>
@@ -34,15 +34,25 @@
 </section>
 <section class="lesson-section" id="conditions">
 <div class="lesson-kicker">04 / 条件の違い</div>
-<h2>ro・rwは何を変える？</h2>
-<p>マウント後、そのファイルシステムを<strong>読むだけにするか、書き込みも許すか</strong>を選べます。<strong><button type="button" class="vterm" data-explain="接続先を変えず、読み取り専用（ro）などの条件を切り替える操作。" aria-label="再マウント（remount）の説明を開く">再マウント（remount）</button></strong>は、同じ接続先のまま条件を変更する操作です。</p><details class="article-expand lesson-simulator"><summary>操作して結果を確かめる</summary><div class="article-expand-body">
-<div class="lesson-try"><div class="lesson-try-head"><strong>図の条件を変えて確認</strong><span>操作できる例</span></div>
-<div class="lesson-control">
-<label for="mount-mode">マウント条件<select id="mount-mode"><option value="ro">ro：読み取り専用</option><option value="rw">rw：読み書き可能</option></select></label>
-<label for="mount-action">行う操作<select id="mount-action"><option value="read">ファイルを読む</option><option value="write">ファイルに書く</option></select></label></div>
-<div class="lesson-status" id="mount-status" aria-live="polite"></div>
-<p class="lesson-why" id="mount-why"></p></div>
-<p class="lesson-note">rwでも権限や故障などで書き込めない場合があります。ここでは<strong>マウント条件だけ</strong>を比べています。</p>
+<h2>同じ書き込みを、remountの前後で試す。</h2>
+<p>マウント後の<strong>roは読み取り専用、rwは読み書き可能</strong>。その違いを、同じ <code>touch</code> コマンドの結果で確認します。<strong><button type="button" class="vterm" data-explain="接続先を変えず、読み取り専用（ro）などの条件を切り替える操作。" aria-label="再マウント（remount）の説明を開く">再マウント（remount）</button></strong>は、同じ接続先のまま条件を変更する操作です。</p><details class="article-expand lesson-simulator"><summary>コマンドを実行して確かめる：ro → rw → ro</summary><div class="article-expand-body">
+<div class="mount-command-lab" id="mount-command-lab">
+<p class="mount-lab-intro"><strong>課題：</strong>同じファイルへの書き込みを、<code>remount</code>の前と後に実行して結果を比べよう。</p>
+<p class="mount-lab-note">これは<strong>仮想Linuxの操作教材</strong>です。実機には一切変更を加えません。ここではルートのマウント先 <code>/</code> を操作します。前半の <code>/mnt/data</code> の例とは別です。</p>
+<div class="mount-lab-state"><div><span class="mount-lab-kicker">現在の / のマウント状態</span><strong id="mount-live-mode" data-mode="ro">ro：読み取り専用</strong><p id="mount-mode-message">書き込みは禁止です。</p></div><div><span class="mount-lab-kicker">直前の実行結果</span><strong id="mount-last-result" aria-live="polite">まだコマンドを実行していません</strong></div></div>
+<div class="mount-lab-commands" role="group" aria-label="仮想Linuxで実行するコマンド">
+<button type="button" data-lab-command="inspect"><small>状態を調べる</small><code>findmnt -no TARGET,OPTIONS /</code><span>実行 ↵</span></button>
+<button type="button" data-lab-command="write"><small>同じ書き込みを試す</small><code>sudo touch /vivras-demo.txt</code><span>実行 ↵</span></button>
+<button type="button" data-lab-command="remountrw"><small>読み書き可能に変更</small><code>sudo mount -o remount,rw /</code><span>実行 ↵</span></button>
+<button type="button" data-lab-command="remountro"><small>読み取り専用に戻す</small><code>sudo mount -o remount,ro /</code><span>実行 ↵</span></button>
+<button type="button" data-lab-command="read"><small>読み取りはできる？</small><code>cat /etc/hostname</code><span>実行 ↵</span></button>
+</div>
+<div class="mount-lab-terminal"><div class="mount-lab-terminal-bar"><span>VIVRAS仮想ターミナル</span><span>実機には接続しません</span></div><pre id="mount-terminal" role="log" aria-live="polite" aria-relevant="additions text" tabindex="0">仮想Linuxの準備完了。上のコマンドを選んで実行してください。</pre></div>
+<div class="mount-lab-compare" aria-label="同じ書き込み操作の結果を比較"><div><span>ro のときの touch</span><strong id="mount-ro-write">未実行</strong></div><div><span>rw のときの touch</span><strong id="mount-rw-write">未実行</strong></div></div>
+<p class="mount-lab-takeaway" id="mount-learned">試してみよう：①roでtouchを実行 → ②remount,rw → ③同じtouchを再実行。</p>
+<button type="button" class="mount-lab-reset" data-lab-reset>最初の状態（ro）に戻す</button>
+</div>
+<p class="lesson-note"><strong>重要：</strong>教材では正常に再マウントできたと仮定します。実機では使用中の状態・ファイルシステム障害・権限・別のマウントの存在などで結果が変わります。ルート <code>/</code> の再マウントはシステムに影響するため、学習目的で実機実行しないでください。</p>
 </div></details></section>
 <section class="lesson-section lesson-compact" id="verify"><details class="article-expand"><summary>コマンドで確認</summary><div class="article-expand-body">
 
@@ -52,7 +62,7 @@ findmnt -no SOURCE,FSTYPE,OPTIONS /
 # /mnt/data に個別のマウントがあるか確認
 findmnt --mountpoint /mnt/data</code></pre>
 <p>結果の<strong>SOURCE</strong>は接続元、<strong>FSTYPE</strong>はファイルシステムの種類、<strong>OPTIONS</strong>はro・rwなどの条件です。<code>findmnt --mountpoint /mnt/data</code>は、その場所自体がマウントポイントでなければ、通常は何も表示しません。</p>
-<details class="lesson-detail"><summary>保守作業でroからrwへ変更するコマンドは？</summary><p><code>sudo mount -o remount,rw /</code>。<code>/</code>にマウント済みのファイルシステムを、読み書き可能な条件へ変更しようとします。<strong>障害時の保護や運用方針を崩す可能性があるため、実機で理由なく実行しないでください。</strong></p></details>
+
 </div></details></section>
 <section class="lesson-section lesson-compact" id="check"><details class="article-expand"><summary>3問で理解度を確認</summary><div class="article-expand-body">
 
@@ -68,4 +78,4 @@ findmnt --mountpoint /mnt/data</code></pre>
 <p class="lesson-note">実機の出力例ではなく、学習用に単純化した図です。実際のマウント対象・権限・エラーは環境によって異なります。</p>
 </div></details></section>
 <div class="article-end"><a href="../topics/tech.html">← 技術の記事一覧へ</a></div>
-</article></main><footer class="site-footer"><div class="container footer-row">© VIVRAS Tech</div></footer><script>(()=>{"use strict";const mode=document.getElementById("mount-mode"),action=document.getElementById("mount-action"),status=document.getElementById("mount-status"),why=document.getElementById("mount-why");function draw(){const blocked=mode.value==="ro"&&action.value==="write";status.textContent=blocked?"書き込み不可":"マウント条件では禁止されない";status.className="lesson-status "+(blocked?"is-blocked":"is-allowed");why.textContent=blocked?"roはファイルシステムへの書き込みを認めないため。":mode.value==="rw"?"rwは読み書きを禁止しない。ただし権限・障害等の条件は別。":"読み取りはroでも認められるため。";}mode.addEventListener("change",draw);action.addEventListener("change",draw);draw()})();</script></body></html>
+</article></main><footer class="site-footer"><div class="container footer-row">© VIVRAS Tech</div></footer></body></html>
