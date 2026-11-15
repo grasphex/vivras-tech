@@ -32,7 +32,11 @@ for filename, req in CASES.items():
     assert 'id="terms"' not in h and 'class="lesson-terms"' not in h, filename
     assert 'class="article-body tech-lesson"' in h, filename
     assert 'class="lesson-figure' in h, filename
-    assert 'class="lesson-try"' in h and 'aria-live="polite"' in h, filename
+    assert 'aria-live="polite"' in h, filename
+    if filename == "linux-root-filesystem-remount.html":
+        assert 'class="mount-command-lab"' in h, filename
+    else:
+        assert 'class="lesson-try"' in h, filename
     assert h.count('class="vterm"') >= 4 and 'assets/terms.js' in h, filename
     assert h.count('<details class="article-expand') >= 4, filename
     assert 'class="lesson-quiz"' in h, filename
