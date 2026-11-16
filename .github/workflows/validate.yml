@@ -21,6 +21,8 @@ jobs:
         run: node --check assets/location-data-explainer.js
       - name: Check location-data editorial requirements
         run: python3 scripts/validate_location_article.py
+      - name: Test Yalta article explanation and scenario controls
+        run: node scripts/test_yalta.cjs
       - name: Test term popup interactions
         run: node scripts/test_terms.cjs
       - name: Build topic and article pages
