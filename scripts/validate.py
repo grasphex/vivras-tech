@@ -107,6 +107,16 @@ def validate():
         assert "<svg " in data and "viewBox=" in data, f"Broken SVG map: {name}"
         assert "Chao Phraya" in data or "チャオプラヤ川" in data, f"Missing river: {name}"
         assert f'../assets/{name}' in thai, f"Article not linked to map: {name}"
+    # Learning sequence and geographical labels must agree: no landform
+    # introduced in the prose without a matching position on the country map.
+    country_svg = (DIST / "assets" / "thailand-learning-country.svg").read_text(encoding="utf-8")
+    for landform in ("北部山地", "中央平野", "コラート高原", "マレー半島"):
+        assert landform in country_svg, f"Terrain label absent from country map: {landform}"
+    for marker in ("id=\"terrain-regions\"", "代表的な位置"):
+        assert marker in country_svg, f"Terrain map qualifier missing: {marker}"
+    assert thai.index('id="map"') < thai.index('id="climate"') < thai.index('id="river"') < thai.index('id="ayutthaya"') < thai.index('id="modern"'), "Thai lesson narrative order changed"
+    assert thai.index("thailand-chao-phraya.svg") > thai.index('id="ayutthaya"'), "Ayutthaya zoom is not next to its explanation"
+    assert 'class="river-island"' in thai and "ロッブリー川" in thai and "パーサック川" in thai, "Three-river defense diagram missing"
     assert "www.naturalearthdata.com" in thai, "Geodata source missing"
     assert (DIST / "assets" / "terms.js").is_file(), "Missing shared term behavior"
     assert (DIST / "assets" / "mount-editorial.css").is_file(), "Missing editorial mount styles"
