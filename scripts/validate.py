@@ -95,6 +95,17 @@ def validate():
         parsed.feed(source)
         assert len(parsed.buttons) >= 3, f"Too few contextual definitions: {a['slug']}"
         assert all(x.get("type") == "button" and len(x.get("data-explain", "")) > 12 and x.get("aria-label") for x in parsed.buttons), f"Broken inline definitions: {a['slug']}"
+    # The Thailand map must not depend on an externally loaded stylesheet:
+    # without Leaflet positioning rules, 256px tile images spill over the page.
+    thai = (DIST / "articles" / "thailand-geography.html").read_text(encoding="utf-8")
+    local_leaflet = DIST / "assets" / "leaflet-1.9.4.css"
+    assert local_leaflet.is_file(), "Missing self-hosted Leaflet CSS"
+    leaflet_rules = local_leaflet.read_text(encoding="utf-8")
+    assert ".leaflet-pane" in leaflet_rules and "position: absolute" in leaflet_rules, "Leaflet tile placement rules missing"
+    assert ".leaflet-container" in leaflet_rules and "overflow: hidden" in leaflet_rules, "Leaflet tile clipping rules missing"
+    assert 'href="../assets/leaflet-1.9.4.css"' in thai, "Thailand map relies on external Leaflet stylesheet"
+    assert 'contain:paint' in thai and 'overflow:hidden' in thai, "Thailand map not contained within mobile viewport"
+    assert 'leafletCssReady' in thai, "Thailand map missing CSS load failure fallback"
     assert (DIST / "assets" / "terms.js").is_file(), "Missing shared term behavior"
     assert (DIST / "assets" / "mount-editorial.css").is_file(), "Missing editorial mount styles"
     orange_css = DIST / "assets" / "refined-orange-v11.css"
