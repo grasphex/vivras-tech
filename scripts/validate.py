@@ -95,17 +95,19 @@ def validate():
         parsed.feed(source)
         assert len(parsed.buttons) >= 3, f"Too few contextual definitions: {a['slug']}"
         assert all(x.get("type") == "button" and len(x.get("data-explain", "")) > 12 and x.get("aria-label") for x in parsed.buttons), f"Broken inline definitions: {a['slug']}"
-    # The Thailand map must not depend on an externally loaded stylesheet:
-    # without Leaflet positioning rules, 256px tile images spill over the page.
+    # Thailand educational map: real country and river vectors are bundled as
+    # self-contained SVG. No Leaflet tiles or CDN styles should leak into article.
     thai = (DIST / "articles" / "thailand-geography.html").read_text(encoding="utf-8")
-    local_leaflet = DIST / "assets" / "leaflet-1.9.4.css"
-    assert local_leaflet.is_file(), "Missing self-hosted Leaflet CSS"
-    leaflet_rules = local_leaflet.read_text(encoding="utf-8")
-    assert ".leaflet-pane" in leaflet_rules and "position: absolute" in leaflet_rules, "Leaflet tile placement rules missing"
-    assert ".leaflet-container" in leaflet_rules and "overflow: hidden" in leaflet_rules, "Leaflet tile clipping rules missing"
-    assert 'href="../assets/leaflet-1.9.4.css"' in thai, "Thailand map relies on external Leaflet stylesheet"
-    assert 'contain:paint' in thai and 'overflow:hidden' in thai, "Thailand map not contained within mobile viewport"
-    assert 'leafletCssReady' in thai, "Thailand map missing CSS load failure fallback"
+    assert 'id="thai-map"' not in thai and 'leaflet.js' not in thai, "Crowded Leaflet map returned"
+    assert "geo-map-scroll" in thai and "overflow-x:auto" in thai, "Mobile map overflow control missing"
+    for name in ("thailand-learning-country.svg", "thailand-chao-phraya.svg"):
+        path = DIST / "assets" / name
+        assert path.is_file(), f"Missing educational vector map: {name}"
+        data = path.read_text(encoding="utf-8")
+        assert "<svg " in data and "viewBox=" in data, f"Broken SVG map: {name}"
+        assert "Chao Phraya" in data or "チャオプラヤ川" in data, f"Missing river: {name}"
+        assert f'../assets/{name}' in thai, f"Article not linked to map: {name}"
+    assert "www.naturalearthdata.com" in thai, "Geodata source missing"
     assert (DIST / "assets" / "terms.js").is_file(), "Missing shared term behavior"
     assert (DIST / "assets" / "mount-editorial.css").is_file(), "Missing editorial mount styles"
     orange_css = DIST / "assets" / "refined-orange-v11.css"

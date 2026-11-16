@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="../assets/site.css">
 <link rel="stylesheet" href="../assets/refined-orange-v11.css">
 <script src="../assets/terms.js" defer></script>
-<link rel="stylesheet" href="../assets/leaflet-1.9.4.css">
 <title>タイの地理｜なぜ稲作とアユタヤの交易が発展したのか｜VIVRAS Tech</title>
 <style>
 :root{--thai-paper:#f6f5f0;--thai-ink:#233026;--thai-line:#c4c9bf;--thai-muted:#617065;--thai-green:#38644d;--thai-blue:#226b85;--thai-gold:#996d40}
@@ -19,12 +18,12 @@ body{background:var(--thai-paper)}.thai{font-family:-apple-system,BlinkMacSystem
 .thai-hero{padding:35px 0 38px;border-bottom:1px solid var(--thai-line)}.thai .crumb{font-size:12px;color:var(--thai-muted);margin-bottom:26px}.thai .crumb a{color:#875a3d}.thai .eyebrow{font:750 12px ui-monospace,monospace;letter-spacing:.09em;color:var(--thai-gold)}.thai h1{font-size:clamp(36px,5.8vw,68px);line-height:1.18;letter-spacing:-.065em;font-weight:800;max-width:950px;margin:13px 0 17px}.thai .lead{font-size:18px;line-height:1.75;max-width:870px}.thai .takeaway{margin-top:24px;border-top:2px solid var(--thai-ink);border-bottom:1px solid var(--thai-line);display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.thai .takeaway>div{padding:16px 12px;border-right:1px solid var(--thai-line)}.thai .takeaway>div:first-child{padding-left:0}.thai .takeaway>div:last-child{border-right:0}.thai .takeaway b{display:block;font-size:17px;line-height:1.3}.thai .takeaway small{display:block;font-size:12px;color:var(--thai-muted);margin-top:5px}
 .thai-nav{border-bottom:1px solid var(--thai-line)}.thai-nav .wrap{display:flex;gap:19px;flex-wrap:wrap;padding-top:13px;padding-bottom:13px}.thai-nav a{font-size:13px;font-weight:750;text-decoration:none}.thai-nav a:hover{color:var(--thai-green)}
 .thai-section{padding:46px 0 54px;border-bottom:1px solid var(--thai-line)}.thai .sec-head{display:grid;grid-template-columns:125px 1fr;gap:24px;margin-bottom:22px}.thai .sec-head .eyebrow{padding-top:8px}.thai h2{font-size:clamp(26px,3.1vw,39px);line-height:1.3;letter-spacing:-.045em}.thai .sec-head p:not(.eyebrow){margin-top:11px;max-width:780px}.thai h3{font-size:20px;line-height:1.35}.thai .muted{color:var(--thai-muted)}.thai .tiny{font-size:12px;color:var(--thai-muted);line-height:1.65}.thai .fact-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--thai-line);border-bottom:1px solid var(--thai-line)}.thai .fact-grid>div{padding:11px 10px 12px;border-right:1px solid var(--thai-line)}.thai .fact-grid>div:first-child{padding-left:0}.thai .fact-grid>div:last-child{border-right:0}.thai .fact-grid dt{font-size:12px;color:var(--thai-muted)}.thai .fact-grid dd{margin:4px 0 0;font-weight:800;font-size:14px}
-.thai .map-area{border-top:2px solid var(--thai-ink);background:#e5ece5;padding:12px;margin-top:20px}.thai .map-actions{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:11px}.thai button{font:inherit;cursor:pointer}.thai .map-actions button{background:transparent;color:var(--thai-ink);border:1px solid #889b8c;padding:8px 15px;border-radius:0;font-size:13px;font-weight:750}.thai .map-actions button[aria-pressed=true]{background:var(--thai-ink);color:white;border-color:var(--thai-ink)}.thai #thai-map{height:455px;width:100%;max-width:100%;min-width:0;position:relative;overflow:hidden;isolation:isolate;contain:paint;background:#d9e9e9}.thai #thai-map .leaflet-tile{max-width:none!important;max-height:none!important}.thai .map-credits{font-size:11px;margin-top:9px;color:#465d50}.thai .map-label{white-space:nowrap;color:#153e2c;font-size:15px;font-weight:850;text-shadow:-2px -2px 3px #fff,2px 2px 3px #fff,0 0 4px #fff}.thai .map-label.main{font-size:19px;color:#23573f}.thai .map-label.city{font-size:13px;color:#884629}.thai .leaflet-div-icon{background:transparent;border:0}.thai .map-fallback{font-size:14px;padding:25px}.thai .leaflet-control-attribution{font-size:10px!important}
+.thai .geo-map-comparison{max-width:790px;margin:22px auto 0}.thai .geo-map-figure{margin:0 0 30px;padding:0;border-top:2px solid var(--thai-ink);padding-top:14px}.thai .geo-map-figure h3{margin-bottom:4px}.thai .geo-map-scroll{width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;border:1px solid #b3c4b3;background:#d9e8ed;margin-top:12px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}.thai .geo-map-scroll:focus-visible{outline:3px solid #c49a5e;outline-offset:2px}.thai .geo-map-scroll img{display:block;width:100%;height:auto;max-width:none}.thai .geo-map-figure figcaption{font-size:13px;line-height:1.75;padding-top:12px;color:#4d5c50}.thai .geo-map-figure figcaption strong{display:block;color:#1f3f2d;font-size:15px}.thai .geo-map-comparison>.tiny{font-size:12px;line-height:1.7}
 .thai .regions{margin-top:24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 25px}.thai .region{display:grid;grid-template-columns:58px 1fr;gap:13px;border-top:1px solid var(--thai-line);padding:15px 0}.thai .region .num{font-size:26px;font-weight:650;font-family:Georgia,serif;color:var(--thai-gold)}.thai .region p{font-size:14px;margin-top:4px}
 .thai .process{border-top:2px solid var(--thai-ink);border-bottom:1px solid var(--thai-line);padding:17px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}.thai .process>div{padding:0 14px 0 18px;border-right:1px solid var(--thai-line);position:relative}.thai .process>div:first-child{padding-left:0}.thai .process>div:last-child{border-right:0}.thai .process strong{display:block;font-size:15px;line-height:1.45}.thai .process p{font-size:13px;color:var(--thai-muted);margin-top:7px}.thai .process .arrow{color:var(--thai-green);font-size:20px;font-weight:800;position:absolute;right:-10px;top:-7px;background:var(--thai-paper);z-index:2}
 .thai .two{display:grid;grid-template-columns:1fr 1fr;gap:22px}.thai .pane{border-top:2px solid var(--thai-ink);padding-top:14px}.thai .pane p{font-size:14px;margin-top:9px}.thai .pane svg{display:block;width:100%;height:auto;max-height:225px;margin-top:10px;background:#edf1e7}.thai .explain{margin-top:20px;padding:15px 18px;background:#e8ebe4;border-left:3px solid var(--thai-green);font-size:14px}.thai .explain strong{font-size:15px}.thai .explain p{font-size:14px;margin-top:5px}.thai .flow{border-top:2px solid var(--thai-ink);margin-top:24px}.thai .flow>div{display:grid;grid-template-columns:130px 1fr;gap:20px;border-bottom:1px solid var(--thai-line);padding:14px 0}.thai .flow strong{color:var(--thai-green);font-size:14px}.thai .flow p{font-size:14px}.thai .trade-line{margin:21px 0 12px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;border-top:2px solid var(--thai-ink);border-bottom:1px solid var(--thai-line)}.thai .trade-line>div{padding:16px 12px;border-right:1px solid var(--thai-line)}.thai .trade-line>div:last-child{border-right:0}.thai .trade-line b{display:block;font-size:15px}.thai .trade-line p{font-size:13px;margin-top:6px}.thai .trade-line em{font-style:normal;color:var(--thai-blue);font-size:12px;font-weight:800}
 .thai .photos{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:26px}.thai figure{margin:0;border-top:2px solid var(--thai-ink);padding-top:9px}.thai figure img{display:block;width:100%;height:260px;object-fit:cover;background:#dbe5dc}.thai figcaption{padding-top:9px;font-size:13px;line-height:1.65}.thai figcaption strong{display:block;font-size:15px}.thai .photo-credit{font-size:11px;color:var(--thai-muted);margin-top:5px}.thai .comparison{width:100%;border-collapse:collapse;margin-top:20px}.thai .comparison th,.thai .comparison td{border-bottom:1px solid var(--thai-line);padding:12px 10px;font-size:14px;text-align:left;vertical-align:top}.thai .comparison th{font-size:12px;color:var(--thai-muted)}.thai .comparison td:first-child{font-weight:750}.thai .history{margin:25px 0 0;padding:0;list-style:none}.thai .history li{display:grid;grid-template-columns:115px 1fr;gap:20px;border-top:1px solid var(--thai-line);padding:12px 0}.thai .history time{font-weight:850;color:var(--thai-gold)}.thai .history p{font-size:14px}.thai .quiz details{border-top:1px solid var(--thai-line);padding:14px 0}.thai .quiz details:last-child{border-bottom:1px solid var(--thai-line)}.thai .quiz summary{font-size:15px;font-weight:760;cursor:pointer}.thai .quiz details p{font-size:14px;margin-top:9px;color:#40574a}.thai .refs{font-size:13px;line-height:1.8;padding-left:20px}.thai .refs li{margin:8px 0}.thai .refs a{overflow-wrap:anywhere}.thai .bottom{padding:25px 0 60px;font-size:13px}
-@media(max-width:750px){.thai .wrap{padding:0 16px}.thai-hero{padding:26px 0 30px}.thai .lead{font-size:16px}.thai .takeaway{grid-template-columns:1fr 1fr}.thai .takeaway>div:nth-child(2){border-right:0}.thai .takeaway>div{border-bottom:1px solid var(--thai-line)}.thai-section{padding:33px 0 40px}.thai .sec-head{grid-template-columns:1fr;gap:5px}.thai .sec-head .eyebrow{padding:0}.thai .two,.thai .regions,.thai .photos{grid-template-columns:1fr}.thai .fact-grid{grid-template-columns:1fr 1fr}.thai .fact-grid>div:nth-child(2){border-right:0}.thai .fact-grid>div{border-bottom:1px solid var(--thai-line)}.thai .process,.thai .trade-line{grid-template-columns:1fr}.thai .process>div,.thai .trade-line>div{border-right:0;border-bottom:1px solid var(--thai-line);padding:10px 0}.thai .process .arrow{display:none}.thai .flow>div{grid-template-columns:110px 1fr;gap:13px}.thai #thai-map{height:440px}.thai .history li{grid-template-columns:85px 1fr;gap:12px}.thai figure img{height:235px}}
+@media(max-width:750px){.thai .wrap{padding:0 16px}.thai-hero{padding:26px 0 30px}.thai .lead{font-size:16px}.thai .takeaway{grid-template-columns:1fr 1fr}.thai .takeaway>div:nth-child(2){border-right:0}.thai .takeaway>div{border-bottom:1px solid var(--thai-line)}.thai-section{padding:33px 0 40px}.thai .sec-head{grid-template-columns:1fr;gap:5px}.thai .sec-head .eyebrow{padding:0}.thai .two,.thai .regions,.thai .photos{grid-template-columns:1fr}.thai .fact-grid{grid-template-columns:1fr 1fr}.thai .fact-grid>div:nth-child(2){border-right:0}.thai .fact-grid>div{border-bottom:1px solid var(--thai-line)}.thai .process,.thai .trade-line{grid-template-columns:1fr}.thai .process>div,.thai .trade-line>div{border-right:0;border-bottom:1px solid var(--thai-line);padding:10px 0}.thai .process .arrow{display:none}.thai .flow>div{grid-template-columns:110px 1fr;gap:13px}.thai .geo-map-scroll img{width:540px;max-width:none}.thai .history li{grid-template-columns:85px 1fr;gap:12px}.thai figure img{height:235px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head><body>
@@ -38,9 +37,21 @@ body{background:var(--thai-paper)}.thai{font-family:-apple-system,BlinkMacSystem
 <nav class="thai-nav" aria-label="目次"><div class="wrap"><a href="#map">位置と地形</a><a href="#river">平野と稲作</a><a href="#climate">モンスーン</a><a href="#ayutthaya">アユタヤ</a><a href="#modern">現代と比較</a><a href="#check">確認問題</a></div></nav>
 <section class="thai-section" id="map"><div class="wrap"><div class="sec-head"><p class="eyebrow">01 / MAP</p><div><h2>位置を見ると、川の役割がわかる。</h2><p>タイはミャンマー・ラオス・カンボジア・マレーシアと国境を接する。中央のチャオプラヤ川と、東北部のメコン川水系は区別して考える。</p></div></div>
 <dl class="fact-grid"><div><dt>首都</dt><dd>バンコク</dd></div><div><dt>人口（2025年）</dt><dd>約7,162万人</dd></div><div><dt>言語</dt><dd>タイ語</dd></div><div><dt>主な宗教</dt><dd>仏教</dd></div></dl>
-<div class="map-area"><div class="map-actions" role="group" aria-label="地図の表示範囲"><button id="view-country" type="button" aria-pressed="true">周辺国・国全体</button><button id="view-river" type="button" aria-pressed="false">チャオプラヤ川とアユタヤ</button><button id="view-city" type="button" aria-pressed="false">アユタヤ旧市街</button></div>
-<div id="thai-map" role="region" aria-label="OpenStreetMapを使用したタイの地図。国境・川・都市・周辺国を実際の地理情報で表示。"><p class="map-fallback">実地図を読み込んでいます。表示されない場合は<a href="https://www.openstreetmap.org/#map=6/15.2/101.2">OpenStreetMapで地図を見る</a>。</p></div>
-<p class="map-credits">地理データと国境：© OpenStreetMap contributors。日本語の注記は実際の緯度経度に配置。地図はドラッグ・拡大縮小できる。現代の河道・道路を表示しており、王朝時代の完全な復元図ではない。</p></div>
+<div class="geo-map-comparison" aria-label="タイの地理学習用の実データ地図">
+<figure class="geo-map-figure">
+<h3>タイと周辺国｜まず全体を把握する</h3>
+<p class="tiny">必要な情報だけ表示：国境・チャオプラヤ川・メコン川・主要都市。</p>
+<div class="geo-map-scroll" tabindex="0" aria-label="タイの全体地図。スマートフォンでは左右にスクロールできます">
+<img src="../assets/thailand-learning-country.svg" width="700" height="880" alt="自然地理データによるタイと周辺国の正確な国境。タイを緑、近隣国を灰色、中央のチャオプラヤ川を濃い青、東部のメコン川を青破線で強調。日本語で各国・都市を表示" decoding="async">
+</div><figcaption><strong>チャオプラヤ川はタイ中央部、メコン川は東側。</strong> 青の実線はチャオプラヤ川、青の破線はメコン川。川の流路と国境は実際の地理データから描いた。</figcaption></figure>
+<figure class="geo-map-figure">
+<h3>中央平野の拡大｜アユタヤから海へ</h3>
+<p class="tiny">チャオプラヤ川の実流路と、ナコーンサワン・アユタヤ・バンコク・タイ湾の位置関係。</p>
+<div class="geo-map-scroll" tabindex="0" aria-label="チャオプラヤ川の拡大地図。スマートフォンでは左右にスクロールできます">
+<img src="../assets/thailand-chao-phraya.svg" width="700" height="740" alt="チャオプラヤ川の実際の流路を濃い青で示した拡大地図。上流のナコーンサワンから南下し、アユタヤ、バンコクを通ってタイ湾に流れる位置関係" loading="lazy" decoding="async">
+</div><figcaption><strong>川は内陸から海への交通路になった。</strong> アユタヤは川の中流〜下流域に位置し、川をたどってタイ湾へつながる。</figcaption></figure>
+<p class="tiny">地図の国境はNatural Earth 1:50m、河川は同1:10mのGISデータ。学習用に線と日本語ラベルを強調しています。川・国境の詳細形状は縮尺によって簡略化され、支流や運河は省略しています。<a href="https://www.openstreetmap.org/#map=10/14.4/100.6" target="_blank" rel="noopener">アユタヤ周辺の詳細な実地図を見る（OpenStreetMap）</a>。</p>
+</div>
 <div class="regions"><div class="region"><span class="num">01</span><div><h3>北部｜山と谷</h3><p>チェンマイ周辺。ピン川・ナーン川などの上流域があり、中央平野へ水を送る。</p></div></div>
 <div class="region"><span class="num">02</span><div><h3>中央｜広い <button class="vterm" type="button" aria-label="沖積平野の意味を読む" data-explain="川が運んだ砂や泥などが長い時間をかけて積もり、形成された低く平らな土地。">沖積平野</button></h3><p>川の運ぶ土砂が積もった低地。チャオプラヤ川が流れ、稲作と都市が発達した。</p></div></div>
 <div class="region"><span class="num">03</span><div><h3>東北｜コラート高原</h3><p>ムン川・チー川などはメコン川水系。中央部とは別の水の流れを持つ。</p></div></div>
@@ -90,7 +101,7 @@ body{background:var(--thai-paper)}.thai{font-family:-apple-system,BlinkMacSystem
 <details><summary>Q5｜タイの中心部と東北部では水系がどう異なる？</summary><p>中心部はチャオプラヤ川流域。東北部はムン川・チー川などを通じてメコン川水系につながる。</p></details>
 <details><summary>Q6｜北東モンスーンはなぜタイ南部では雨をもたらす場合がある？</summary><p>大陸から来た空気でもタイ湾上を通ると水蒸気を取り込むため。空気の出発地だけでなく通過経路が重要。</p></details>
 </div></div></section>
-<section class="thai-section" id="sources"><div class="wrap"><div class="sec-head"><p class="eyebrow">SOURCES</p><div><h2>一次資料・画像の出典</h2><p>地図は実地理データ。土砂・季節風・交易ルートの図は原理を伝える模式図であり、測量図や当時の地図ではない。</p></div></div>
+<section class="thai-section" id="sources"><div class="wrap"><div class="sec-head"><p class="eyebrow">SOURCES</p><div><h2>一次資料・画像の出典</h2><p>国境・主河川の地図はNatural Earthの地理データ。土砂・季節風・交易ルートの図は原理を伝える模式図であり、測量図や当時の地図ではない。</p></div></div>
 <ol class="refs">
 <li>[1] <a href="https://thailand.go.th/public/guide-book-detail/009_141" target="_blank" rel="noopener">タイ政府｜Geography of Thailand</a>：位置・地形・中央平野と川。</li>
 <li>[2] <a href="https://data.worldbank.org/country/thailand" target="_blank" rel="noopener">世界銀行｜Thailand Data</a>：2025年人口。</li>
@@ -99,39 +110,7 @@ body{background:var(--thai-paper)}.thai{font-family:-apple-system,BlinkMacSystem
 <li>[5] <a href="https://www.tourismthailand.org/Destinations/Provinces/phra-nakhon-si-ayutthaya/229" target="_blank" rel="noopener">タイ政府観光局｜Ayutthaya</a>：河川に囲まれた旧都。</li>
 <li>[6] <a href="https://www.worldbank.org/ext/en/country/thailand" target="_blank" rel="noopener">世界銀行｜Thailand Overview</a>：経済構造の変化。</li>
 <li>[7] <a href="https://www.boi.go.th/index.php?_=&amp;language=en&amp;page=press_releases_detail&amp;topic_id=138493" target="_blank" rel="noopener">タイ投資委員会｜2025年の産業投資</a>：電子機器等。</li>
-<li>[8] <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>：地図データ・表示出典。</li>
-</ol></div></section>
+<li>[8] <a href="https://www.naturalearthdata.com/downloads/" target="_blank" rel="noopener">Natural Earth</a>：地図の国境（1:50m）・河川（1:10m）データ、パブリックドメイン。</li>
+<li>[9] <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>：任意で開ける詳細地図の地理データ・著作権表示。</li></ol></div></section>
 </main><footer class="site-footer"><div class="container footer-row"><span>© VIVRAS Tech</span><span><a href="../topics/society.html">社会・教養の記事一覧へ</a></span></div></footer>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script>
-(function(){
-const el=document.getElementById('thai-map');if(!el||!window.L){if(el)el.innerHTML='<p class="map-fallback">地図ライブラリを読み込めませんでした。<a href="https://www.openstreetmap.org/#map=6/15.2/101.2">OpenStreetMapで確認</a></p>';return;}
-// Refuse to initialize if Leaflet's positioning stylesheet is missing.
-const probe=document.createElement('div');probe.className='leaflet-pane';el.appendChild(probe);
-const leafletCssReady=window.getComputedStyle(probe).position==='absolute';probe.remove();
-if(!leafletCssReady){el.innerHTML='<p class="map-fallback">地図の表示に必要なCSSを読み込めませんでした。<a href="https://www.openstreetmap.org/#map=6/15.2/101.2" target="_blank" rel="noopener">正確な地図はこちら</a></p>';return;}
-el.innerHTML='';
-const map=L.map(el,{scrollWheelZoom:false,zoomControl:true,preferCanvas:true});
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',maxZoom:18}).addTo(map);
-const views={country:[[5.1,95.9],[21.6,108.1]],river:[[13.3,99.5],[15.9,101.2]],city:[[14.28,100.48],[14.42,100.69]]};
-const details=[
-[15.70,100.14,'ナコーンサワン','ピン川・ナーン川が合流してチャオプラヤ川になる付近'],
-[14.354,100.569,'アユタヤ旧市街','旧都。3本の川に囲まれた国際交易都市'],
-[13.756,100.502,'バンコク','現在の首都。チャオプラヤ川の下流'],
-[13.531,100.594,'チャオプラヤ川河口付近','ここからタイ湾につながる'],
-[18.789,98.985,'チェンマイ','北部の山地と谷'],
-[14.979,102.098,'ナコーンラーチャシーマー','東北部コラート高原の中心都市']
-];
-details.forEach(function(d){L.circleMarker([d[0],d[1]],{radius:5,color:'#884629',weight:2,fillColor:'#f7e8d4',fillOpacity:1}).bindPopup('<strong>'+d[2]+'</strong><br>'+d[3]).addTo(map);});
-const labelGroup=L.layerGroup().addTo(map);const labels=[
-[17.9,99.1,'タイ','main'],[19.3,97.9,'ミャンマー',''],[18.4,103.5,'ラオス',''],[12.8,104.85,'カンボジア',''],[8.9,99.5,'マレー半島',''],[11.4,101.7,'タイ湾',''],[9.8,97.9,'アンダマン海',''],[14.38,100.53,'アユタヤ','city']
-];
-function drawLabels(){labelGroup.clearLayers();const z=map.getZoom();labels.forEach(function(p){if(z>=9&&p[3]!=='city')return;if(z<9&&p[3]==='city')return;L.marker([p[0],p[1]],{interactive:false,icon:L.divIcon({className:'leaflet-div-icon',html:'<span class="map-label '+p[3]+'">'+p[2]+'</span>',iconSize:[118,22],iconAnchor:[59,10]})}).addTo(labelGroup);});}
-map.on('zoomend',drawLabels);
-const buttons=[['view-country','country'],['view-river','river'],['view-city','city']];
-function focus(key){buttons.forEach(function(p){document.getElementById(p[0]).setAttribute('aria-pressed',String(p[1]===key));});map.fitBounds(views[key],{padding:[12,12],animate:false});}
-buttons.forEach(function(p){document.getElementById(p[0]).addEventListener('click',function(){focus(p[1]);});});
-focus('country');drawLabels();
-})();
-</script>
 </body></html>
